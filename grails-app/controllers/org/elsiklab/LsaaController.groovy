@@ -1,5 +1,7 @@
 package org.elsiklab
 
+import grails.converters.JSON
+
 class LsaaController {
 
     def index() { }
@@ -7,6 +9,6 @@ class LsaaController {
 
     def createLSAA() {
         log.debug "create LSAA"
-        render ([success: "true"] as JSON)
+        render ([success: true] as JSON)
     }
 }
