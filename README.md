@@ -31,3 +31,7 @@ Add the filesystem path and plugin declaration of this project to grails-app/con
 If that doesn't work you can also try explicitely setting the filesystem path for finding the plugin (wherever you built it)
 
     grails.plugin.location.'apollo-lsaa' = "/Users/biocmd/Work/Apollo/plugins/apollo-lsaa"
+
+Or
+   
+   grails install-plugin grails-apollo-lsaa-1.0.0-SNAPSHOT.zip
