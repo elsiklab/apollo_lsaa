@@ -1,4 +1,4 @@
-package org.bbop.apollo
+package org.elsiklab
 
 
 import grails.converters.JSON
