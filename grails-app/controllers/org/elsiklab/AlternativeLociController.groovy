@@ -30,6 +30,8 @@ class AlternativeLociController {
             uniqueName: name,
             residues: params.sequencedata
         ).save(flush:true)
+
+        log.debug "${params.start} ${params.end} ${altloci} ${sequence}"
         FeatureLocation featureLoc = new FeatureLocation(
                 fmin: params.start
                 ,fmax: params.end
