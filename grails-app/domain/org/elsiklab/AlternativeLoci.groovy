@@ -1,4 +1,6 @@
-package org.bbop.apollo
+package org.elsiklab
+
+import org.bbop.apollo.BiologicalRegion
 
 class AlternativeLoci extends BiologicalRegion {
 
