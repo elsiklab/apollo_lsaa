@@ -38,16 +38,16 @@ class AlternativeLociController {
                 ,feature: altloci
                 ,sequence: sequence
         ).save(flush:true)
-
-        new File(sequence.organism.fasta).withWriterAppend("UTF-8") {
-            it.write(">"+name+"\n"+params.sequencedata+"\n")
-        }
-
-        // remake fasta index, blat db, blast db
-        ('samtools faidx '+sequence.organism.fasta).execute()
-        ('faToTwoBit '+sequence.organism.fasta+' '+sequence.organism.blatdb).execute()
-        ('makeblastdb -dbtype nucl -in '+sequence.organism.fasta).execute()
-
+//
+//        new File(sequence.organism.fasta).withWriterAppend("UTF-8") {
+//            it.write(">"+name+"\n"+params.sequencedata+"\n")
+//        }
+//
+//        // remake fasta index, blat db, blast db
+//        ('samtools faidx '+sequence.organism.fasta).execute()
+//        ('faToTwoBit '+sequence.organism.fasta+' '+sequence.organism.blatdb).execute()
+//        ('makeblastdb -dbtype nucl -in '+sequence.organism.fasta).execute()
+//
         altloci.addToFeatureLocations(featureLoc)
         render ([success: "create loci success"] as JSON)
     }
