@@ -16,5 +16,7 @@ class AlternativeLociSpec extends Specification {
     }
 
     void "test something"() {
+        expect:
+              1==1
     }
 }
