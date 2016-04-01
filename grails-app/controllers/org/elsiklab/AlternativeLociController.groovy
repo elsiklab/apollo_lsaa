@@ -4,8 +4,8 @@ package org.elsiklab
 import grails.converters.JSON
 import groovy.json.JsonBuilder
 import grails.transaction.Transactional
-import org.bbop.apollo.Feature
-import org.bbop.apollo.FeatureLocation
+import org.bbop.apollo.*
+
 
 class AlternativeLociController {
 
@@ -53,15 +53,13 @@ class AlternativeLociController {
 
     def getLoci() {
         Sequence sequence = Sequence.findByName(params.sequence)
-        def viewableAnnotationList = [AlternativeLoci.class.canonicalName]
-        def features = Feature.createCriteria().list() {
+        def features = AlternativeLoci.createCriteria().list() {
             featureLocations {
                 eq('sequence',sequence)
             }
-            'in'('class',viewableAnnotationList)
         }
         JsonBuilder json = new JsonBuilder ()
-        json.features features, { Feature result ->
+        json.features features, { result ->
             start result.featureLocation.fmin
             id result.uniqueName
             end result.featureLocation.fmax

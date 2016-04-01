@@ -1,5 +1,5 @@
-grails-apollo-lsaa-1.0.0-SNAPSHOT.zip
-grails-apollo-lsaa-1.0.0-SNAPSHOT.zip.sha1
+grails-apollo-lsaa-*.zip
+grails-apollo-lsaa-*.zip.sha1
 plugin.xml
 target/
 web-app/WEB-INF/tld/c.tld
