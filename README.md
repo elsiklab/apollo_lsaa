@@ -35,3 +35,8 @@ If that doesn't work you can also try explicitely setting the filesystem path fo
 Or
    
    grails install-plugin grails-apollo-lsaa-1.0.0-SNAPSHOT.zip
+
+
+## Run tests
+
+    grails test-app
