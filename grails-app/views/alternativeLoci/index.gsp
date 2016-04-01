@@ -24,11 +24,11 @@
             <thead>
                     <tr>
                     
-                        <g:sortableColumn property="value" title="${message(code: 'availableStatus.name.label', default: 'Name')}" />
-                        <g:sortableColumn property="value" title="${message(code: 'availableStatus.name.label', default: 'Description')}" />
-                        <g:sortableColumn property="value" title="${message(code: 'availableStatus.name.label', default: 'Refseq')}" />
-                        <g:sortableColumn property="value" title="${message(code: 'availableStatus.name.label', default: 'Start')}" />
-                        <g:sortableColumn property="value" title="${message(code: 'availableStatus.name.label', default: 'End')}" />
+                        <g:sortableColumn property="name" title="${message(code: 'availableStatus.name.label', default: 'Name')}" />
+                        <g:sortableColumn property="description" title="${message(code: 'availableStatus.name.label', default: 'Description')}" />
+                        <g:sortableColumn property="featureLocation.sequence.name" title="${message(code: 'availableStatus.name.label', default: 'Refseq')}" />
+                        <g:sortableColumn property="featureLocation.fmin" title="${message(code: 'availableStatus.name.label', default: 'Start')}" />
+                        <g:sortableColumn property="fmax" title="${message(code: 'availableStatus.name.label', default: 'End')}" />
                     
                     </tr>
                 </thead>
