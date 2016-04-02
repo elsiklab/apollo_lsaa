@@ -1,7 +1,8 @@
 package org.elsiklab
 
 import grails.test.spock.IntegrationSpec
-import org.bbop.apollo.*
+import org.bbop.apollo.Sequence
+import org.bbop.apollo.Organism
 
 
 class AlternativeLociControllerIntegrationSpec extends IntegrationSpec {
@@ -11,7 +12,7 @@ class AlternativeLociControllerIntegrationSpec extends IntegrationSpec {
                 directory: "test/integration/resources/"
                 , commonName: "honeybee"
         ).save(flush: true)
-        Sequence sequence = new Sequence(
+        new Sequence(
                 length: 1405242
                 , seqChunkSize: 20000
                 , start: 0
@@ -19,9 +20,6 @@ class AlternativeLociControllerIntegrationSpec extends IntegrationSpec {
                 , end: 1405242
                 , name: "Group1.10"
         ).save()
-    }
-
-    def cleanup() {
     }
 
     void "test something"() {

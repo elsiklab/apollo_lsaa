@@ -9,11 +9,6 @@ import spock.lang.Specification
 @TestFor(AlternativeLoci)
 class AlternativeLociSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-    }
 
     void "test something"() {
         expect:

@@ -46,6 +46,9 @@ grails.project.dependency.resolution = {
             export = false
         }
         compile ":apollo-domain-classes:1.0.0"
+        compile ":codenarc:0.25.1"
+
+
         runtime ":hibernate4:4.3.5.5"
     }
 }

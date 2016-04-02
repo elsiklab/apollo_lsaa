@@ -4,7 +4,8 @@ package org.elsiklab
 import grails.converters.JSON
 import groovy.json.JsonBuilder
 import grails.transaction.Transactional
-import org.bbop.apollo.*
+import org.bbop.apollo.FeatureLocation
+import org.bbop.apollo.Sequence
 
 
 class AlternativeLociController {
@@ -78,12 +79,6 @@ class AlternativeLociController {
     }
 
 
-
-
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond AlternativeLoci.list(params), model:[alternativeLociInstanceCount: AlternativeLoci.count()]
-    }
 
     def show(AlternativeLoci alternativeLociInstance) {
         respond alternativeLociInstance
@@ -170,5 +165,68 @@ class AlternativeLociController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+
+
+
+    def index(Integer max) {
+        log.debug('here');
+
+        params.max = Math.min(max ?: 15, 100)
+
+        def c = AlternativeLoci.createCriteria()
+
+        def list = c.list(max: params.max, offset:params.offset) {
+            if(params.sort=="owners") {
+                owners {
+                    order('username', params.order)
+                }
+            }
+            if(params.sort=="sequencename") {
+                featureLocations {
+                    sequence {
+                        order('name', params.order)
+                    }
+                }
+            }
+            else if(params.sort=="name") {
+                order('name', params.order)
+            }
+            else if(params.sort=="organism") {
+                featureLocations {
+                    sequence {
+                        organism {
+                            order('commonName',params.order)
+                        }
+                    }
+                }
+            }
+            else if(params.sort=="lastUpdated") {
+                order('lastUpdated',params.order)
+            }
+
+            if(params.ownerName!=null&&params.ownerName!="") {
+                owners {
+                    ilike('username', '%'+params.ownerName+'%')
+                }
+            }
+            if(params.featureType!= null&&params.featureType!= "") {
+                ilike('class', '%'+params.featureType)
+            }
+            if(params.organismName!= null&&params.organismName != "") {
+                featureLocations {
+                    sequence {
+                        organism {
+                            ilike('commonName','%'+params.organismName+'%')
+                        }
+                    }
+                }
+            }
+        }
+
+        def filters = [organismName: params.organismName, featureType: params.featureType, ownerName: params.ownerName]
+
+        render view: "changes", model: [features: list, featureCount: list.totalCount, organismName: params.organismName, featureType: params.featureType, ownerName: params.ownerName, filters: filters, sort: params.sort]
     }
 }

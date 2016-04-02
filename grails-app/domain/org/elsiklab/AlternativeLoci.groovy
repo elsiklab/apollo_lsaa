@@ -2,6 +2,8 @@ package org.elsiklab
 
 import org.bbop.apollo.BiologicalRegion
 
+import groovy.transform.EqualsAndHashCode
+@EqualsAndHashCode
 class AlternativeLoci extends BiologicalRegion {
 
     static String ontologyId = "SO:0000702" //possible_assembly_error
