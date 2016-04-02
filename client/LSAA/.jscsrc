@@ -1,0 +1,11 @@
+{
+	"preset": "crockford",
+	"disallowSpacesInsideParentheses": null,
+	"requireSpacesInAnonymousFunctionExpression": null,
+	"requireSpaceBeforeObjectValues": null,
+	"requireBlocksOnNewline": null,
+	"requireVarDeclFirst": null,
+	"requireMultipleVarDecl": null,
+    "validateIndentation": null,
+    "disallowDanglingUnderscores": null
+}

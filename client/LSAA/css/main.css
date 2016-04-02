@@ -1,0 +1,28 @@
+.setLSAA form {
+    width: 20%;
+    margin: 0 auto;
+    float: left;
+}
+
+.setLSAA label, input {
+    /* in order to define widths */
+    display: inline-block;
+}
+
+.setLSAA label {
+    width: 30%;
+}
+
+.setLSAA label + input {
+    width: 30%;
+    /* large margin-right to force the next element to the new-line
+       and margin-left to create a gutter between the label and input */
+    margin: 0 30% 0 0%;
+}
+
+.setLSAA br {
+    clear: left;
+}
+.global_highlight_mod {
+    cursor: pointer;
+}
