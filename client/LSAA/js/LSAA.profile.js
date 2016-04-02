@@ -23,8 +23,7 @@ var profile = {
     layers: {
         'LSAA/main': {
             include: [
-                'LSAA',
-                'LSAA/View/LSAADialog'
+                'LSAA'
             ],
             exclude: ['JBrowse']
         }
