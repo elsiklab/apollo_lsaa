@@ -178,41 +178,12 @@ class AlternativeLociController {
         def c = AlternativeLoci.createCriteria()
 
         def list = c.list(max: params.max, offset:params.offset) {
-            if(params.sort=="owners") {
-                owners {
-                    order('username', params.order)
-                }
-            }
-            if(params.sort=="sequencename") {
-                featureLocations {
-                    sequence {
-                        order('name', params.order)
-                    }
-                }
-            }
-            else if(params.sort=="name") {
-                order('name', params.order)
-            }
-            else if(params.sort=="organism") {
-                featureLocations {
-                    sequence {
-                        organism {
-                            order('commonName',params.order)
-                        }
-                    }
-                }
-            }
-            else if(params.sort=="lastUpdated") {
-                order('lastUpdated',params.order)
-            }
+            
 
             if(params.ownerName!=null&&params.ownerName!="") {
                 owners {
                     ilike('username', '%'+params.ownerName+'%')
                 }
-            }
-            if(params.featureType!= null&&params.featureType!= "") {
-                ilike('class', '%'+params.featureType)
             }
             if(params.organismName!= null&&params.organismName != "") {
                 featureLocations {
@@ -225,8 +196,6 @@ class AlternativeLociController {
             }
         }
 
-        def filters = [organismName: params.organismName, featureType: params.featureType, ownerName: params.ownerName]
-
-        render view: "changes", model: [features: list, featureCount: list.totalCount, organismName: params.organismName, featureType: params.featureType, ownerName: params.ownerName, filters: filters, sort: params.sort]
+        render view: "index", model: [features: list, sort: params.sort]
     }
 }
