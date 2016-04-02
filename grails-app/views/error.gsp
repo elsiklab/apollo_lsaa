@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title><g:if env="development">Grails Runtime Exception</g:if><g:else>Error</g:else></title>
+		<title>Grails Runtime Exception</title>
 		<meta name="layout" content="main">
-		<g:if env="development"><asset:stylesheet src="errors.css"/></g:if>
+		<asset:stylesheet src="errors.css"/>
 	</head>
 	<body>
-		<g:else>
-			<ul class="errors">
-                <g:renderException exception="${exception}" />
-			</ul>
-		</g:else>
+        <ul class="errors">
+            <g:renderException exception="${exception}" />
+        </ul>
 	</body>
 </html>

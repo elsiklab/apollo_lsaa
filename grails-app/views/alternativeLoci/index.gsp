@@ -38,14 +38,14 @@
                         <g:formatDate format="E dd-MMM-yy" date="${feature.lastUpdated}"/>
                     </td>
                     <td>
-                        ${feature.featureLocation?.sequence.organism.commonName}
+                        ${feature.featureLocation?.sequence?.organism?.commonName}
                     </td>
                     <td>
-                        ${feature.featureLocation?.sequence.name}
+                        ${feature.featureLocation?.sequence?.name}
                     </td>
                     <td>
                         <g:link target="_blank" controller="annotator" action="loadLink"
-                                params="[loc: feature.featureLocation?.sequence.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax, organism: feature.featureLocation?.sequence.organism.id]">
+                                params="[loc: feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax, organism: feature.featureLocation?.sequence?.organism?.id]">
                             ${feature.name}
                         </g:link>
                     </td>
