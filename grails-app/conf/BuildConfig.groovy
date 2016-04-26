@@ -45,7 +45,7 @@ grails.project.dependency.resolution = {
               ":rest-client-builder:2.1.0") {
             export = false
         }
-        compile ":apollo-domain-classes:1.0.0"
+        compile ":apollo-domain-classes:1.0.6"
         compile ":codenarc:0.25.1"
 
 
