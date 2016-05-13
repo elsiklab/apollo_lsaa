@@ -44,9 +44,14 @@
                         ${feature.featureLocation?.sequence?.name}
                     </td>
                     <td>
+                        ${feature.name} 
                         <g:link target="_blank" controller="annotator" action="loadLink"
-                                params="[loc: feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax, organism: feature.featureLocation?.sequence?.organism?.id]">
-                            ${feature.name}
+                                params="[loc: feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin-100 + '..' + feature.featureLocation.fmax, organism: feature.featureLocation?.sequence?.organism?.id]">
+                            (main)
+                        </g:link>
+                        <g:link target="_blank" controller="annotator" action="loadLink"
+                                params="[loc: feature.name, organism: feature.featureLocation?.sequence?.organism?.id]">
+                            (alt)
                         </g:link>
                     </td>
 
