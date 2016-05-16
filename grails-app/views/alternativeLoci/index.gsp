@@ -45,8 +45,8 @@
                     </td>
                     <td>
                         ${feature.name} 
-                        <a href="${g.createLink(absolute:true, uri:'/jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism)}">locus</a>
-                        <a href="${g.createLink(absolute:true, uri:'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism)}">alt locus</a>
+                        <a href="${g.createLink(absolute:true, uri:'/jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
+                        <a href="${g.createLink(absolute:true, uri:'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
                     </td>
 
                     <td>
