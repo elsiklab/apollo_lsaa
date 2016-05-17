@@ -34,14 +34,6 @@ environments {
             dialect = org.hibernate.dialect.PostgresPlusDialect
             url = "jdbc:postgresql://localhost/apollo-test"
         }
-        dataSource_chado{
-            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            username = "biocmd"
-            password = "maynard"
-            driverClassName = "org.postgresql.Driver"
-            dialect = org.hibernate.dialect.PostgresPlusDialect
-            url = "jdbc:postgresql://localhost/apollo-test-chado"
-        }
     }
     production {
         dataSource{

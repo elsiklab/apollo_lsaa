@@ -7,8 +7,8 @@ services:
 before_install:
 - npm install -g eslint eslint-plugin-react bower
 before_script:
-- psql -c 'create database apollo-test;' -U postgres;
+- psql -c 'create database "apollo-test";' -U postgres;
 - git clone https://github.com/elsiklab/apollo_domain_classes.git
-- cd apollo-domain-classes && ./grailsw refresh-dependencies && ./grailsw maven-install && cd -
+- cd apollo_domain_classes && ./grailsw refresh-dependencies && ./grailsw maven-install && cd -
 script:
     - ./grailsw test-app
