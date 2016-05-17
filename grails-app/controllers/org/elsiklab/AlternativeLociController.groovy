@@ -6,6 +6,8 @@ import groovy.json.JsonBuilder
 import grails.transaction.Transactional
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
+import org.bbop.apollo.User
+import org.apache.shiro.SecurityUtils
 
 
 class AlternativeLociController {
@@ -40,6 +42,8 @@ class AlternativeLociController {
                 ,sequence: sequence
         ).save(flush:true)
 
+        User user = User.findByUsername(currentUserName)
+        altloci.addToOwners(owner)
 
         new Sequence(
             name: name,
