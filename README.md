@@ -4,7 +4,29 @@
 
 A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loci (locus specific alternate assemblies)
 
-## Installation
+
+## Install client plugin
+
+Copy the code from client/LSAA to the jbrowse-download plugin directory and include it as a plugin declaration
+
+
+## Run tests
+
+    grails test-app
+
+## Run codenarc
+
+    grails codenarc
+
+## Run in development
+
+To develop the plugin, it is valuable to run the plugin in isolation "like a microservice" separately from the main application
+
+    grails run-app -reloading -Dserver.port=8085 --stacktrace
+
+You can then run Apollo on port 8080 or similar
+
+## Run in production
 
 
 Run the maven-install target to build and install to the system's local maven cache
@@ -26,16 +48,3 @@ Apollo will then use this plugin declaration and the API's for apollo-lsaa will 
 Note: we are currently using the "apollo-domain-classes" modification from https://github.com/GMOD/Apollo/pull/962
 
 
-## Install client plugin
-
-Copy the code from client/LSAA to jbrowse-download/plugins/LSAA and include it as a plugin declaration
-
-
-
-## Run tests
-
-    grails test-app
-
-## Run codenarc
-
-    grails codenarc
