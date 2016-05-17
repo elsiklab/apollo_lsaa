@@ -4,6 +4,16 @@ addons:
   postgresql: "9.3"
 services:
 - postgresql
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - extlib/
+    - $HOME/.grails/
+    - $HOME/.m2/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.cache/bower/
 before_install:
 - npm install -g eslint eslint-plugin-react bower
 before_script:
