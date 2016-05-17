@@ -1,8 +1,9 @@
 package org.elsiklab
 
 
-import grails.converters.JSON
 import groovy.json.JsonBuilder
+import grails.converters.JSON
+import grails.util.Environment
 import grails.transaction.Transactional
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
@@ -26,7 +27,7 @@ class AlternativeLociController {
             return
         }
 
-        String name = nameService.generateUniqueName()
+        String name = UUID.randomUUID().toString()
         AlternativeLoci altloci = new AlternativeLoci(
             description: params.description,
             name: name,
@@ -41,28 +42,33 @@ class AlternativeLociController {
                 ,feature: altloci
                 ,sequence: sequence
         ).save(flush:true)
+        altloci.addToFeatureLocations(featureLoc)
 
-        User user = User.findByUsername(currentUserName)
+        def owner = User.findByUsername(SecurityUtils.subject.principal)
+        if (Environment.current != Environment.PRODUCTION) {
+            owner = User.findOrCreateByUsername("admin")
+        }
         altloci.addToOwners(owner)
 
-        new Sequence(
-            name: name,
-            organism: sequence.organism,
-            start: 0,
-            end: params.sequencedata.length(),
-            length: params.sequencedata.length(),
-            seqChunkSize:20000 
-        ).save()
+        if(params.sequencedata.length()) {
+            new Sequence(
+                name: name,
+                organism: sequence.organism,
+                start: 0,
+                end: params.sequencedata.length(),
+                length: params.sequencedata.length(),
+                seqChunkSize:20000 
+            ).save()
 
-        File.createTempFile("temp",".tmp").with {
-            log.debug absolutePath
-            log.debug name
-            write(">"+name+"\n"+params.sequencedata+"\n")
-            ('prepare-refseqs.pl --fasta '+absolutePath+' --out '+sequence.organism.directory).execute()
-            ('generate-names.pl --out '+sequence.organism.directory).execute()
+
+            File.createTempFile("temp",".tmp").with {
+                log.debug absolutePath
+                log.debug name
+                write(">"+name+"\n"+params.sequencedata+"\n")
+                ('prepare-refseqs.pl --fasta '+absolutePath+' --out '+sequence.organism.directory).execute()
+                ('generate-names.pl --out '+sequence.organism.directory).execute()
+            }
         }
-
-        altloci.addToFeatureLocations(featureLoc)
         render ([success: "create loci success"] as JSON)
     }
 

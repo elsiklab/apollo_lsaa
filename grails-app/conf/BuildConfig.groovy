@@ -54,5 +54,6 @@ grails.project.dependency.resolution = {
 
 
         runtime ":hibernate4:4.3.5.5"
+        runtime ":cors:1.3.0"
     }
 }
