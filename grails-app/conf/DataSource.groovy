@@ -1,57 +1,120 @@
-dataSource {
-    pooled = true
-    jmxExport = true
-    driverClassName = "org.h2.Driver"
-    username = "sa"
-    password = ""
-}
 hibernate {
     cache.use_second_level_cache = true
-    cache.use_query_cache = false
+    cache.use_query_cache = true
 //    cache.region.factory_class = 'org.hibernate.cache.SingletonEhCacheRegionFactory' // Hibernate 3
     cache.region.factory_class = 'org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory' // Hibernate 4
     singleSession = true // configure OSIV singleSession mode
     flush.mode = 'manual' // OSIV session flush mode outside of transactional context
 }
 
-// environment specific settings
 environments {
     development {
-        dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+        // sample config to turn on debug logging in development e.g. for apollo run-local
+        log4j.main = {
+            debug "grails.app"
+        }
+        // sample config to edit apollo specific configs in development mode
+        apollo {
+            gff3.source = "testing"
+        }
+        dataSource{
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            username = "biocmd"
+            password = "maynard"
+            driverClassName = "org.postgresql.Driver"
+            dialect = org.hibernate.dialect.PostgresPlusDialect
+            url = "jdbc:postgresql://localhost/apollo2"
         }
     }
     test {
-        dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+        dataSource{
+            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+            username = "biocmd"
+            password = "maynard"
+            driverClassName = "org.postgresql.Driver"
+            dialect = "org.bbop.apollo.ImprovedPostgresDialect"
+            url = "jdbc:postgresql://localhost/apollo-test"
+        }
+        dataSource_chado{
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            username = "biocmd"
+            password = "maynard"
+            driverClassName = "org.postgresql.Driver"
+            dialect = "org.bbop.apollo.ImprovedPostgresDialect"
+            url = "jdbc:postgresql://localhost/apollo-test-chado"
         }
     }
     production {
-        dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+        dataSource{
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            username = "biocmd"
+            password = "maynard"
+            driverClassName = "org.postgresql.Driver"
+            dialect = org.hibernate.dialect.PostgresPlusDialect
+            url = "jdbc:postgresql://localhost/apollo-production"
             properties {
-               // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
-               jmxEnabled = true
-               initialSize = 5
-               maxActive = 50
-               minIdle = 5
-               maxIdle = 25
-               maxWait = 10000
-               maxAge = 10 * 60000
-               timeBetweenEvictionRunsMillis = 5000
-               minEvictableIdleTimeMillis = 60000
-               validationQuery = "SELECT 1"
-               validationQueryTimeout = 3
-               validationInterval = 15000
-               testOnBorrow = true
-               testWhileIdle = true
-               testOnReturn = false
-               jdbcInterceptors = "ConnectionState"
-               defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
+                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
+                jmxEnabled = true
+                initialSize = 5
+                maxActive = 50
+                minIdle = 5
+                maxIdle = 25
+                maxWait = 10000
+                maxAge = 10 * 60000
+                timeBetweenEvictionRunsMillis = 5000
+                minEvictableIdleTimeMillis = 60000
+                validationQuery = "SELECT 1"
+                validationQueryTimeout = 3
+                validationInterval = 15000
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = false
+                jdbcInterceptors = "ConnectionState"
+                defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
             }
         }
+    }
+}
+
+// Uncomment to make changes
+//
+jbrowse {
+//    git {
+//        url= "https://github.com/GMOD/jbrowse"
+//        tag = "1.12.2-release"
+////        branch = "master"
+//        alwaysPull = true
+//        alwaysRecheck = true
+//    }
+    plugins {
+        LSAA{
+            included = true
+        }
+        PairedReadViewer{
+            included = true
+        }
+//        NeatHTMLFeatures{
+//            included = true
+//        }
+//        NeatCanvasFeatures{
+//            included = true
+//        }
+//        RegexSequenceSearch{
+//            included = true
+//        }
+//        HideTrackLabels{
+//            included = true
+//        }
+//        MyVariantInfo {
+//            git = 'https://github.com/GMOD/myvariantviewer'
+//            branch = 'master'
+//            alwaysRecheck = "true"
+//            alwaysPull = "true"
+//        }
+//        SashimiPlot {
+//            git = 'https://github.org/cmdcolin/sashimiplot'
+//            branch = 'master'
+//            alwaysPull = "true"
+//        }
     }
 }

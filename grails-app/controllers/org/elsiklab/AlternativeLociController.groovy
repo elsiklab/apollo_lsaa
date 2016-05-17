@@ -180,8 +180,6 @@ class AlternativeLociController {
 
 
     def index(Integer max) {
-        log.debug('here');
-
         params.max = Math.min(max ?: 15, 100)
 
         def c = AlternativeLoci.createCriteria()
