@@ -13,17 +13,22 @@
         <g:message code="alternativeLoci.value.label" default="Start" />
         <span class="required-indicator">*</span>
     </label>
-    <g:textField name="start" required="" value="${alternativeLociInstance?.featureLocation.fmin}"/>
+    <g:textField name="start" required="" value="${alternativeLociInstance?.featureLocation?.fmin}"/>
     <br />
     <label for="end">
         <g:message code="alternativeLoci.value.label" default="End" />
         <span class="required-indicator">*</span>
     </label>
-    <g:textField name="end" required="" value="${alternativeLociInstance?.featureLocation.fmax}"/>
+    <g:textField name="end" required="" value="${alternativeLociInstance?.featureLocation?.fmax}"/>
     <br />
     <label for="description">
         <g:message code="alternativeLoci.value.label" default="Description" />
     </label>
     <g:textField name="description" required="" value="${alternativeLociInstance?.description}"/>
+    <br />
+    <label for="residues">
+        <g:message code="alternativeLoci.value.label" default="Residues" />
+    </label>
+    <p>${alternativeLociInstance?.residues}</p>
 </div>
 

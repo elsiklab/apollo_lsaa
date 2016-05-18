@@ -10,6 +10,7 @@ import org.bbop.apollo.Sequence
 import org.bbop.apollo.User
 import org.apache.shiro.SecurityUtils
 
+import static org.springframework.http.HttpStatus.*
 
 class AlternativeLociController {
 
@@ -45,9 +46,12 @@ class AlternativeLociController {
         altloci.addToFeatureLocations(featureLoc)
 
         def owner = User.findByUsername(SecurityUtils.subject.principal?:"admin")
-        if (Environment.current != Environment.PRODUCTION) {
+        log.debug owner
+        if (!owner && Environment.current != Environment.PRODUCTION) {
+            log.debug "creating owner"
             owner = new User(username: "admin", passwordHash: "admin", firstName: "admin", lastName: "admin")
             owner.save(flush: true)
+            log.debug "created owner ${owner}"
         }
         log.debug owner
         altloci.addToOwners(owner)
@@ -133,7 +137,7 @@ class AlternativeLociController {
     }
 
     def edit(AlternativeLoci alternativeLociInstance) {
-        respond alternativeLociInstance
+        render view: "edit", model: [alternativeLociInstance: alternativeLociInstance]
     }
 
     @Transactional
@@ -153,7 +157,7 @@ class AlternativeLociController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'AlternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
-                redirect alternativeLociInstance
+                redirect action:"index", method:"GET"
             }
             '*'{ respond alternativeLociInstance, [status: OK] }
         }
@@ -243,6 +247,10 @@ class AlternativeLociController {
                     }
                 }
             }
+        }
+
+        list.each {
+            log.debug it.owner
         }
 
         render view: "index", model: [features: list, sort: params.sort, alternativeLociInstanceCount: list.totalCount]
