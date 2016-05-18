@@ -48,7 +48,7 @@ return declare( JBrowsePlugin,
         });
     },
     createLSAA: function () {
-        var dialog = new LSAADialog({ browser: this.browser });
+        var dialog = new LSAADialog({ browser: this.browser, contextPath: this.contextPath });
         dialog.show();
     }
 });

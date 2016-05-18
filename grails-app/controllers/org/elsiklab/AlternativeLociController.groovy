@@ -48,6 +48,7 @@ class AlternativeLociController {
         if (Environment.current != Environment.PRODUCTION) {
             owner = User.findOrCreateByUsername("admin")
         }
+        log.debug owner
         altloci.addToOwners(owner)
 
         if(params.sequencedata.length()) {

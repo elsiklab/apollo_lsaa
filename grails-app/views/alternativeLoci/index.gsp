@@ -1,4 +1,3 @@
-
 <%@ page import="org.elsiklab.AlternativeLoci" %>
 <!DOCTYPE html>
 <html>
