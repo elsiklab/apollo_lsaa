@@ -33,7 +33,7 @@ class AlternativeLociController {
             name: name,
             uniqueName: name,
             residues: params.sequencedata
-        ).save(flush:true)
+        ).save(flush: true)
 
         log.debug "${params.start} ${params.end} ${altloci} ${sequence}"
         FeatureLocation featureLoc = new FeatureLocation(
@@ -44,9 +44,10 @@ class AlternativeLociController {
         ).save(flush:true)
         altloci.addToFeatureLocations(featureLoc)
 
-        def owner = User.findByUsername(SecurityUtils.subject.principal)
+        def owner = User.findByUsername(SecurityUtils.subject.principal?:"admin")
         if (Environment.current != Environment.PRODUCTION) {
-            owner = User.findOrCreateByUsername("admin")
+            owner = new User(username: "admin", passwordHash: "admin", firstName: "admin", lastName: "admin")
+            owner.save(flush: true)
         }
         log.debug owner
         altloci.addToOwners(owner)
@@ -197,6 +198,36 @@ class AlternativeLociController {
 
         def list = c.list(max: params.max, offset:params.offset) {
             
+            if(params.sort=="owners") {
+                owners {
+                    order('username', params.order)
+                }
+            }
+            if(params.sort=="sequencename") {
+                featureLocations {
+                    sequence {
+                        order('name', params.order)
+                    }
+                }
+            }
+            else if(params.sort=="name") {
+                order('name', params.order)
+            }
+            else if(params.sort=="cvTerm") {
+                order('class', params.order)
+            }
+            else if(params.sort=="organism") {
+                featureLocations {
+                    sequence {
+                        organism {
+                            order('commonName',params.order)
+                        }
+                    }
+                }
+            }
+            else if(params.sort=="lastUpdated") {
+                order('lastUpdated',params.order)
+            }
 
             if(params.ownerName!=null&&params.ownerName!="") {
                 owners {
@@ -214,6 +245,6 @@ class AlternativeLociController {
             }
         }
 
-        render view: "index", model: [features: list, sort: params.sort]
+        render view: "index", model: [features: list, sort: params.sort, alternativeLociInstanceCount: list.totalCount]
     }
 }
