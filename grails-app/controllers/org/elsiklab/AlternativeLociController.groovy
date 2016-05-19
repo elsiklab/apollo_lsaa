@@ -7,6 +7,7 @@ import grails.util.Environment
 import grails.transaction.Transactional
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
+import org.bbop.apollo.OrganismProperty
 import org.bbop.apollo.User
 import org.apache.shiro.SecurityUtils
 
@@ -36,7 +37,6 @@ class AlternativeLociController {
             residues: params.sequencedata
         ).save(flush: true)
 
-        log.debug "${params.start} ${params.end} ${altloci} ${sequence}"
         FeatureLocation featureLoc = new FeatureLocation(
                 fmin: params.start
                 ,fmax: params.end
@@ -46,14 +46,10 @@ class AlternativeLociController {
         altloci.addToFeatureLocations(featureLoc)
 
         def owner = User.findByUsername(SecurityUtils.subject.principal?:"admin")
-        log.debug owner
         if (!owner && Environment.current != Environment.PRODUCTION) {
-            log.debug "creating owner"
             owner = new User(username: "admin", passwordHash: "admin", firstName: "admin", lastName: "admin")
             owner.save(flush: true)
-            log.debug "created owner ${owner}"
         }
-        log.debug owner
         altloci.addToOwners(owner)
 
         if(params.sequencedata.length()) {
@@ -66,13 +62,17 @@ class AlternativeLociController {
                 seqChunkSize:20000 
             ).save()
 
-
-            File.createTempFile("temp",".tmp").with {
-                log.debug absolutePath
-                log.debug name
+            new File(sequence.organism.directory+"/"+name+".fa").with {
+                log.debug "${absolutePath}"
                 write(">"+name+"\n"+params.sequencedata+"\n")
                 ('prepare-refseqs.pl --fasta '+absolutePath+' --out '+sequence.organism.directory).execute()
-                ('generate-names.pl --out '+sequence.organism.directory).execute()
+                ('generate-names.pl --completionLimit 0 --out '+sequence.organism.directory).execute()
+
+                new OrganismProperty(key: "blatdb", organism: sequence.organism, value: name).save()
+                new OrganismProperty(key: "blatdbpath", organism: sequence.organism, value: absolutePath).save()
+        
+                // remake fasta index, blat db, blast db
+                ('makeblastdb -dbtype nucl -in '+absolutePath + " -title "+name).execute()
             }
         }
         render ([success: "create loci success"] as JSON)
