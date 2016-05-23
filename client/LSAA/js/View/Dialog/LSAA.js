@@ -41,7 +41,9 @@ return declare( ActionBarDialog,
         new Button({
             label: 'Cancel',
             onClick: function () {
-                thisB.cancelCallback && thisB.cancelCallback();
+                if (thisB.cancelCallback) {
+                    thisB.cancelCallback();
+                }
                 thisB.hide();
             }
         }).placeAt( actionBar );
@@ -64,7 +66,9 @@ return declare( ActionBarDialog,
                     thisB.browser.view.redrawRegion(
                         new Location(thisB.sequence.get('value') + ":" + thisB.start.get('value') + ".." + thisB.end.get('value'))
                     );
-                }, function (error) { alert(error) });
+                }, function (error) {
+                    alert(error);
+                });
             }
         }).placeAt( actionBar );
 
@@ -92,9 +96,9 @@ return declare( ActionBarDialog,
         this.sequence = new TextBox({id: 'lsaa_name'});
         this.start = new TextBox({id: 'lsaa_start'});
         this.end = new TextBox({id: 'lsaa_end'});
-        this.description = new TextArea({id: 'description',style: "height: 60px;"});
-        this.sequencedata = new TextArea({id: 'sequencedata',style: "height: 60px;"});
-        var br = function () { return dom.create('br') };
+        this.description = new TextArea({id: 'description', style: "height: 60px;"});
+        this.sequencedata = new TextArea({id: 'sequencedata', style: "height: 60px;"});
+        var br = function () { return dom.create('br'); };
 
         this.set('content', [
                      dom.create('p', { innerHTML: 'Provide coordinate, details, and optional alternate sequences. See the <a href="http://genomes.missouri.edu/help.html">Help Guide</a> for additional information.' } ), br(),

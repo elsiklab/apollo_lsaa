@@ -34,7 +34,7 @@ return declare( FeatureGlyph, {
         }
         context.beginPath();
         context.strokeStyle = this.getConf( "style.color", [fRect.f, r.span] );
-        context.arc(r.drawTo+r.r, 0, Math.abs(r.r), 0, Math.PI);
+        context.arc(r.drawTo + r.r, 0, Math.abs(r.r), 0, Math.PI);
         context.stroke();
     },
     getRadius: function (feature, block) {

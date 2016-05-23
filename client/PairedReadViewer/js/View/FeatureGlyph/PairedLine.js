@@ -41,7 +41,7 @@ return declare( FeatureGlyph, {
                     showMismatches: true,
                     mismatchFont: 'bold 10px Courier New,monospace'
                 },
-                scaleFactor: 5,
+                scaleFactor: 5
             }
         );
     },
