@@ -25,11 +25,11 @@ class AlternativeLociController {
         Sequence sequence = Sequence.findByName(params.sequence)
         if(!sequence) {
             response.status = 500
-            render ([error: "No sequence found"] as JSON)
+            render ([error: 'No sequence found'] as JSON)
             return
         }
 
-        String name = UUID.randomUUID().toString()
+        String name = UUID.randomUUID()
         AlternativeLoci altloci = new AlternativeLoci(
             description: params.description,
             name: name,
@@ -38,16 +38,16 @@ class AlternativeLociController {
         ).save(flush: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
-                fmin: params.start
-                ,fmax: params.end
-                ,feature: altloci
-                ,sequence: sequence
+            fmin: params.start,
+            fmax: params.end,
+            feature: altloci,
+            sequence: sequence
         ).save(flush:true)
         altloci.addToFeatureLocations(featureLoc)
 
-        def owner = User.findByUsername(SecurityUtils.subject.principal?:"admin")
+        def owner = User.findByUsername(SecurityUtils.subject.principal ?: 'admin')
         if (!owner && Environment.current != Environment.PRODUCTION) {
-            owner = new User(username: "admin", passwordHash: "admin", firstName: "admin", lastName: "admin")
+            owner = new User(username: 'admin', passwordHash: 'admin', firstName: 'admin', lastName: 'admin')
             owner.save(flush: true)
         }
         altloci.addToOwners(owner)
@@ -59,23 +59,22 @@ class AlternativeLociController {
                 start: 0,
                 end: params.sequencedata.length(),
                 length: params.sequencedata.length(),
-                seqChunkSize:20000 
+                seqChunkSize: 20000
             ).save()
 
-            new File(sequence.organism.directory+"/"+name+".fa").with {
-                log.debug "${absolutePath}"
-                write(">"+name+"\n"+params.sequencedata+"\n")
-                ('prepare-refseqs.pl --fasta '+absolutePath+' --out '+sequence.organism.directory).execute()
-                ('generate-names.pl --completionLimit 0 --out '+sequence.organism.directory).execute()
+            new File("${sequence.organism.directory}/${name}.fa").with {
+                write('>'+name+'\n'+params.sequencedata+'\n')
+                ("prepare-refseqs.pl --fasta ${absolutePath} --out ${sequence.organism.directory}").execute()
+                ("generate-names.pl --completionLimit 0 --out ${sequence.organism.directory}").execute()
 
-                new OrganismProperty(key: "blatdb", organism: sequence.organism, value: name).save()
-                new OrganismProperty(key: "blatdbpath", organism: sequence.organism, value: absolutePath).save()
-        
+                new OrganismProperty(key: 'blatdb', organism: sequence.organism, value: name).save()
+                new OrganismProperty(key: 'blatdbpath', organism: sequence.organism, value: absolutePath).save()
+
                 // remake fasta index, blat db, blast db
-                ('makeblastdb -dbtype nucl -in '+absolutePath + " -title "+name).execute()
+                ("makeblastdb -dbtype nucl -in ${absolutePath} -title ${name}").execute()
             }
         }
-        render ([success: "create loci success"] as JSON)
+        render ([success: 'create loci success'] as JSON)
     }
 
 
@@ -87,19 +86,19 @@ class AlternativeLociController {
             }
         }
         JsonBuilder json = new JsonBuilder ()
-        json.features features, { result ->
-            start result.featureLocation.fmin
-            id result.uniqueName
-            end result.featureLocation.fmax
-            ref result.featureLocation.sequence.name
-            description result.description
-            if(result.residues) {
+        json.features features, { it ->
+            start it.featureLocation.fmin
+            id it.uniqueName
+            end it.featureLocation.fmax
+            ref it.featureLocation.sequence.name
+            description it.description
+            if(it.residues) {
                 href true
             }
-            color "rgba(50,50,190,0.2)"
-            seqName result.uniqueName
+            color 'rgba(50,50,190,0.2)'
+            seqName it.uniqueName
         }
-        
+
         render json.toString()
     }
 
@@ -137,7 +136,7 @@ class AlternativeLociController {
     }
 
     def edit(AlternativeLoci alternativeLociInstance) {
-        render view: "edit", model: [alternativeLociInstance: alternativeLociInstance]
+        render view: 'edit', model: [alternativeLociInstance: alternativeLociInstance]
     }
 
     @Transactional
@@ -157,7 +156,7 @@ class AlternativeLociController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'AlternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
-                redirect action:"index", method:"GET"
+                redirect action:'index', method:'GET'
             }
             '*'{ respond alternativeLociInstance, [status: OK] }
         }
@@ -176,7 +175,7 @@ class AlternativeLociController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'AlternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
-                redirect action:"index", method:"GET"
+                redirect action:'index', method:'GET'
             }
             '*'{ render status: NO_CONTENT }
         }
@@ -186,7 +185,7 @@ class AlternativeLociController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'availableStatus.label', default: 'AlternativeLoci'), params.id])
-                redirect action: "index", method: "GET"
+                redirect action: 'index', method: 'GET'
             }
             '*'{ render status: NOT_FOUND }
         }
@@ -201,48 +200,48 @@ class AlternativeLociController {
         def c = AlternativeLoci.createCriteria()
 
         def list = c.list(max: params.max, offset:params.offset) {
-            
-            if(params.sort=="owners") {
+
+            if(params.sort == 'owners') {
                 owners {
                     order('username', params.order)
                 }
             }
-            if(params.sort=="sequencename") {
+            if(params.sort == 'sequencename') {
                 featureLocations {
                     sequence {
                         order('name', params.order)
                     }
                 }
             }
-            else if(params.sort=="name") {
+            else if(params.sort == 'name') {
                 order('name', params.order)
             }
-            else if(params.sort=="cvTerm") {
+            else if(params.sort == 'cvTerm') {
                 order('class', params.order)
             }
-            else if(params.sort=="organism") {
+            else if(params.sort == 'organism') {
                 featureLocations {
                     sequence {
                         organism {
-                            order('commonName',params.order)
+                            order('commonName', params.order)
                         }
                     }
                 }
             }
-            else if(params.sort=="lastUpdated") {
-                order('lastUpdated',params.order)
+            else if(params.sort == 'lastUpdated') {
+                order('lastUpdated', params.order)
             }
 
-            if(params.ownerName!=null&&params.ownerName!="") {
+            if(params.ownerName != null && params.ownerName != '') {
                 owners {
-                    ilike('username', '%'+params.ownerName+'%')
+                    ilike('username', '%' + params.ownerName + '%')
                 }
             }
-            if(params.organismName!= null&&params.organismName != "") {
+            if(params.organismName != null && params.organismName != '') {
                 featureLocations {
                     sequence {
                         organism {
-                            ilike('commonName','%'+params.organismName+'%')
+                            ilike('commonName', '%' + params.organismName + '%')
                         }
                     }
                 }
@@ -253,6 +252,6 @@ class AlternativeLociController {
             log.debug it.owner
         }
 
-        render view: "index", model: [features: list, sort: params.sort, alternativeLociInstanceCount: list.totalCount]
+        render view: 'index', model: [features: list, sort: params.sort, alternativeLociInstanceCount: list.totalCount]
     }
 }

@@ -49,7 +49,7 @@ grails.project.dependency.resolution = {
             export = false
         }
         compile ":apollo-domain-classes:1.0.9"
-        compile ":codenarc:0.25.1"
+        compile ":codenarc:0.25.2"
         compile ":shiro:1.2.1"
 
 
@@ -58,3 +58,5 @@ grails.project.dependency.resolution = {
         compile ":asset-pipeline:2.8.0"
     }
 }
+
+codenarc.ruleSetFiles="file:grails-app/conf/CodeNarcRules.groovy"
