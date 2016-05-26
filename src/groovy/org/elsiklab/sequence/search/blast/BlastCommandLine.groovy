@@ -59,19 +59,13 @@ public class BlastCommandLine extends SequenceSearchTool {
         String gff = d + '/result.gff3'
         String tab = d + '/result.tab'
         String xml = d + '/result.xml'
-        String config = """
-        {
-            "glyph": "JBrowse/View/FeatureGlyph/ProcessedTranscript",
-            "transcriptType":"match",
-            "subParts":"blastn"
-        }
-        """
 
         ("${blastBin} -db ${database} -query ${queryArg} -out ${arc} -outfmt 11 ${blastUserOptions}").execute().waitForProcessOutput(System.out, System.err)
         ("${blastFormatter} -outfmt 6 -archive ${arc} -out ${tab}").execute().waitForProcessOutput(System.out, System.err)
         ("${blastFormatter} -outfmt 0 -archive ${arc} -out ${xml}").execute().waitForProcessOutput(System.out, System.err)
         ("${gffFormatter} --input ${xml} --method blastn --match --addid --version 3 --type hit -o ${gff}").execute().waitForProcessOutput(System.out, System.err)
-        ("flatfile-to-json.pl --config ${config} --trackType CanvasFeatures --trackLabel ${dir.name} --gff ${gff} --out ${outputDir}").execute().waitForProcessOutput(System.out, System.err)
+        ['flatfile-to-json.pl', '--config', $/{"glyph":"JBrowse/View/FeatureGlyph/Box"}/$,'--clientConfig',$/{"color":"function(feature){return(feature.get('strand')==-1?'blue'
+:'red');}"}/$,'--trackType','CanvasFeatures','--trackLabel',"${dir.name}",'--gff',"${gff}",'--out',"${outputDir}"].execute().waitForProcessOutput(System.out, System.err)
 
 
         Collection<BlastAlignment> matches = []
