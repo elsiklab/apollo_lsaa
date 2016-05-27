@@ -63,6 +63,12 @@ public class BlatCommandLine extends SequenceSearchTool {
         new File(outputGff).withWriterAppend('UTF-8') { it.write(gffContent) }
         ['flatfile-to-json.pl', '--config', $/{"glyph":"JBrowse/View/FeatureGlyph/Box"}/$,'--clientConfig',$/{"color":"function(feature){return(feature.get('strand')==-1?'blue':'red');}"}/$,'--trackType','JBrowse/View/Track/CanvasFeatures','--trackLabel',"${dir.name}",'--gff',"${outputGff}",'--out',"${outputDir}"].execute().waitForProcessOutput(System.out, System.err)
 
+        def timer = new Timer()
+        def outputPath = outputDir // copy for timer
+        def task = timer.runAfter(120*1000) {
+            ("remove-track.pl --trackLabel ${dir.name} --out ${outputPath} --delete").execute().waitForProcessOutput(System.out, System.err)
+        }
+
         Collection<BlastAlignment> matches = new ArrayList<BlastAlignment>()
         new File(outputArg).eachLine { line ->
             matches.add(new TabDelimitedAlignment(line))

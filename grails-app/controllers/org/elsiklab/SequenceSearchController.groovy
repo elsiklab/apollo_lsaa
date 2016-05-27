@@ -34,15 +34,11 @@ class SequenceSearchController {
         def trackList = slurper.parseText(filetext)
 
         def newtrack = [:]
-        log.debug map
         trackList.tracks.each { result ->
-            log.debug "${result.label} ${map}"
             if(result.label == map.toString()) {
-                log.debug "found ${result}"
                 newtrack = result
             }
         }
-        log.debug "newtrack ${newtrack}"
 
 
         JsonBuilder json = new JsonBuilder ()
@@ -90,7 +86,6 @@ class SequenceSearchController {
         }
 
         
-        log.debug json
         render json
     }
 

@@ -66,6 +66,12 @@ public class BlastCommandLine extends SequenceSearchTool {
         ("${gffFormatter} --input ${xml} --method blastn --match --addid --version 3 --type hit -o ${gff}").execute().waitForProcessOutput(System.out, System.err)
         ['flatfile-to-json.pl', '--config', $/{"glyph":"JBrowse/View/FeatureGlyph/Box"}/$,'--clientConfig',$/{"color":"function(feature){return(feature.get('strand')==-1?'blue':'red');}"}/$,'--trackType','JBrowse/View/Track/CanvasFeatures','--trackLabel',"${dir.name}",'--gff',"${gff}",'--out',"${outputDir}"].execute().waitForProcessOutput(System.out, System.err)
 
+        def timer = new Timer()
+        def outputPath = outputDir // copy for timer
+        def task = timer.runAfter(120*1000) {
+            ("remove-track.pl --trackLabel ${dir.name} --out ${outputPath} --delete").execute().waitForProcessOutput(System.out, System.err)
+        }
+
 
         Collection<BlastAlignment> matches = []
         new File(tab).eachLine { line ->
