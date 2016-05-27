@@ -10,8 +10,8 @@ define( [
             'dijit/_WidgetsInTemplateMixin',
             'jquery',
             'dojo/text!./SequenceSearch.html'
-        ], 
-        function(
+        ],
+        function (
             declare,
             array,
             request,
@@ -32,24 +32,24 @@ var Panel = declare( [ContentPane, TemplatedMixin, WidgetsInTemplateMixin], {
 return declare(Dialog, {
     title: "Sequence search",
 
-    hide: function() {
+    hide: function () {
         this.inherited(arguments);
         window.setTimeout( dojo.hitch( this, 'destroyRecursive' ), 500 );
     },
     show: function (args) {
         var thisB = this;
         this.browser = args.browser;
-        this.contextPath = args.contextPath||"..";
-        this.seqContext = args.browser.config.seqContext||"..";
-        this.errorCallback = args.errorCallback || function() { };
-        this.successCallback = args.successCallback || function() { };
+        this.contextPath = args.contextPath || "..";
+        this.seqContext = args.browser.config.seqContext || "..";
+        this.errorCallback = args.errorCallback || function () { };
+        this.successCallback = args.successCallback || function () { };
 
         this.set('content', new Panel());
         var refSeqName = args.refseq;
         var starts = args.starts;
         this.inherited(arguments);
 
-        $("#sequence_search").submit(function(evt) {
+        $("#sequence_search").submit(function (evt) {
             thisB.search(refSeqName);
             return false;
         });
@@ -60,20 +60,20 @@ return declare(Dialog, {
 
 
 
-    getSequenceSearchTools: function(refSeqName) {
+    getSequenceSearchTools: function (refSeqName) {
         var ok = false;
         var postobj = {
             "track": refSeqName,
             "operation": "get_sequence_search_tools"
         };
         return request(this.seqContext + "/sequenceSearch/getSequenceSearchTools", {
-            data: JSON.stringify(postobj), 
+            data: JSON.stringify(postobj),
             method: "post",
             headers: { 'Content-Type': 'application/json' },
             handleAs: "json",
             timeout: 5000 * 1000
-        }).then(function(response) {
-            if(response.error) {
+        }).then(function (response) {
+            if (response.error) {
                 console.error(response.error);
                 alert(response.error);
             }
@@ -81,27 +81,26 @@ return declare(Dialog, {
                 alert('No sequence search tools available');
                 return;
             }
-            
+
             var sequenceToolsSelect = dojo.byId('sequence_tools_select');
-            for(var key in response.sequence_search_tools) {
+            for (var key in response.sequence_search_tools) {
                 if (response.sequence_search_tools.hasOwnProperty(key)) {
                     dojo.create("option", { innerHTML: response.sequence_search_tools[key].name, id: key }, sequenceToolsSelect);
                 }
             }
         },
-        function(response) {
+        function (response) {
             console.error(response);
         });
     },
-    
-    search: function(refSeqName) {
+
+    search: function (refSeqName) {
         var thisB = this;
         var residues = dojo.byId('sequence_field').value.toUpperCase();
         if (residues.length == 0) {
             alert("No sequence entered");
             return;
-        }
-        else if (residues.match(/[^ACDEFGHIKLMNPQRSTVWXY\n]/)) {
+        } else if (residues.match(/[^ACDEFGHIKLMNPQRSTVWXY\n]/)) {
             alert("The sequence should only contain non redundant IUPAC nucleotide or amino acid codes (except for N/X)");
             return;
         }
@@ -110,7 +109,7 @@ return declare(Dialog, {
             track: refSeqName,
             search: {
                 key: sequenceToolsSelect.options[sequenceToolsSelect.selectedIndex].id,
-                residues: residues.replace(/(\r\n|\n|\r)/gm,""),
+                residues: residues.replace(/(\r\n|\n|\r)/gm, ""),
                 database_id: dojo.byId('search_all_refseqs').checked ? null : refSeqName
             },
             operation: "search_sequence",
@@ -124,8 +123,8 @@ return declare(Dialog, {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
             timeout: 5000 * 1000
-        }).then( function(response) {
-            if(response.error) {
+        }).then( function (response) {
+            if (response.error) {
                 alert(response.error);
                 return;
             }
@@ -141,13 +140,13 @@ return declare(Dialog, {
             $("#sequence_search_matches").show();
             $("#sequence_search_header").show();
             var matches = dojo.byId("sequence_search_matches");
-            
+
             var returnedMatches = response.matches;
-            returnedMatches.sort(function(match1, match2) {
+            returnedMatches.sort(function (match1, match2) {
                 return match2.rawscore - match1.rawscore;
             });
             var maxNumberOfHits = 100;
-            
+
             for (var i = 0; i < returnedMatches.length && i < maxNumberOfHits; ++i) {
                 var match = returnedMatches[i];
                 var query = match.query;
@@ -169,50 +168,50 @@ return declare(Dialog, {
                 var scoreColumn = dojo.create("span", { innerHTML: match.rawscore, className: "search_sequence_matches_field search_sequence_matches_generic_field" }, row);
                 var significanceColumn = dojo.create("span", { innerHTML: match.significance, className: "search_sequence_matches_field search_sequence_matches_generic_field" }, row);
                 var identityColumn = dojo.create("span", { innerHTML : match.identity, className: "search_sequence_matches_field search_sequence_matches_generic_field" }, row);
-                on(row, "click", (function(id, fmin, fmax) {
-                    return function() {
+                on(row, "click", (function (id, fmin, fmax) {
+                    return function () {
                         thisB.successCallback(id, fmin, fmax);
                     };
                 })(subject.feature.uniquename, subject.location.fmin, subject.location.fmax));
             }
-            if(response.track) {
+            if (response.track) {
                 console.log('createCombo');
                 thisB.createCombinationTrack(response.track);
             }
             thisB.resize();
             thisB._position();
         },
-        function(err) {
+        function (err) {
             $("#sequence_search_waiting").hide();
             $("#sequence_search_message").val(err);
             console.error(err);
         });
     },
-    createCombinationTrack: function(trackConf) {
+    createCombinationTrack: function (trackConf) {
         var d = new Deferred();
         var storeConf = {
             browser: this.browser,
             refSeq: this.browser.refSeq,
             type: trackConf.storeClass,
-            baseUrl: this.browser.config.baseUrl+'data/',
+            baseUrl: this.browser.config.baseUrl + 'data/',
             urlTemplate: trackConf.urlTemplate
         };
         var storeName = this.browser.addStoreConfig(undefined, storeConf);
         storeConf.name = storeName;
-        this.browser.getStore(storeName, function(store) {
+        this.browser.getStore(storeName, function (store) {
             d.resolve(true);
         });
         var thisB = this;
-        d.promise.then(function(){
+        d.promise.then(function () {
             // send out a message about how the user wants to create the new tracks
-            trackConf.store=storeName;
+            trackConf.store = storeName;
             thisB.browser.publish( '/jbrowse/v1/v/tracks/new', [trackConf] );
 
             // Open the track immediately
             thisB.browser.publish( '/jbrowse/v1/v/tracks/show', [trackConf] );
         });
     }
-    
+
 });
 
 
