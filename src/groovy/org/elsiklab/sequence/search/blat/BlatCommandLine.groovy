@@ -61,7 +61,7 @@ public class BlatCommandLine extends SequenceSearchTool {
         ("${command} ${databaseArg} ${queryArg} ${outputPsl}").execute().waitForProcessOutput(System.out, System.err)
         def gffContent = ("blat2gff.pl ${outputPsl}").execute().text
         new File(outputGff).withWriterAppend('UTF-8') { it.write(gffContent) }
-        ['flatfile-to-json.pl', '--config', $/{"glyph":"JBrowse/View/FeatureGlyph/Box"}/$,'--clientConfig',$/{"color":"function(feature){return(feature.get('strand')==-1?'blue':'red');}"}/$,'--trackType','CanvasFeatures','--trackLabel',"${dir.name}",'--gff',"${outputGff}",'--out',"${outputDir}"].execute().waitForProcessOutput(System.out, System.err)
+        ['flatfile-to-json.pl', '--config', $/{"glyph":"JBrowse/View/FeatureGlyph/Box"}/$,'--clientConfig',$/{"color":"function(feature){return(feature.get('strand')==-1?'blue':'red');}"}/$,'--trackType','JBrowse/View/Track/CanvasFeatures','--trackLabel',"${dir.name}",'--gff',"${outputGff}",'--out',"${outputDir}"].execute().waitForProcessOutput(System.out, System.err)
 
         Collection<BlastAlignment> matches = new ArrayList<BlastAlignment>()
         new File(outputArg).eachLine { line ->

@@ -175,7 +175,6 @@ return declare(Dialog, {
                 })(subject.feature.uniquename, subject.location.fmin, subject.location.fmax));
             }
             if (response.track) {
-                console.log('createCombo');
                 thisB.createCombinationTrack(response.track);
             }
             thisB.resize();
@@ -205,6 +204,9 @@ return declare(Dialog, {
         d.promise.then(function () {
             // send out a message about how the user wants to create the new tracks
             trackConf.store = storeName;
+            if(trackConf.style&&trackConf.style.color) {
+                trackConf.style.color=eval("("+trackConf.style.color+")");
+            }
             thisB.browser.publish( '/jbrowse/v1/v/tracks/new', [trackConf] );
 
             // Open the track immediately
