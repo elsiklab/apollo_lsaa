@@ -21,7 +21,7 @@ environments {
             username = "postgres"
             driverClassName = "org.postgresql.Driver"
             dialect = org.hibernate.dialect.PostgresPlusDialect
-            url = "jdbc:postgresql://localhost/apollo2"
+            url = "jdbc:postgresql://localhost/apollo3"
         }
     }
     test {

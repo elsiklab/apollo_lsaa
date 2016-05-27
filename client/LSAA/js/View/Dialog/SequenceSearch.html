@@ -1,0 +1,27 @@
+<div class="search_sequence">
+    <div class="search_sequence_tools">
+        <form id="sequence_search" action="">
+            <select id="sequence_tools_select" />
+            <label for="sequence_field">Enter sequence</label>
+            <textarea id="sequence_field" cols=79 rows=8 style="display: block"></textarea>
+            <div>
+                <input type="checkbox" id="search_all_refseqs" />
+                <label for="search_all_refseqs">Search all genomic sequences</label>
+            </div>
+            <button type="submit">Search</button>
+            <div id="sequence_search_message" style="display: none">No matches found</div>
+            <div id="sequence_search_waiting" style="display: none">
+                <img class="waiting_image" src="plugins/WebApollo/img/loading.gif" />
+            </div>
+            <div id="sequence_search_header" style="display: none">
+                <span class="search_sequence_matches_header_field search_sequence_matches_generic_field">ID</span>
+                <span class="search_sequence_matches_header_field search_sequence_matches_generic_field">Start</span>
+                <span class="search_sequence_matches_header_field search_sequence_matches_generic_field">End</span>
+                <span class="search_sequence_matches_header_field search_sequence_matches_generic_field">Score</span>
+                <span class="search_sequence_matches_header_field search_sequence_matches_generic_field">Significance</span>
+                <span class="search_sequence_matches_header_field search_sequence_matches_generic_field">Identity</span>
+            </div>
+            <div id="sequence_search_matches"></div>
+        </form>
+    </div>
+</div>
