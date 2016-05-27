@@ -19,7 +19,7 @@ class SequenceSearchController {
         StringBuilder map = new StringBuilder()
         def searchUtils = searchTools().get(search.key)
 
-        searchUtils.put("database", search.blast ? organism.fasta : organism.blatdb)
+        searchUtils.put("database", organism.blatdb)
         searchUtils.put("output_dir", organism.directory)
 
         // dynamically allocate a search_class
