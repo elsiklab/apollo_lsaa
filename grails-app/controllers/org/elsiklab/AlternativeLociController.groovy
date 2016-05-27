@@ -19,7 +19,6 @@ class AlternativeLociController {
     def nameService
     def featureService
 
-
     def addLoci() {
 
         Sequence sequence = Sequence.findByName(params.sequence)
@@ -63,7 +62,7 @@ class AlternativeLociController {
             ).save()
 
             new File("${sequence.organism.directory}/${name}.fa").with {
-                write('>'+name+'\n'+params.sequencedata+'\n')
+                write('>' + name + '\n' + params.sequencedata + '\n')
                 ("prepare-refseqs.pl --fasta ${absolutePath} --out ${sequence.organism.directory}").execute()
                 ("generate-names.pl --completionLimit 0 --out ${sequence.organism.directory}").execute()
 
@@ -76,7 +75,6 @@ class AlternativeLociController {
         }
         render ([success: 'create loci success'] as JSON)
     }
-
 
     def getLoci() {
         Sequence sequence = Sequence.findByName(params.sequence)
@@ -101,8 +99,6 @@ class AlternativeLociController {
 
         render json.toString()
     }
-
-
 
     def show(AlternativeLoci alternativeLociInstance) {
         respond alternativeLociInstance
@@ -158,7 +154,7 @@ class AlternativeLociController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'AlternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
                 redirect action:'index', method:'GET'
             }
-            '*'{ respond alternativeLociInstance, [status: OK] }
+            '*' { respond alternativeLociInstance, [status: OK] }
         }
     }
 
@@ -177,7 +173,7 @@ class AlternativeLociController {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'AlternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
                 redirect action:'index', method:'GET'
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -187,12 +183,9 @@ class AlternativeLociController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'availableStatus.label', default: 'AlternativeLoci'), params.id])
                 redirect action: 'index', method: 'GET'
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
-
-
-
 
     def index(Integer max) {
         params.max = Math.min(max ?: 15, 100)

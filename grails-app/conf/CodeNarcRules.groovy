@@ -124,7 +124,6 @@ ruleset {
     
     // rulesets/dry.xml
     DuplicateListLiteral 
-    DuplicateMapLiteral 
     
     // rulesets/enhanced.xml
     CloneWithoutCloneable 
@@ -169,14 +168,11 @@ ruleset {
     SpaceAfterCatch 
     SpaceAfterClosingBrace 
     SpaceAfterComma 
-    SpaceAfterFor 
-    SpaceAfterIf 
     SpaceAfterOpeningBrace 
     SpaceAfterSemicolon 
     SpaceAfterSwitch 
     SpaceAfterWhile 
     SpaceAroundClosureArrow 
-    SpaceAroundMapEntryColon 
     SpaceAroundOperator 
     SpaceBeforeClosingBrace 
     SpaceBeforeOpeningBrace 
