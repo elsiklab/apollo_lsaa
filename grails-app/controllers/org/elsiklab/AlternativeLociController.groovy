@@ -142,7 +142,7 @@ class AlternativeLociController {
     }
 
     @Transactional
-    def save(BiologicalRegion alternativeLociInstance) {
+    def save(AlternativeLoci alternativeLociInstance) {
         if (alternativeLociInstance == null) {
             notFound()
             return
@@ -164,12 +164,12 @@ class AlternativeLociController {
         }
     }
 
-    def edit(BiologicalRegion alternativeLociInstance) {
+    def edit(AlternativeLoci alternativeLociInstance) {
         render view: 'edit', model: [alternativeLociInstance: alternativeLociInstance]
     }
 
     @Transactional
-    def update(BiologicalRegion alternativeLociInstance) {
+    def update(AlternativeLoci alternativeLociInstance) {
         if (alternativeLociInstance == null) {
             notFound()
             return
@@ -192,7 +192,7 @@ class AlternativeLociController {
     }
 
     @Transactional
-    def delete(BiologicalRegion alternativeLociInstance) {
+    def delete(AlternativeLoci alternativeLociInstance) {
 
         if (alternativeLociInstance == null) {
             notFound()
@@ -209,6 +209,98 @@ class AlternativeLociController {
             '*' { render status: NO_CONTENT }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def showRegion(AlternativeRegion alternativeLociInstance) {
+        respond alternativeLociInstance
+    }
+
+    def createRegion() {
+        respond new AlternativeRegion(params)
+    }
+
+    @Transactional
+    def saveRegion(AlternativeRegion alternativeLociInstance) {
+        if (alternativeLociInstance == null) {
+            notFound()
+            return
+        }
+
+        if (alternativeLociInstance.hasErrors()) {
+            respond alternativeLociInstance.errors, view:'create'
+            return
+        }
+
+        alternativeLociInstance.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'alternativeLoci.label', default: 'AlternativeRegion'), alternativeLociInstance.id])
+                redirect alternativeLociInstance
+            }
+            '*' { respond alternativeLociInstance, [status: CREATED] }
+        }
+    }
+
+    def editRegion(AlternativeRegion alternativeLociInstance) {
+        render view: 'edit', model: [alternativeLociInstance: alternativeLociInstance]
+    }
+
+    @Transactional
+    def updateRegion(AlternativeRegion alternativeLociInstance) {
+        if (alternativeLociInstance == null) {
+            notFound()
+            return
+        }
+
+        if (alternativeLociInstance.hasErrors()) {
+            respond alternativeLociInstance.errors, view:'edit'
+            return
+        }
+
+        alternativeLociInstance.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'AlternativeRegion.label', default: 'AlternativeRegion'), alternativeLociInstance.id])
+                redirect action:'index', method:'GET'
+            }
+            '*' { respond alternativeLociInstance, [status: OK] }
+        }
+    }
+
+    @Transactional
+    def deleteRegion(AlternativeRegion alternativeLociInstance) {
+
+        if (alternativeLociInstance == null) {
+            notFound()
+            return
+        }
+
+        alternativeLociInstance.delete flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'AlternativeRegion.label', default: 'AlternativeRegion'), alternativeLociInstance.id])
+                redirect action:'index', method:'GET'
+            }
+            '*' { render status: NO_CONTENT }
+        }
+    }
+
 
     protected void notFound() {
         request.withFormat {

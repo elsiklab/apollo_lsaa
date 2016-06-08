@@ -35,10 +35,20 @@
                     <g:each in="${features}" status="i" var="feature">
                         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                             <td>
-                                <g:link action="delete" id="${feature.id}">Delete</g:link>
+                                <g:if test="${feature.class.name == 'org.elsiklab.AlternativeLoci'}">
+                                    <g:link action="delete" id="${feature.id}">Delete</g:link>
+                                </g:if>
+                                <g:if test="${feature.class.name == 'org.elsiklab.AlternativeRegion'}">
+                                    <g:link action="deleteRegion" id="${feature.id}">Delete</g:link>
+                                </g:if>
                             </td>
                             <td>
-                                <g:link action="edit" id="${feature.id}">Edit</g:link>
+                                <g:if test="${feature.class.name == 'org.elsiklab.AlternativeLoci'}">
+                                    <g:link action="edit" id="${feature.id}">Edit</g:link>
+                                </g:if>
+                                <g:if test="${feature.class.name == 'org.elsiklab.AlternativeRegion'}">
+                                    <g:link action="editRegion" id="${feature.id}">Edit</g:link>
+                                </g:if>
                             </td>
                             <td>
                                 <g:formatDate format="E dd-MMM-yy" date="${feature.lastUpdated}"/>
