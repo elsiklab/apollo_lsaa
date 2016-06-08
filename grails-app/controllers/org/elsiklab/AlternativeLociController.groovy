@@ -130,9 +130,6 @@ class AlternativeLociController {
             end it.featureLocation.fmax
             ref it.featureLocation.sequence.name
             description it.description
-            if(it.residues) {
-                href true
-            }
             color 'rgba(50,50,190,0.2)'
             seqName it.uniqueName
         }

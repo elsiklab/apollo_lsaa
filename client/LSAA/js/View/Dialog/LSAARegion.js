@@ -55,8 +55,7 @@ return declare( ActionBarDialog,
                         start: thisB.start.get('value'),
                         end: thisB.end.get('value'),
                         sequence: thisB.sequence.get('value'),
-                        description: thisB.description.get('value'),
-                        sequencedata: thisB.sequencedata.get('value')
+                        description: thisB.description.get('value')
                     },
                     handleAs: "json",
                     method: "post"

@@ -4,10 +4,10 @@ import org.bbop.apollo.BiologicalRegion
 
 import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode
-class AlternativeRegion extends BiologicalRegion {
+class AlternativeLoci extends BiologicalRegion {
 
-    static String ontologyId = "SO:0000702" //possible_assembly_error
-    static String cvTerm = "possible_assembly_error" // may have a link
+    static String ontologyId = "SO:0001525"
+    static String cvTerm = "assembly_error_correction"
     static String alternateCvTerm = "alternative_loci"
     static constraints = {
         residues nullable: true

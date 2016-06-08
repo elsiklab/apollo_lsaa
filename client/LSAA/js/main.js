@@ -15,7 +15,8 @@ define([
             MenuItem,
             MenuSeparator,
             registry,
-            LSAADialog
+            LSAADialog,
+            LSAARegionDialog
        ) {
 return declare( JBrowsePlugin,
 {
@@ -35,7 +36,7 @@ return declare( JBrowsePlugin,
             }
 
             browser.addGlobalMenuItem('tools', new MenuItem({
-                label: 'Create LSAA',
+                label: 'Create LSAA correction',
                 iconClass: 'dijitIconBookmark',
                 onClick: lang.hitch(thisB, 'createLSAA')
             }));
@@ -58,7 +59,7 @@ return declare( JBrowsePlugin,
         dialog.show();
     },
     createLSAARegion: function () {
-        var dialog = new LSAADialogRegion({ browser: this.browser, contextPath: this.contextPath });
+        var dialog = new LSAARegionDialog({ browser: this.browser, contextPath: this.contextPath });
         dialog.show();
     }
 });
