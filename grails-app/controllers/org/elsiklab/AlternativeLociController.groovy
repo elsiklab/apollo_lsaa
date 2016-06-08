@@ -7,6 +7,7 @@ import grails.util.Environment
 import grails.transaction.Transactional
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
+import org.bbop.apollo.BiologicalRegion
 import org.bbop.apollo.OrganismProperty
 import org.bbop.apollo.User
 import org.apache.shiro.SecurityUtils
@@ -112,17 +113,12 @@ class AlternativeLociController {
 
     def getLoci() {
         Sequence sequence = Sequence.findByName(params.sequence)
-        def loci = AlternativeLoci.createCriteria().list() {
+        def features = BiologicalRegion.createCriteria().list() {
             featureLocations {
                 eq('sequence',sequence)
             }
+            'in'('class', [AlternativeRegion.class.name, AlternativeLoci.class.name])
         }
-        def regions = AlternativeRegion.createCriteria().list() {
-            featureLocations {
-                eq('sequence',sequence)
-            }
-        }
-        def features = loci+regions
         JsonBuilder json = new JsonBuilder ()
         json.features features, { it ->
             start it.featureLocation.fmin
@@ -146,7 +142,7 @@ class AlternativeLociController {
     }
 
     @Transactional
-    def save(AlternativeLoci alternativeLociInstance) {
+    def save(BiologicalRegion alternativeLociInstance) {
         if (alternativeLociInstance == null) {
             notFound()
             return
@@ -168,12 +164,12 @@ class AlternativeLociController {
         }
     }
 
-    def edit(AlternativeLoci alternativeLociInstance) {
+    def edit(BiologicalRegion alternativeLociInstance) {
         render view: 'edit', model: [alternativeLociInstance: alternativeLociInstance]
     }
 
     @Transactional
-    def update(AlternativeLoci alternativeLociInstance) {
+    def update(BiologicalRegion alternativeLociInstance) {
         if (alternativeLociInstance == null) {
             notFound()
             return
@@ -196,7 +192,7 @@ class AlternativeLociController {
     }
 
     @Transactional
-    def delete(AlternativeLoci alternativeLociInstance) {
+    def delete(BiologicalRegion alternativeLociInstance) {
 
         if (alternativeLociInstance == null) {
             notFound()
@@ -227,7 +223,7 @@ class AlternativeLociController {
     def index(Integer max) {
         params.max = Math.min(max ?: 15, 100)
 
-        def c = AlternativeLoci.createCriteria()
+        def c = BiologicalRegion.createCriteria()
 
         def list = c.list(max: params.max, offset:params.offset) {
 
@@ -276,10 +272,7 @@ class AlternativeLociController {
                     }
                 }
             }
-        }
-
-        list.each {
-            log.debug it.owner
+            'in'('class', [AlternativeRegion.class.name, AlternativeLoci.class.name])
         }
 
         render view: 'index', model: [features: list, sort: params.sort, alternativeLociInstanceCount: list.totalCount]

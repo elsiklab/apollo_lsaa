@@ -52,15 +52,19 @@
                             <td>
                                 ${feature.name}
                                 <g:if env="development">
-                                    <a href="${g.createLink(absolute:true, base: 'http://localhost/apollo', uri:'/jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
-                                    <g:if test="${feature.residues != null}">
-                                        <a href="${g.createLink(absolute:true, base: 'http://localhost/apollo', uri:'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
+                                    <g:if test="${feature.class.name == 'org.elsiklab.AlternativeLoci'}">
+                                        <a href="${g.createLink(absolute:true, base: 'http://localhost/apollo', uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
+                                    </g:if>
+                                    <g:if test="${feature.class.name == 'org.elsiklab.AlternativeRegion'}">
+                                        <a href="${g.createLink(absolute:true, base: 'http://localhost/apollo', uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
                                     </g:if>
                                 </g:if>
                                 <g:if env="production">
-                                    <a href="${g.createLink(absolute:true, uri:'/jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
-                                    <g:if test="${feature.residues != null}">
-                                        <a href="${g.createLink(absolute:true, uri:'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
+                                    <g:if test="${feature.class.name == 'org.elsiklab.AlternativeLoci'}">
+                                        <a href="${g.createLink(absolute:true, uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
+                                    </g:if>
+                                    <g:if test="${feature.class.name == 'org.elsiklab.AlternativeRegion'}">
+                                        <a href="${g.createLink(absolute:true, uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
                                     </g:if>
                                 </g:if>
                             </td>
