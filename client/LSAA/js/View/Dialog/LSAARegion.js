@@ -27,7 +27,7 @@ define([
 return declare( ActionBarDialog,
 {
     autofocus: false,
-    title: 'Create alternative loci',
+    title: 'Create alternative region',
 
     constructor: function (args) {
         this.browser = args.browser;
@@ -50,11 +50,12 @@ return declare( ActionBarDialog,
         new Button({
             label: 'OK',
             onClick: function () {
-                request( thisB.contextPath + '/alternativeLoci/addLoci', {
+                request( thisB.contextPath + '/alternativeLoci/addRegion', {
                     data: {
                         start: thisB.start.get('value'),
                         end: thisB.end.get('value'),
                         sequence: thisB.sequence.get('value'),
+                        description: thisB.description.get('value'),
                         sequencedata: thisB.sequencedata.get('value')
                     },
                     handleAs: "json",
@@ -95,15 +96,15 @@ return declare( ActionBarDialog,
         this.sequence = new TextBox({id: 'lsaa_name'});
         this.start = new TextBox({id: 'lsaa_start'});
         this.end = new TextBox({id: 'lsaa_end'});
-        this.sequencedata = new TextArea({id: 'sequencedata', style: "height: 60px;"});
+        this.description = new TextArea({id: 'description', style: "height: 60px;"});
         var br = function () { return dom.create('br'); };
 
         this.set('content', [
-                     dom.create('p', { innerHTML: 'Provide coordinate and alternate sequences for assembly fix. See the <a href="http://genomes.missouri.edu/help.html">Help Guide</a> for additional information.' } ), br(),
+                     dom.create('p', { innerHTML: 'Provide LSAA region details. See the <a href="http://genomes.missouri.edu/help.html">Help Guide</a> for additional information.' } ), br(),
                      dom.create('label', { "for": 'lsaa_name', innerHTML: 'Reference sequence: ' } ), this.sequence.domNode, br(),
                      dom.create('label', { "for": 'lsaa_start', innerHTML: 'Start: ' } ), this.start.domNode, br(),
                      dom.create('label', { "for": 'lsaa_end', innerHTML: 'End: ' } ), this.end.domNode, br(),
-                     dom.create('label', { "for": 'sequencedata', innerHTML: 'Sequence data: ' } ), this.sequencedata.domNode, br()
+                     dom.create('label', { "for": 'description', innerHTML: 'Description: ' } ), this.description.domNode, br()
                  ] );
 
 

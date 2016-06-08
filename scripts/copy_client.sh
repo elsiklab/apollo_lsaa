@@ -2,3 +2,5 @@
 
 rm -rf ../../web-app/jbrowse/plugins/LSAA
 cp -R client/LSAA ../../web-app/jbrowse/plugins/LSAA
+rm -rf ../../jbrowse-download/plugins/LSAA
+cp -R client/LSAA ../../jbrowse-download/plugins/LSAA

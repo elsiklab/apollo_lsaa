@@ -4,7 +4,7 @@ import org.bbop.apollo.BiologicalRegion
 
 import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode
-class AlternativeLoci extends BiologicalRegion {
+class AlternativeRegion extends BiologicalRegion {
 
     static String ontologyId = "SO:0000702" //possible_assembly_error
     static String cvTerm = "possible_assembly_error" // may have a link

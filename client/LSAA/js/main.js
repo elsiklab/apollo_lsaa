@@ -5,7 +5,8 @@ define([
             'dijit/MenuItem',
             'dijit/MenuSeparator',
             'dijit/registry',
-            'LSAA/View/Dialog/LSAA'
+            'LSAA/View/Dialog/LSAA',
+            'LSAA/View/Dialog/LSAARegion'
        ],
        function (
             declare,
@@ -39,6 +40,11 @@ return declare( JBrowsePlugin,
                 onClick: lang.hitch(thisB, 'createLSAA')
             }));
             browser.addGlobalMenuItem('tools', new MenuItem({
+                label: 'Create LSAA region',
+                iconClass: 'dijitIconBookmark',
+                onClick: lang.hitch(thisB, 'createLSAARegion')
+            }));
+            browser.addGlobalMenuItem('tools', new MenuItem({
                 label: 'View LSAA report',
                 iconClass: 'dijitIconTable',
                 onClick: function () { window.open( thisB.contextPath + '/alternativeLoci' ); }
@@ -49,6 +55,10 @@ return declare( JBrowsePlugin,
     },
     createLSAA: function () {
         var dialog = new LSAADialog({ browser: this.browser, contextPath: this.contextPath });
+        dialog.show();
+    },
+    createLSAARegion: function () {
+        var dialog = new LSAADialogRegion({ browser: this.browser, contextPath: this.contextPath });
         dialog.show();
     }
 });

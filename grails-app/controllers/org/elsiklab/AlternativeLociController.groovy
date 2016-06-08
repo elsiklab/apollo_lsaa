@@ -76,13 +76,53 @@ class AlternativeLociController {
         render ([success: 'create loci success'] as JSON)
     }
 
+    def addRegion() {
+
+        Sequence sequence = Sequence.findByName(params.sequence)
+        if(!sequence) {
+            response.status = 500
+            render ([error: 'No sequence found'] as JSON)
+            return
+        }
+
+        String name = UUID.randomUUID()
+        AlternativeRegion altloci = new AlternativeRegion(
+            description: params.description,
+            name: name,
+            uniqueName: name
+        ).save(flush: true)
+
+        FeatureLocation featureLoc = new FeatureLocation(
+            fmin: params.start,
+            fmax: params.end,
+            feature: altloci,
+            sequence: sequence
+        ).save(flush:true)
+        altloci.addToFeatureLocations(featureLoc)
+
+        def owner = User.findByUsername(SecurityUtils.subject.principal ?: 'admin')
+        if (!owner && Environment.current != Environment.PRODUCTION) {
+            owner = new User(username: 'admin', passwordHash: 'admin', firstName: 'admin', lastName: 'admin')
+            owner.save(flush: true)
+        }
+        altloci.addToOwners(owner)
+
+        render ([success: 'create loci success'] as JSON)
+    }
+
     def getLoci() {
         Sequence sequence = Sequence.findByName(params.sequence)
-        def features = AlternativeLoci.createCriteria().list() {
+        def loci = AlternativeLoci.createCriteria().list() {
             featureLocations {
                 eq('sequence',sequence)
             }
         }
+        def regions = AlternativeRegion.createCriteria().list() {
+            featureLocations {
+                eq('sequence',sequence)
+            }
+        }
+        def features = loci+regions
         JsonBuilder json = new JsonBuilder ()
         json.features features, { it ->
             start it.featureLocation.fmin
