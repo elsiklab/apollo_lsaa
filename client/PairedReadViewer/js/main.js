@@ -15,6 +15,11 @@ return declare( JBrowsePlugin,
 
         // do anything you need to initialize your plugin here
         console.log( "PairedReadViewer plugin starting" );
+
+        browser.registerTrackType({
+            label: 'PairedRead Arcs',
+            type: 'PairedReadViewer/View/Track/PairedRead'
+        });
     }
 });
 });
