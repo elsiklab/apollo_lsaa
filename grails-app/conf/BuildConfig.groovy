@@ -1,6 +1,7 @@
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
+grails.enable.native2ascii = false
 
 grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
@@ -48,7 +49,7 @@ grails.project.dependency.resolution = {
               ":rest-client-builder:2.1.0") {
             export = false
         }
-        compile ":apollo-domain-classes:1.0.9"
+        compile ":apollo-domain-classes:1.0.10"
         compile ":codenarc:0.25.2"
         compile ":shiro:1.2.1"
 
