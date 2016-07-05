@@ -32,7 +32,9 @@ class EditScaffoldsController {
     }
 
     def generateScaffolds() {
-        ("scaffolder sequence out.yaml ref.fasta > output.fasta").execute().waitForProcessOutput(System.out, System.err)
+        new File("out.fasta").withWriter { out ->
+            ("scaffolder sequence out.yaml scf1117875582023.fa").execute().waitForProcessOutput(out, System.err)
+        }
         redirect(action: "index", params: [error: "Generated fasta"])
     }
 }
