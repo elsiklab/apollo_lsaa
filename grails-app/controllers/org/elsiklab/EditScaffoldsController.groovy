@@ -34,7 +34,18 @@ class EditScaffoldsController {
     def generateScaffolds() {
         new File("out.fasta").withWriter { out ->
             ("scaffolder sequence out.yaml scf1117875582023.fa").execute().waitForProcessOutput(out, System.err)
+            log.debug "done"
         }
-        redirect(action: "index", params: [error: "Generated fasta"])
+        redirect(action: "downloadFasta")
+    }
+
+    def downloadFasta() {
+        log.debug "downloading"
+        new File("out.fasta").withReader { stream ->
+            response.setHeader "Content-disposition", "attachment;filename=output.fa"
+            response.contentType = 'application/octet-stream'
+            response.outputStream << stream
+            response.outputStream.flush()
+        }
     }
 }
