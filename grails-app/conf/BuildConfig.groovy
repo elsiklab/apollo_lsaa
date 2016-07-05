@@ -41,10 +41,11 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
         runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
+        compile group: 'org.jyaml', name: 'jyaml', version: '1.3'
     }
 
     plugins {
-        build ":tomcat:7.0.55"
+        build ":tomcat:7.0.70"
         build(":release:3.1.0",
               ":rest-client-builder:2.1.0") {
             export = false

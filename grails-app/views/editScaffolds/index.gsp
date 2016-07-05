@@ -26,13 +26,14 @@
         </div>
         <h3>Scaffold editor</h3>
         <p>Use the scaffolder syntax to edit the genome arrangement</p>
+        <g:if test="${error}">
+            <div class="message" role="status">${error}</div>
+        </g:if>
 
         <g:form name="scaffold" action="editScaffold">
             <g:textArea name="scaffoldEditor" class="scaffoldEditor" value="${yaml}"></g:textArea><br />
             <g:submitButton name="Submit"></g:submitButton>
         </g:form>
-        <p id="output>
-        </p>
-
+        <p id="output"></p>
     </body>
 </html>

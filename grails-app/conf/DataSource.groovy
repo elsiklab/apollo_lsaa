@@ -18,7 +18,7 @@ environments {
         }
         dataSource{
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            username = "postgres"
+            username = "biocmd"
             driverClassName = "org.postgresql.Driver"
             dialect = org.hibernate.dialect.PostgresPlusDialect
             url = "jdbc:postgresql://localhost/apollo3"
@@ -27,7 +27,7 @@ environments {
     test {
         dataSource{
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            username = "postgres"
+            username = "biocmd"
             driverClassName = "org.postgresql.Driver"
             dialect = org.hibernate.dialect.PostgresPlusDialect
             url = "jdbc:postgresql://localhost/apollo-test"
@@ -36,7 +36,7 @@ environments {
     production {
         dataSource{
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            username = "postgres"
+            username = "biocmd"
             driverClassName = "org.postgresql.Driver"
             dialect = org.hibernate.dialect.PostgresPlusDialect
             url = "jdbc:postgresql://localhost/apollo-production"
