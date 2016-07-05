@@ -34,6 +34,12 @@
             <g:textArea name="scaffoldEditor" class="scaffoldEditor" value="${yaml}"></g:textArea><br />
             <g:submitButton name="Submit"></g:submitButton>
         </g:form>
+
+
+        <g:form name="generate" action="generateScaffolds">
+            <g:submitButton name="Generate scaffolds"></g:submitButton>
+        </g:form>
+
         <p id="output"></p>
     </body>
 </html>
