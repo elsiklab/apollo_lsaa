@@ -10,7 +10,10 @@
             border: 1px solid #000;
         }
         .left {
-            width: 200px;
+            flex: 1;
+        }
+        .center {
+            flex: 0.4;
         }
         .right {
             flex: 1;
@@ -31,19 +34,20 @@
             <div class="message row col-sm-12" role="status">${flash.message}</div>
         </g:if>
 
-        <div class="container">
-            <g:form name="scaffold" action="addFasta">
-                <div class="left">
-                    <p>Submit sequence</p>
-                    <g:textArea name="addFasta" class="addFasta"></g:textArea><br />
-                    <g:submitButton name="Submit"></g:submitButton>
-                </div>
-                <div class="right"> 
-                    <p>Submit path to existing file on filesystem</p>
-                    <g:textField name="addFile"></g:textField>
-                </div>
-            </g:form>
-        </div>
+        <g:form name="scaffold" action="addFasta" class="container">
+            <div class="left">
+                <p>Submit sequence in FASTA format</p>
+                <g:textArea name="addFasta" class="addFasta"></g:textArea><br />
+                <g:submitButton name="Submit"></g:submitButton>
+            </div>
+            <div class="center">
+                <p>--or--</p>
+            </div>
+            <div class="right"> 
+                <p>Submit path to existing FASTA file on filesystem</p>
+                <g:textField name="addFile"></g:textField>
+            </div>
+        </g:form>
 
         <p id="output"></p>
 

@@ -35,16 +35,23 @@ class EditScaffoldsController {
     }
 
     def generateScaffolds() {
-        new File("out.fasta").withWriter { out ->
-            ("scaffolder sequence out.yaml scf1117875582023.fa").execute().waitForProcessOutput(out, System.err)
-            log.debug "done"
+        new File("temp.fa").withWriter { temp ->
+            EditScaffold.getAll().each { it ->
+                new File(it.filename).withReader { input ->
+                    temp << input
+                }
+            }
+
+            new File("out.fa").withWriter { out ->
+                ("scaffolder sequence out.yaml temp.fa").execute().waitForProcessOutput(out, System.err)
+            }
         }
         redirect(action: "downloadFasta")
     }
 
     def downloadFasta() {
         log.debug "downloading"
-        new File("out.fasta").withReader { stream ->
+        new File("out.fa").withReader { stream ->
             response.setHeader "Content-disposition", "attachment;filename=output.fa"
             response.contentType = 'application/octet-stream'
             response.outputStream << stream
@@ -53,12 +60,7 @@ class EditScaffoldsController {
     }
 
     def addFasta(Integer max) {
-        log.debug "adding fasta"
-        log.debug params
-
         if(params.addFasta) {
-            log.debug "here ${params.addFasta}"
-            
             def f = File.createTempFile("fasta", null, null)
             f.withWriter { out ->
                 out << params.addFasta
@@ -97,8 +99,6 @@ class EditScaffoldsController {
 
     @Transactional
     def delete(EditScaffold editScaffold) {
-        log.debug "here"
-
         if (editScaffold == null) {
             notFound()
             return
