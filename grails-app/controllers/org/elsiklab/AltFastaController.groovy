@@ -8,7 +8,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class AltFastaController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "GET"]
 
 
     def index(Integer max) {
@@ -71,7 +71,7 @@ class AltFastaController {
 
         altFasta.save flush:true
 
-        index()
+        redirect(action: "index")
     }
 
     @Transactional
@@ -126,6 +126,7 @@ class AltFastaController {
 
     @Transactional
     def delete(AltFasta altFasta) {
+        log.debug "delete"
 
         if (altFasta == null) {
             notFound()
@@ -134,13 +135,7 @@ class AltFastaController {
 
         altFasta.delete flush:true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'AltFasta.label', default: 'AltFasta'), altFasta.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
+        redirect(action: "index")
     }
 
     protected void notFound() {
