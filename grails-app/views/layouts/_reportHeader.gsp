@@ -1,5 +1,12 @@
 <%@ page import="org.codehaus.groovy.grails.web.json.JSONArray" %>
 <nav class="navbar navbar-default">
+    <style>
+    .menubox {
+        border: 1px solid black;
+        padding: 10px;
+        background-color: #fff;
+    }
+    </style>
     <div class="apollo-header row">
         <g:link uri="/"><asset:image src="ApolloLogo_100x36.png"/></g:link>
         <div class="btn btn-group">
@@ -13,6 +20,13 @@
                         <li><g:link uri="${report.link}">${report.label}</g:link></li>
                     </g:if>
                 </g:each>
+            </ul>
+        </div>
+        <div class="menubox">
+            <p>Scaffold editor menu</p>
+            <ul>
+                </li><a href="altFasta">Add fasta</a></li>
+                </li><a href="editScaffolds">Edit scaffolds</a></li>
             </ul>
         </div>
     </div>

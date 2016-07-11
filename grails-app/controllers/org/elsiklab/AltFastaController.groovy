@@ -56,7 +56,12 @@ class AltFastaController {
         }
  
         else if(params.addFile) {
-            altFasta = new AltFasta(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+            if(new File(params.addFile).exists()) {
+                altFasta = new AltFasta(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+            }
+            else {
+                respond "Error: file does not exist", view: 'index', error: "Error"
+            }
         }
 
         if (altFasta.hasErrors()) {
