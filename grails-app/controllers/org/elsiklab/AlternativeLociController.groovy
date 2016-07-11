@@ -210,20 +210,6 @@ class AlternativeLociController {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def showRegion(AlternativeRegion alternativeLociInstance) {
         respond alternativeLociInstance
     }

@@ -2,8 +2,13 @@ package org.elsiklab
 
 import grails.converters.JSON
 import grails.transaction.Transactional
+
 import org.ho.yaml.Yaml
 import org.ho.yaml.exception.YamlException
+
+import org.bbop.apollo.FeatureLocation
+import org.bbop.apollo.Sequence
+
 
 import static org.springframework.http.HttpStatus.*
 
@@ -123,5 +128,34 @@ class EditScaffoldsController {
             }
             '*' { render status: NOT_FOUND }
         }
+    }
+
+
+
+    def createReversal(String sequence, Integer start, Integer end, String description) {
+        String name = UUID.randomUUID()
+        System.err.println sequence
+        Sequence s = Sequence.findByName(sequence)
+        System.err.println s
+
+        AlternativeLoci altloci = new AlternativeLoci(
+            name: name,
+            uniqueName: name,
+            description: description ?: ""
+        ).save(flush: true)
+        System.err.println altloci
+
+        FeatureLocation featureLoc = new FeatureLocation(
+            fmin: start,
+            fmax: end,
+            feature: altloci,
+            sequence: s
+        ).save(flush:true)
+        System.err.println featureLoc
+        altloci.addToFeatureLocations(featureLoc)
+        render ([success: true] as JSON)
+    }
+    def getReversals() {
+         return AlternativeLoci.getAll()
     }
 }
