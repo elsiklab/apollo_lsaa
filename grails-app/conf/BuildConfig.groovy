@@ -53,6 +53,7 @@ grails.project.dependency.resolution = {
         compile ":apollo-domain-classes:1.0.10"
         compile ":codenarc:0.25.2"
         compile ":shiro:1.2.1"
+        compile ":scaffolding:2.0.0"
 
 
         runtime ":hibernate4:4.3.5.5"
