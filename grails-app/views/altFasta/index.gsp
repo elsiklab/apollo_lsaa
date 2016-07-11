@@ -34,7 +34,7 @@
             <div class="message row col-sm-12" role="status">${flash.message}</div>
         </g:if>
 
-        <g:form name="scaffold" action="addFasta" class="container">
+        <g:form name="scaffold" action="." class="container">
             <div class="left">
                 <p>Submit sequence in FASTA format</p>
                 <g:textArea name="addFasta" class="addFasta"></g:textArea><br />

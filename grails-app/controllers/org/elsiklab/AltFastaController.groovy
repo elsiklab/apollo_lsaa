@@ -17,16 +17,16 @@ class AltFastaController {
             f.withWriter { out ->
                 out << params.addFasta
             }
-            new EditScaffold(filename: f.getAbsolutePath(), username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+            new AltFasta(filename: f.getAbsolutePath(), username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
         }
  
         else if(params.addFile) {
-            new EditScaffold(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+            new AltFasta(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
         }
 
         params.max = Math.min(max ?: 15, 100)
  
-        def list = EditScaffold.createCriteria().list(max: params.max, offset:params.offset) {
+        def list = AltFasta.createCriteria().list(max: params.max, offset:params.offset) {
             if(params.sort=="username") {
                 order('username', params.order)
             }
