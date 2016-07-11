@@ -24,9 +24,10 @@ class EditScaffoldsControllerSpec extends IntegrationSpec {
 
     void "test something"() {
         when:
-            controller.createReversal("GK000015.2",1500,3000);
+            controller.createReversal("GK000015.2",1500,3000,"description");
         then:
             def res = controller.getReversals(); 
-            res.length == 1
+            System.err.println res
+            res.size() == 1
     }
 }

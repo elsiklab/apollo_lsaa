@@ -141,8 +141,9 @@ class EditScaffoldsController {
         AlternativeLoci altloci = new AlternativeLoci(
             name: name,
             uniqueName: name,
-            description: description ?: ""
-        ).save(flush: true)
+            description: description ?: "",
+            filename: "blah"
+        ).save(flush: true,failOnError: true)
         System.err.println altloci
 
         FeatureLocation featureLoc = new FeatureLocation(
