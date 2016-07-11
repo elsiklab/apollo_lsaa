@@ -15,8 +15,11 @@ import static org.springframework.http.HttpStatus.*
 
 class EditScaffoldsController {
 
+
+    def grailsApplication
+
     def index() {
-        def yamlfile = new File("out.yaml")
+        def yamlfile = new File("${grailsApplication.config.appStoreDirectory}/out.yaml")
         try {
             def ret = Yaml.load(yamlfile)
             render view: "index", model: [yaml: yamlfile.text]
@@ -32,30 +35,30 @@ class EditScaffoldsController {
     }
 
     def editScaffold() {
-        new File("out.yaml").withWriter { out ->
+        new File("${grailsApplication.config.appStoreDirectory}/out.yaml").withWriter { out ->
             out.write params.scaffoldEditor
         }
         redirect(action: "index")
     }
 
     def generateScaffolds() {
-        new File("temp.fa").withWriter { temp ->
+        new File("${grailsApplication.config.appStoreDirectory}/temp.fa").withWriter { temp ->
             AltFasta.getAll().each { it ->
                 new File(it.filename).withReader { input ->
                     temp << input
                 }
             }
+            def ap = grailsApplication.config.appStoreDirectory
 
-            new File("out.fa").withWriter { out ->
-                ("scaffolder sequence out.yaml temp.fa").execute().waitForProcessOutput(out, System.err)
+            new File("${grailsApplication.config.appStoreDirectory}/out.fa").withWriter { out ->
+                ("scaffolder sequence ${grailsApplication.config.appStoreDirectory}/out.yaml ${grailsApplication.config.appStoreDirectory}/temp.fa").execute().waitForProcessOutput(out, System.err)
             }
         }
         redirect(action: "downloadFasta")
     }
 
     def downloadFasta() {
-        log.debug "downloading"
-        new File("out.fa").withReader { stream ->
+        new File("${grailsApplication.config.appStoreDirectory}/out.fa").withReader { stream ->
             response.setHeader "Content-disposition", "attachment;filename=output.fa"
             response.contentType = 'application/octet-stream'
             response.outputStream << stream

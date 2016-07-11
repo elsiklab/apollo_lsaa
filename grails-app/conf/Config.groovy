@@ -21,3 +21,6 @@ log4j = {
            'net.sf.ehcache.hibernate'
     debug 'org.elsiklab'
 }
+
+
+appStoreDirectory = '/Users/biocmd/'
