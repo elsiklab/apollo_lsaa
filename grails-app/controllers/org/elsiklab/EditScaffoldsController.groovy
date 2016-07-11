@@ -16,22 +16,18 @@ import static org.springframework.http.HttpStatus.*
 class EditScaffoldsController {
 
     def index() {
-        def text = new File("out.yaml").text
+        def yamlfile = new File("out.yaml")
         try {
-            def file = new File("output.fasta")
-            if(file.exists()) {
-                def reference = file.text
-                def ret = Yaml.load(new File("out.yaml"))
-                render view: "index", model: [yaml: text, reference: reference]
-            }
+            def ret = Yaml.load(yamlfile)
+            render view: "index", model: [yaml: yamlfile.text]
         }
         catch(YamlException e) {
             e.printStackTrace()
-            render view: "index", model: [yaml: text, flash: [message: "Error parsing YAML"]]
+            render view: "index", model: [yaml: yamlfile.text, flash: [message: "Error parsing YAML"]]
         }
         catch(FileNotFoundException e) {
             e.printStackTrace()
-            render view: "index", model: [yaml: text]
+            render view: "index", model: [yaml: ""]
         }
     }
 
