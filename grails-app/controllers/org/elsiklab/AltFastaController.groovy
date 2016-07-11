@@ -12,17 +12,7 @@ class AltFastaController {
 
 
     def index(Integer max) {
-        if(params.addFasta) {
-            def f = File.createTempFile("fasta", null, null)
-            f.withWriter { out ->
-                out << params.addFasta
-            }
-            new AltFasta(filename: f.getAbsolutePath(), username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
-        }
- 
-        else if(params.addFile) {
-            new AltFasta(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
-        }
+        
 
         params.max = Math.min(max ?: 15, 100)
  
@@ -54,8 +44,29 @@ class AltFastaController {
         respond altFasta
     }
 
+    @Transactional
     def create() {
-        respond new AltFasta(params)
+        def altFasta
+        if(params.addFasta) {
+            def f = File.createTempFile("fasta", null, null)
+            f.withWriter { out ->
+                out << params.addFasta
+            }
+            altFasta = new AltFasta(filename: f.getAbsolutePath(), username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+        }
+ 
+        else if(params.addFile) {
+            altFasta = new AltFasta(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+        }
+
+        if (altFasta.hasErrors()) {
+            respond altFasta.errors, view:'create'
+            return
+        }
+
+        altFasta.save flush:true
+
+        index()
     }
 
     @Transactional
