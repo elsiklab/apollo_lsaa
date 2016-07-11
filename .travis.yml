@@ -1,4 +1,4 @@
-sudo: false
+
 language: groovy
 addons:
   postgresql: "9.3"
@@ -20,7 +20,7 @@ before_script:
     - psql -c 'create database "apollo-test";' -U postgres;
     - git clone https://github.com/elsiklab/apollo_domain_classes.git
     - cd apollo_domain_classes && ./grailsw refresh-dependencies && ./grailsw maven-install && cd -
-    - eslint client/PairedReadViewer/js
-    - eslint client/LSAA/js
 script:
     - ./grailsw test-app --non-interactive
+after_script:
+    - eslint client
