@@ -5,6 +5,10 @@
         <meta name="layout" content="main">
         <title>LSAA - Add scaffold</title>
         <style>
+        .addFasta {
+            width: 100%;
+            height: 400px;
+        }
         .container {
             display: flex;
             border: 1px solid #000;

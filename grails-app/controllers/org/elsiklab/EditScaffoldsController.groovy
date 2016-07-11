@@ -18,9 +18,12 @@ class EditScaffoldsController {
     def index() {
         def text = new File("out.yaml").text
         try {
-            def reference = new File("output.fasta").text
-            def ret = Yaml.load(new File("out.yaml"))
-            render view: "index", model: [yaml: text, reference: reference]
+            def file = new File("output.fasta")
+            if(file.exists()) {
+                def reference = file.text
+                def ret = Yaml.load(new File("out.yaml"))
+                render view: "index", model: [yaml: text, reference: reference]
+            }
         }
         catch(YamlException e) {
             e.printStackTrace()

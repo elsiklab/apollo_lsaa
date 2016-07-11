@@ -6,8 +6,17 @@
         <title>LSAA - Edit scaffolds</title>
         <style>
         .scaffoldEditor {
-            width: 700px;
-            height: 400px;
+            width: 100%;
+            height: 400px
+        }
+        .container {
+            display: flex;
+        }
+        .left {
+            flex: 1;
+        }
+        .right {
+            flex: 1;
         }
         </style>
     </head>
@@ -25,11 +34,17 @@
         <g:if test="${error}">
             <div class="message" role="status">${error}</div>
         </g:if>
+        <div class="container">
+            <div class="left">
+                <g:form name="scaffold" action="editScaffold">
+                    <g:textArea name="scaffoldEditor" class="scaffoldEditor" value="${yaml}"></g:textArea><br />
+                    <g:submitButton name="Submit"></g:submitButton>
+                </g:form>
+            </div>
 
-        <g:form name="scaffold" action="editScaffold">
-            <g:textArea name="scaffoldEditor" class="scaffoldEditor" value="${yaml}"></g:textArea><br />
-            <g:submitButton name="Submit"></g:submitButton>
-        </g:form>
+            <div class="right">
+            </div>
+        </div>
 
 
         <g:form name="generate" action="generateScaffolds">

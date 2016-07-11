@@ -12,8 +12,6 @@ class AltFastaController {
 
 
     def index(Integer max) {
-        
-
         params.max = Math.min(max ?: 15, 100)
  
         def list = AltFasta.createCriteria().list(max: params.max, offset:params.offset) {
