@@ -1,4 +1,10 @@
 // configuration for plugin testing - will not be included in the plugin zip
+grails.config.locations = [
+        "file:./${appName}-config.groovy"        // dev only
+        , "classpath:${appName}-config.groovy"    // for production deployment
+        , "classpath:${appName}-config.properties"
+]
+
 
 log4j = {
     // Example of changing the log pattern for the default console
@@ -23,4 +29,4 @@ log4j = {
 }
 
 
-appStoreDirectory = '/Users/biocmd/'
+appStoreDirectory = '/tmp/'
