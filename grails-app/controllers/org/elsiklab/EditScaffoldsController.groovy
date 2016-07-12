@@ -75,14 +75,14 @@ class EditScaffoldsController {
         redirect(action: "index")
     }
 
-    def createReversal(String sequence, Integer start, Integer end, String description) {
+    def createReversal(String sequence, Integer start, Integer end, String description, String sequencedata) {
         String name = UUID.randomUUID()
         Sequence s = Sequence.findByName(sequence)
  
         AlternativeLoci altloci = new AlternativeLoci(
             name: name,
             uniqueName: name,
-            description: description ?: "",
+            description: description,
             filename: "blah"
         ).save(flush: true,failOnError: true)
  
@@ -93,6 +93,20 @@ class EditScaffoldsController {
             sequence: s
         ).save(flush:true)
         altloci.addToFeatureLocations(featureLoc)
+
+
+        
+        File.createTempFile("fasta", null, new File(grailsApplication.config.lsaa.appStoreDirectory)).withWriter { temp ->
+            temp << ">${name}"
+            temp << sequencedata
+        }
+        def editscaf = new AltFasta(
+            filename: filename,
+            username: "admin",
+            dateCreated: new Date(),
+            lastModified: new Data()
+        )
+
         render ([success: true] as JSON)
     }
 

@@ -47,7 +47,7 @@ function(
             new Button({
                 label: 'OK',
                 onClick: function() {
-                    request(thisB.contextPath + '/altFasta/createReversal', {
+                    request(thisB.contextPath + '/editScaffolds/createReversal', {
                         data: {
                             start: thisB.start.get('value'),
                             end: thisB.end.get('value'),
