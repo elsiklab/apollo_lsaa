@@ -9,12 +9,18 @@ class AlternativeLoci extends BiologicalRegion {
     static String ontologyId = "SO:0001525"
     static String cvTerm = "assembly_error_correction"
     static String alternateCvTerm = "alternative_loci"
+
+
     static constraints = {
-        residues nullable: true
+        reverse nullable: true
+        description nullable: true
     }
-    String residues
+
     String description
+    Boolean reverse
+
+
     static mapping = {
-        residues type: 'text'
+        description type: 'text'
     }
 }

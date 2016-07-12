@@ -87,6 +87,8 @@ class EditScaffoldsController {
         altloci.addToFeatureLocations(featureLoc)
         render ([success: true] as JSON)
     }
+
+
     def getReversals() {
          return AlternativeLoci.getAll()
     }
