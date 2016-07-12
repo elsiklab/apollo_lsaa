@@ -47,11 +47,12 @@ function(
             new Button({
                 label: 'OK',
                 onClick: function() {
-                    request(thisB.contextPath + '/alternativeLoci/addLoci', {
+                    request(thisB.contextPath + '/altFasta/createReversal', {
                         data: {
                             start: thisB.start.get('value'),
                             end: thisB.end.get('value'),
                             sequence: thisB.sequence.get('value'),
+                            description: thisB.description.get('value'),
                             sequencedata: thisB.sequencedata.get('value')
                         },
                         handleAs: 'json',
@@ -74,6 +75,7 @@ function(
                     if (highlight) {
                         thisB.start.set('value', highlight.start);
                         thisB.end.set('value', highlight.end);
+                        thisB.description.set('value', highlight.end);
                         thisB.sequence.set('value', highlight.ref);
                     } else {
                         console.error('No highlight set');
@@ -88,6 +90,7 @@ function(
             this.sequence = new TextBox({id: 'lsaa_name'});
             this.start = new TextBox({id: 'lsaa_start'});
             this.end = new TextBox({id: 'lsaa_end'});
+            this.description = new TextBox({id: 'lsaa_description'});
             this.sequencedata = new TextArea({id: 'sequencedata', style: 'height: 60px;'});
             var br = function() { return dom.create('br'); };
 
@@ -96,6 +99,7 @@ function(
                 dom.create('label', { 'for': 'lsaa_name', innerHTML: 'Reference sequence: ' }), this.sequence.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_start', innerHTML: 'Start: ' }), this.start.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_end', innerHTML: 'End: ' }), this.end.domNode, br(),
+                dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Descrition: ' }), this.description.domNode, br(),
                 dom.create('label', { 'for': 'sequencedata', innerHTML: 'Sequence data: ' }), this.sequencedata.domNode, br()
             ]);
 
