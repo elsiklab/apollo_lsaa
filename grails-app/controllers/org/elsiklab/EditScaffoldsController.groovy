@@ -95,7 +95,7 @@ class EditScaffoldsController {
         altloci.addToFeatureLocations(featureLoc)
 
 
-        
+        log.debug "HERE"
         File.createTempFile("fasta", null, new File(grailsApplication.config.lsaa.appStoreDirectory)).withWriter { temp ->
             temp << ">${name}"
             temp << sequencedata
@@ -104,7 +104,7 @@ class EditScaffoldsController {
             filename: filename,
             username: "admin",
             dateCreated: new Date(),
-            lastModified: new Data()
+            lastModified: new Date()
         )
 
         render ([success: true] as JSON)

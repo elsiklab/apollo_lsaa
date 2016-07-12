@@ -75,7 +75,6 @@ function(
                     if (highlight) {
                         thisB.start.set('value', highlight.start);
                         thisB.end.set('value', highlight.end);
-                        thisB.description.set('value', highlight.end);
                         thisB.sequence.set('value', highlight.ref);
                     } else {
                         console.error('No highlight set');
