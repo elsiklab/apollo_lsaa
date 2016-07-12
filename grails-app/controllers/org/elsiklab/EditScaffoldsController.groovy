@@ -51,6 +51,7 @@ class EditScaffoldsController {
             def ap = grailsApplication.config.lsaa.appStoreDirectory
 
             new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withWriter { out ->
+                log.debug "scaffolder sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa"
                 ("scaffolder sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa").execute().waitForProcessOutput(out, System.err)
             }
         }
@@ -79,7 +80,7 @@ class EditScaffoldsController {
         Sequence s = Sequence.findByName(sequence)
  
         AlternativeLoci altloci = new AlternativeLoci(
-            name: name,
+            name: sequence,
             uniqueName: name,
             description: description,
             reverse: true
@@ -135,22 +136,55 @@ class EditScaffoldsController {
 
 
     def getReversals() {
-         return AlternativeLoci.createCriteria() {
+         return AlternativeLoci.createCriteria().list() {
              eq('reverse',true)
          }
     }
 
     def convertToYaml() {
-        def res = AlternativeLoci.getAll().collect { it ->
-            [
-                sequence: [
-                    name: it.name,
-                    start: it.featureLocation.fmin,
-                    stop: it.featureLocation.fmax
-                ]
-            ]
+        def res = AlternativeLoci.createCriteria().list() {
+            eq('reverse',true)
+            featureLocations {
+                order('fmin','ascending')
+            }
         }
 
-        return Yaml.dump(res)
+        def map = []
+        def prevstart = 1
+
+        def s = Sequence.findByName(res[0].featureLocation.sequence.name)
+
+        res.eachWithIndex { it, i ->
+
+            def fmin = it.featureLocation.fmin
+            def fmax = it.featureLocation.fmax
+
+            map << [
+                sequence: [
+                    source: it.name,
+                    start: prevstart,
+                    stop: fmin-1
+                ]
+            ]
+            map << [
+                sequence: [
+                    source: it.name,
+                    start: fmin,
+                    stop: fmax
+                ]
+            ]
+
+            map << [
+                sequence: [
+                    source: it.name,
+                    start: fmax+1,
+                    stop: i==res.size()-1 ? s.length-1 : res[i+1].featureLocation.fmin
+                ]
+            ]
+
+            prevstart = fmin
+        }
+
+        return Yaml.dump(map)
     }
 }
