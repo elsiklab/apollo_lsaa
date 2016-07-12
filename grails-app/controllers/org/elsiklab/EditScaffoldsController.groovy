@@ -67,6 +67,14 @@ class EditScaffoldsController {
         }
     }
 
+
+    def loadFromAltLoci() {
+        new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml").withWriter { temp ->
+            temp << convertToYaml()
+		}
+        redirect(action: "index")
+    }
+
     def createReversal(String sequence, Integer start, Integer end, String description) {
         String name = UUID.randomUUID()
         Sequence s = Sequence.findByName(sequence)

@@ -50,6 +50,11 @@
         <g:form name="generate" action="generateScaffolds">
             <g:submitButton name="Generate scaffolds"></g:submitButton>
         </g:form>
+        <g:form name="load" action="loadFromAltLoci">
+            <g:submitButton name="Load yaml from alternate loci"></g:submitButton>
+        </g:form>
+
+
 
         <p id="output"></p>
     </body>
