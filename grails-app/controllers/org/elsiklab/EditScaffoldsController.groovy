@@ -93,7 +93,6 @@ class EditScaffoldsController {
         altloci.addToFeatureLocations(featureLoc)
 
 
-        log.debug "HERE"
         def file = File.createTempFile("fasta", null, new File(grailsApplication.config.lsaa.appStoreDirectory))
         
         file.withWriter { temp ->
@@ -104,7 +103,7 @@ class EditScaffoldsController {
                 username: "admin",
                 dateCreated: new Date(),
                 lastModified: new Date()
-            )
+            ).save(flush:true)
         }
         
 

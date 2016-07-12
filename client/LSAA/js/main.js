@@ -6,6 +6,7 @@ define([
     'dijit/MenuSeparator',
     'dijit/registry',
     'LSAA/View/Dialog/LSAA'
+    'LSAA/View/Dialog/Reverse'
 ],
 function(
     declare,
@@ -14,7 +15,8 @@ function(
     MenuItem,
     MenuSeparator,
     registry,
-    LSAADialog
+    LSAADialog,
+    ReverseDialog
 ) {
     return declare(JBrowsePlugin, {
         constructor: function(args) {
@@ -32,12 +34,18 @@ function(
                 }
 
                 browser.addGlobalMenuItem('tools', new MenuItem({
-                    label: 'Create LSAA correction',
+                    label: 'LSAA - annotate correction',
                     iconClass: 'dijitIconBookmark',
                     onClick: lang.hitch(thisB, 'createLSAA')
                 }));
+
                 browser.addGlobalMenuItem('tools', new MenuItem({
-                    label: 'View LSAA report',
+                    label: 'LSAA - Annotate inversion',
+                    iconClass: 'dijitIconUndo',
+                    onClick: lang.hitch(thisB, 'createLSAA')
+                }));
+                browser.addGlobalMenuItem('tools', new MenuItem({
+                    label: 'LSAA - View report',
                     iconClass: 'dijitIconTable',
                     onClick: function() { window.open(thisB.contextPath + '/alternativeLoci'); }
                 }));
