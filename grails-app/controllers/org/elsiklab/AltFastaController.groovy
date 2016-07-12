@@ -46,7 +46,7 @@ class AltFastaController {
     def create() {
         def altFasta
         if(params.addFasta) {
-            def f = File.createTempFile("fasta", null, null)
+            def f = File.createTempFile("fasta", null, new File(grailsApplication.config.lsaa.appStoreDirectory))
             f.withWriter { out ->
                 out << params.addFasta
             }

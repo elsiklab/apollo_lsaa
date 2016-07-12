@@ -28,5 +28,6 @@ log4j = {
     debug 'org.elsiklab'
 }
 
-
-appStoreDirectory = '/tmp/'
+lsaa {
+    appStoreDirectory = '/tmp/'
+}
