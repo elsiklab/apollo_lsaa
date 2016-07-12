@@ -201,13 +201,7 @@ class AlternativeLociController {
 
         alternativeLociInstance.delete flush:true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'AlternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
-                redirect action:'index', method:'GET'
-            }
-            '*' { render status: NO_CONTENT }
-        }
+        redirect(action: "index")
     }
 
     def showRegion(AlternativeRegion alternativeLociInstance) {

@@ -25,11 +25,14 @@
         <div class="menubox">
             <p>Scaffold editor menu</p>
             <ul>
-                </li>
+                <li>
                     <g:link controller="altFasta" action="index">Add fasta</g:link>
                 </li>
-                </li>
+                <li>
                     <g:link controller="editScaffolds" action="index">Edit scaffolds</g:link>
+                </li>
+                <li>
+                    <g:link controller="alternativeLoci" action="index">Alternative loci</g:link>
                 </li>
             </ul>
         </div>

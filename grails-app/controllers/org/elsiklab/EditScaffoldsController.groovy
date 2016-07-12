@@ -19,7 +19,6 @@ class EditScaffoldsController {
     def grailsApplication
 
     def index() {
-        log.debug grailsApplication.config.lsaa.appStoreDirectory
         def yamlfile = new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml")
         try {
             def ret = Yaml.load(yamlfile)
@@ -82,8 +81,7 @@ class EditScaffoldsController {
         AlternativeLoci altloci = new AlternativeLoci(
             name: name,
             uniqueName: name,
-            description: description,
-            filename: "blah"
+            description: description
         ).save(flush: true,failOnError: true)
  
         FeatureLocation featureLoc = new FeatureLocation(
@@ -96,16 +94,19 @@ class EditScaffoldsController {
 
 
         log.debug "HERE"
-        File.createTempFile("fasta", null, new File(grailsApplication.config.lsaa.appStoreDirectory)).withWriter { temp ->
+        def file = File.createTempFile("fasta", null, new File(grailsApplication.config.lsaa.appStoreDirectory))
+        
+        file.withWriter { temp ->
             temp << ">${name}"
             temp << sequencedata
+            def editscaf = new AltFasta(
+                filename: file.getAbsolutePath(),
+                username: "admin",
+                dateCreated: new Date(),
+                lastModified: new Date()
+            )
         }
-        def editscaf = new AltFasta(
-            filename: filename,
-            username: "admin",
-            dateCreated: new Date(),
-            lastModified: new Date()
-        )
+        
 
         render ([success: true] as JSON)
     }
