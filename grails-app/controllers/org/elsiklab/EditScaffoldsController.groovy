@@ -92,11 +92,10 @@ class EditScaffoldsController {
     }
 
     def convertToYaml() {
-        def res = AlternativeLoci.getAll().map { it ->
-            [name: it.name]
+        def res = AlternativeLoci.getAll().collect { it ->
+            [name: it.name, start: it.featureLocation.fmin, stop: it.featureLocation.fmax]
         }
 
-        log.debug Yaml.dump(res[0])
-        System.err.println( Yaml.dump(res[0]))
+        return Yaml.dumpStream(res.iterator())
     }
 }
