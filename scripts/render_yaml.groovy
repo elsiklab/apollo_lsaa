@@ -7,4 +7,4 @@ import org.ho.yaml.Yaml
 import org.ho.yaml.exception.YamlException
 
 
-println Yaml.dump([])
+println Yaml.dump([[sequence: [start: 100, end: 10000, source: "GK00015.2"]],[sequence:[start: 200, end: 20000, source: "GK000015.2"]]])
