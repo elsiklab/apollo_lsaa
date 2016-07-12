@@ -90,4 +90,11 @@ class EditScaffoldsController {
     def getReversals() {
          return AlternativeLoci.getAll()
     }
+
+    def convertToYaml() {
+        def altloci = AlternativeLoci.getAll()
+
+        log.debug Yaml.dump(altloci[0])
+        System.err.println( Yaml.dump(altloci[0]))
+    }
 }
