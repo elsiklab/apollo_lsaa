@@ -51,8 +51,8 @@ class EditScaffoldsController {
             def ap = grailsApplication.config.lsaa.appStoreDirectory
 
             new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withWriter { out ->
-                log.debug "scaffolder sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa"
-                ("scaffolder sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa").execute().waitForProcessOutput(out, System.err)
+                log.debug "${grailsApplication.config.lsaa.scaffolder.path} sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa"
+                ("${grailsApplication.config.lsaa.scaffolder.path} sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa").execute().waitForProcessOutput(out, System.err)
             }
         }
         redirect(action: "downloadFasta")

@@ -10,7 +10,8 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 
 class SequenceSearchController {
 
-    def configWrapperService
+
+    def grailsApplication
 
     def searchSequence() {
         Organism organism = Organism.findById(request.JSON.organism)
@@ -89,37 +90,9 @@ class SequenceSearchController {
         render json
     }
 
-    def searchTools() {
-        return [
-            blat_nuc: [
-                search_exe: '/usr/local/bin/blat',
-                search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineNucleotideToNucleotide',
-                name: 'Blat nucleotide',
-                params: '',
-                tmp_dir: '/opt/apollo/tmp',
-                removeTmpDir: false
-            ],
-            blat_prot: [
-                search_exe: '/usr/local/bin/blat',
-                search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineProteinToNucleotide',
-                name: 'Blat protein',
-                params: '',
-                tmp_dir: '/opt/apollo/tmp',
-                removeTmpDir: false
-            ],
-            blast_prot: [
-                search_exe: '/usr/local/ncbi/blast/bin/tblastn',
-                formatter_exe: '/usr/local/ncbi/blast/bin/blast_formatter',
-                gff_exe: 'bp_search2gff.pl',
-                search_class: 'org.elsiklab.sequence.search.blast.BlastCommandLine',
-                name: 'Blast protein',
-                params: ''
-            ]
-        ]
-    }
 
     def getSequenceSearchTools() {
-        def jre = ['sequence_search_tools': searchTools()]
+        def jre = ['sequence_search_tools':grailsApplication.config.lsaa.sequence_search_tools] 
         render jre as JSON
     }
 }

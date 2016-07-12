@@ -31,4 +31,33 @@ log4j = {
 
 lsaa {
     appStoreDirectory = '/tmp/'
+    scaffolder {
+        path = 'scaffolder'
+    }
+    sequence_search_tools = [
+        blat_nuc: [
+            search_exe: '/usr/local/bin/blat',
+            search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineNucleotideToNucleotide',
+            name: 'Blat nucleotide',
+            params: '',
+            tmp_dir: '/opt/apollo/tmp',
+            removeTmpDir: false
+        ],
+        blat_prot: [
+            search_exe: '/usr/local/bin/blat',
+            search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineProteinToNucleotide',
+            name: 'Blat protein',
+            params: '',
+            tmp_dir: '/opt/apollo/tmp',
+            removeTmpDir: false
+        ],
+        blast_prot: [
+            search_exe: '/usr/local/ncbi/blast/bin/tblastn',
+            formatter_exe: '/usr/local/ncbi/blast/bin/blast_formatter',
+            gff_exe: 'bp_search2gff.pl',
+            search_class: 'org.elsiklab.sequence.search.blast.BlastCommandLine',
+            name: 'Blast protein',
+            params: ''
+        ]
+    ]
 }
