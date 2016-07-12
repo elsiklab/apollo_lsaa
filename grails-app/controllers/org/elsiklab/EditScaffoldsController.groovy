@@ -74,7 +74,30 @@ class EditScaffoldsController {
         redirect(action: "index")
     }
 
-    def createReversal(String sequence, Integer start, Integer end, String description, String sequencedata) {
+    def createReversal(String sequence, Integer start, Integer end, String description) {
+        String name = UUID.randomUUID()
+        Sequence s = Sequence.findByName(sequence)
+ 
+        AlternativeLoci altloci = new AlternativeLoci(
+            name: name,
+            uniqueName: name,
+            description: description,
+            reverse: true
+        ).save(flush: true,failOnError: true)
+ 
+        FeatureLocation featureLoc = new FeatureLocation(
+            fmin: start,
+            fmax: end,
+            feature: altloci,
+            sequence: s
+        ).save(flush:true)
+        altloci.addToFeatureLocations(featureLoc)
+
+        render ([success: true] as JSON)
+    }
+
+
+    def createCorrection(String sequence, Integer start, Integer end, String description, String sequencedata) {
         String name = UUID.randomUUID()
         Sequence s = Sequence.findByName(sequence)
  
@@ -112,7 +135,9 @@ class EditScaffoldsController {
 
 
     def getReversals() {
-         return AlternativeLoci.getAll()
+         return AlternativeLoci.createCriteria() {
+             eq('reverse',true)
+         }
     }
 
     def convertToYaml() {

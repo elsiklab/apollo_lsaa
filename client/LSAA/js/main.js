@@ -5,7 +5,7 @@ define([
     'dijit/MenuItem',
     'dijit/MenuSeparator',
     'dijit/registry',
-    'LSAA/View/Dialog/LSAA'
+    'LSAA/View/Dialog/LSAA',
     'LSAA/View/Dialog/Reverse'
 ],
 function(
@@ -40,9 +40,9 @@ function(
                 }));
 
                 browser.addGlobalMenuItem('tools', new MenuItem({
-                    label: 'LSAA - Annotate inversion',
+                    label: 'LSAA - annotate inversion',
                     iconClass: 'dijitIconUndo',
-                    onClick: lang.hitch(thisB, 'createLSAA')
+                    onClick: lang.hitch(thisB, 'createReverse')
                 }));
                 browser.addGlobalMenuItem('tools', new MenuItem({
                     label: 'LSAA - View report',
@@ -55,6 +55,10 @@ function(
         },
         createLSAA: function() {
             var dialog = new LSAADialog({ browser: this.browser, contextPath: this.contextPath });
+            dialog.show();
+        },
+        createReverse: function() {
+            var dialog = new ReverseDialog({ browser: this.browser, contextPath: this.contextPath });
             dialog.show();
         }
     });
