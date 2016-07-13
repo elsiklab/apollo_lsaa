@@ -13,7 +13,7 @@ app.use(function(req, res, next) {
 
 // retrieve results
 app.all('/', function(req, res) {
-    exec(`scaffolder sequence ${config.yamlfile} ${config.fastafile}`, function(error, stdout, stderr) {
+    exec("scaffolder sequence "+config.yamlfile +" "+config.fastafile, {maxBuffer: 1024 * 1024 * 500}, function(error, stdout, stderr) {
         res.setHeader('Content-disposition', 'attachment; filename=result.fasta');
         res.contentType('application/octet-stream');
         res.send(stdout);
