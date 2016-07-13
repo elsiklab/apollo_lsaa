@@ -47,7 +47,7 @@
         </div>
 
 
-        <g:form name="generate" action="generateScaffolds">
+        <g:form name="generate" url="${grailsApplication.config.lsaa.taskrunnerURL}">
             <g:submitButton name="Generate scaffolds"></g:submitButton>
         </g:form>
         <g:form name="load" action="loadFromAltLoci">
