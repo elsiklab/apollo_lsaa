@@ -7,6 +7,7 @@
     </head>
     <body>
     <g:render template="../layouts/reportHeader"/>
+        <h3>Alternative loci</h3>
         <a href="#list-availableStatus" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
         <div class="nav" role="navigation">
             <ul>
