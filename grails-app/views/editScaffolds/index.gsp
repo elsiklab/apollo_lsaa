@@ -40,19 +40,18 @@
                     <g:textArea name="scaffoldEditor" class="scaffoldEditor" value="${yaml}"></g:textArea><br />
                     <g:submitButton name="Submit"></g:submitButton>
                 </g:form>
+                <g:form name="generate" url="${grailsApplication.config.lsaa.taskrunnerURL}">
+                    <g:submitButton name="Generate scaffolds"></g:submitButton>
+                </g:form>
+                <g:form name="load" action="loadFromAltLoci">
+                    <g:submitButton name="Load yaml from alternate loci"></g:submitButton>
+                </g:form>
             </div>
-
             <div class="right">
             </div>
         </div>
 
 
-        <g:form name="generate" url="${grailsApplication.config.lsaa.taskrunnerURL}">
-            <g:submitButton name="Generate scaffolds"></g:submitButton>
-        </g:form>
-        <g:form name="load" action="loadFromAltLoci">
-            <g:submitButton name="Load yaml from alternate loci"></g:submitButton>
-        </g:form>
 
 
 
