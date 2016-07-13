@@ -96,7 +96,7 @@ function(
                 dom.create('label', { 'for': 'lsaa_name', innerHTML: 'Reference sequence: ' }), this.sequence.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_start', innerHTML: 'Start: ' }), this.start.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_end', innerHTML: 'End: ' }), this.end.domNode, br(),
-                dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Descrition: ' }), this.description.domNode, br(),
+                dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Description: ' }), this.description.domNode, br(),
             ]);
 
             this.inherited(arguments);
