@@ -3,9 +3,9 @@ language: groovy
 addons:
   postgresql: "9.3"
 services:
-- postgresql
+    - postgresql
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
   directories:
     - extlib/
@@ -16,6 +16,8 @@ cache:
     - $HOME/.cache/bower/
 before_install:
     - npm install -g eslint eslint-plugin-react eslint-config-airbnb-es5 babel-eslint bower
+install:
+    - gem install scaffolder scaffolder-tools
 before_script:
     - psql -c 'create database "apollo-test";' -U postgres;
     - git clone https://github.com/elsiklab/apollo_domain_classes.git
