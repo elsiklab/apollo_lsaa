@@ -55,8 +55,8 @@ After it is installed to the local maven cache, add this to Apollo's BuildConfig
     grails.project.dependency.resolution = {
         ...
         plugins {
-            compile ":apollo-domain-classes:1.0.9"
-            compile ":apollo-lsaa:1.0.2"
+            compile ":apollo-domain-classes:1.0.10"
+            compile ":apollo-lsaa:1.0.3"
         }
     }
 
