@@ -21,13 +21,14 @@ class EditScaffoldsControllerSpec extends IntegrationSpec {
 
     def cleanup() {
     }
-
-    void "test something"() {
+    void "test reversal"() {
         when:
-            controller.createReversal("GK000015.2",1500,3000,"description1");
-            controller.createReversal("GK000015.2",4500,6000,"description2");
-        then:
+            controller.createReversal("GK000015.2",1000,3000,"rev")
             def res = controller.getReversals(); 
-            res.size() == 2
+            def map = controller.convertToMap()
+        then:
+            res.size() == 1
+            map.size == 3
+            map[1].sequence.source == "GK000015.2"
     }
 }

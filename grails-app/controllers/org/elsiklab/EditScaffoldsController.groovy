@@ -141,7 +141,7 @@ class EditScaffoldsController {
          }
     }
 
-    def convertToYaml() {
+    def convertToMap() {
         def res = AlternativeLoci.createCriteria().list() {
             eq('reverse',true)
             featureLocations {
@@ -170,7 +170,8 @@ class EditScaffoldsController {
                 sequence: [
                     source: it.name,
                     start: fmin,
-                    stop: fmax
+                    stop: fmax,
+                    reverse: true
                 ]
             ]
 
@@ -184,7 +185,10 @@ class EditScaffoldsController {
 
             prevstart = fmin
         }
+        return map
+    }
 
-        return Yaml.dump(map)
+    def convertToYaml() {
+        return Yaml.dump(this.convertToMap())
     }
 }
