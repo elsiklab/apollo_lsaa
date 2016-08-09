@@ -13,17 +13,17 @@ class AlternativeLociControllerIntegrationSpec extends IntegrationSpec {
                 , commonName: "honeybee"
         ).save(flush: true)
         new Sequence(
-                length: 1405242
-                , seqChunkSize: 20000
-                , start: 0
-                , organism: organism
-                , end: 1405242
-                , name: "Group1.10"
+                start: 0,
+                end: 1405242,
+                length: 1405242,
+                seqChunkSize: 20000,
+                name: "Group1.10",
+                organism: organism
         ).save()
     }
 
     void "test something"() {
         expect:
-              1==1
+              1 == 1
     }
 }

@@ -43,6 +43,7 @@ grails.project.dependency.resolution = {
         compile ':scaffolding:2.1.2'
 
 
+        runtime ':redis:1.6.6'
         runtime ':hibernate4:4.3.5.5'
         runtime ':cors:1.3.0'
         compile ':asset-pipeline:2.8.0'

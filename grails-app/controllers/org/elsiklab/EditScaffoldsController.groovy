@@ -82,7 +82,7 @@ class EditScaffoldsController {
             name: sequence,
             uniqueName: name,
             description: description,
-            reverse: true
+            reversed: true
         ).save(flush: true, failOnError: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
@@ -136,7 +136,7 @@ class EditScaffoldsController {
 
     def getReversals() {
          return AlternativeLoci.createCriteria().list() {
-             eq('reverse', true)
+             eq('reversed', true)
          }
     }
 
@@ -159,7 +159,7 @@ class EditScaffoldsController {
 
             if(i>0) map << current
 
-            if(it.reverse) {
+            if(it.reversed) {
                 map << [
                     sequence: [
                         source: it.name,
@@ -172,7 +172,7 @@ class EditScaffoldsController {
                         source: it.name,
                         start: fmin,
                         stop: fmax,
-                        reverse: true
+                        reverse: it.reversed
                     ]
                 ]
                 map << [

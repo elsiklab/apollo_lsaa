@@ -198,39 +198,47 @@ class FastaFileController {
                 order('fmin','ascending')
             }
         }
+        log.debug res
+
         def map = []
         def prevstart = 1
         def current
 
         res.eachWithIndex { it, i ->
+            log.debug it
             if(i > 0) {
                 map << current
             }
-            if(it.reverse) {
-                map << [
-                    sequence: [
-                        source: it.name,
-                        start: prevstart,
-                        stop: it.featureLocation.fmin-1
-                    ]
+
+            def indexedFasta = new IndexedFastaSequenceFile(new File(file))
+            def s = indexedFasta.getSubsequenceAt('scf1117875582023', it, it)
+
+            map << [
+                sequence: [
+                    source: it.name,
+                    start: prevstart,
+                    stop: it.featureLocation.fmin-1
                 ]
-                map << [
-                    sequence: [
-                        source: it.name,
-                        start: it.featureLocation.fmin,
-                        stop: it.featureLocation.fmax,
-                        reverse: true
-                    ]
+            ]
+            map << [
+                sequence: [
+                    source: it.name,
+                    start: it.featureLocation.fmin,
+                    stop: it.featureLocation.fmax,
+                    reverse: it.reversed ?: false
                 ]
-                map << [
-                    sequence: [
-                        source: it.name,
-                        start: it.featureLocation.fmax+1,
-                        stop: i==res.size()-1 ? s.length-1 : res[i+1].featureLocation.fmin
-                    ]
+            ]
+            map << [
+                sequence: [
+                    source: it.name,
+                    start: it.featureLocation.fmax + 1,
+                    stop: i == res.size() - 1 ? s.length - 1 : res[i + 1].featureLocation.fmin
                 ]
-            }
+            ]
             prevstart = it.featureLocation.fmin
         }
+
+        log.debug map
+        render map as JSON
     }
 }

@@ -59,4 +59,11 @@ lsaa {
     ]
 }
 
+redis {
+    timeout = 2000
+    port = 6379
+    host = "localhost"
+}
+
+
 grails.resources.work.dir = "grails-app/jbrowse"
