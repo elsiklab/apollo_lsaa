@@ -142,46 +142,73 @@ class EditScaffoldsController {
     }
 
     def convertToMap() {
-        def res = AlternativeLoci.createCriteria().list() {
-            eq('reverse',true)
+        def rev = AlternativeLoci.createCriteria().list() {
             featureLocations {
                 order('fmin','ascending')
             }
         }
+//        def ins = AlternativeLoci.createCriteria().list() {
+//            eq('insert',true)
+//            featureLocations {
+//                order('fmin','ascending')
+//            }
+//        }
+//        def del = AlternativeLoci.createCriteria().list() {
+//            eq('deletion',true)
+//            featureLocations {
+//                order('fmin','ascending')
+//            }
+//        }
 
         def map = []
         def prevstart = 1
 
-        def s = Sequence.findByName(res[0].featureLocation.sequence.name)
+        def s = Sequence.findByName(rev[0].featureLocation.sequence.name)
+        def current
 
-        res.eachWithIndex { it, i ->
+        rev.eachWithIndex { it, i ->
 
             def fmin = it.featureLocation.fmin
             def fmax = it.featureLocation.fmax
-
-            map << [
-                sequence: [
-                    source: it.name,
-                    start: prevstart,
-                    stop: fmin-1
+            if(it.insertion) {
+                map << [
+                    sequence: [ 
+                        source: it.name,
+                        start: fmin,
+                        stop: fmax,
+                        inserts: [
+                        ]
+                    ]
                 ]
-            ]
-            map << [
-                sequence: [
-                    source: it.name,
-                    start: fmin,
-                    stop: fmax,
-                    reverse: true
+            }
+            if(i>0) map << current
+            
+            if(it.reverse) {
+                map << [
+                    sequence: [
+                        source: it.name,
+                        start: prevstart,
+                        stop: fmin-1
+                    ]
                 ]
-            ]
-
-            map << [
-                sequence: [
-                    source: it.name,
-                    start: fmax+1,
-                    stop: i==res.size()-1 ? s.length-1 : res[i+1].featureLocation.fmin
+                map << [
+                    sequence: [
+                        source: it.name,
+                        start: fmin,
+                        stop: fmax,
+                        reverse: true
+                    ]
                 ]
-            ]
+                map << [
+                    sequence: [
+                        source: it.name,
+                        start: fmax+1,
+                        stop: i==res.size()-1 ? s.length-1 : res[i+1].featureLocation.fmin
+                    ]
+                ]
+            }
+            
+            
 
             prevstart = fmin
         }

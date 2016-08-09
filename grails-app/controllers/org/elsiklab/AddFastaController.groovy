@@ -6,7 +6,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
-class AltFastaController {
+class AddFastaController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "GET"]
 
@@ -14,7 +14,7 @@ class AltFastaController {
     def index(Integer max) {
         params.max = Math.min(max ?: 15, 100)
  
-        def list = AltFasta.createCriteria().list(max: params.max, offset:params.offset) {
+        def list = FastaFile.createCriteria().list(max: params.max, offset:params.offset) {
             if(params.sort=="username") {
                 order('username', params.order)
             }
@@ -38,100 +38,100 @@ class AltFastaController {
     }
 
 
-    def show(AltFasta altFasta) {
-        respond altFasta
+    def show(FastaFile addFasta) {
+        respond addFasta
     }
 
     @Transactional
     def create() {
-        def altFasta
+        def addFasta
         if(params.addFasta) {
             def f = File.createTempFile("fasta", null, new File(grailsApplication.config.lsaa.appStoreDirectory))
             f.withWriter { out ->
                 out << params.addFasta
             }
-            altFasta = new AltFasta(filename: f.getAbsolutePath(), username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+            addFasta = new FastaFile(filename: f.getAbsolutePath(), username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
         }
  
         else if(params.addFile) {
             if(new File(params.addFile).exists()) {
-                altFasta = new AltFasta(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
+                addFasta = new FastaFile(filename: params.addFile, username: "admin", dateCreated: new Date(), lastUpdated: new Date()).save()
             }
             else {
                 respond "Error: file does not exist", view: 'index', error: "Error"
             }
         }
 
-        if (altFasta.hasErrors()) {
-            respond altFasta.errors, view:'create'
+        if (addFasta.hasErrors()) {
+            respond addFasta.errors, view:'create'
             return
         }
 
-        altFasta.save flush:true
+        addFasta.save flush:true
 
         redirect(action: "index")
     }
 
     @Transactional
-    def save(AltFasta altFasta) {
-        if (altFasta == null) {
+    def save(FastaFile addFasta) {
+        if (addFasta == null) {
             notFound()
             return
         }
 
-        if (altFasta.hasErrors()) {
-            respond altFasta.errors, view:'create'
+        if (addFasta.hasErrors()) {
+            respond addFasta.errors, view:'create'
             return
         }
 
-        altFasta.save flush:true
+        addFasta.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'altFasta.label', default: 'AltFasta'), altFasta.id])
-                redirect altFasta
+                flash.message = message(code: 'default.created.message', args: [message(code: 'addFasta.label', default: 'AddFasta'), addFasta.id])
+                redirect addFasta
             }
-            '*' { respond altFasta, [status: CREATED] }
+            '*' { respond addFasta, [status: CREATED] }
         }
     }
 
-    def edit(AltFasta altFasta) {
-        respond altFasta
+    def edit(FastaFile addFasta) {
+        respond addFasta
     }
 
     @Transactional
-    def update(AltFasta altFasta) {
-        if (altFasta == null) {
+    def update(FastaFile addFasta) {
+        if (addFasta == null) {
             notFound()
             return
         }
 
-        if (altFasta.hasErrors()) {
-            respond altFasta.errors, view:'edit'
+        if (addFasta.hasErrors()) {
+            respond addFasta.errors, view:'edit'
             return
         }
 
-        altFasta.save flush:true
+        addFasta.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'AltFasta.label', default: 'AltFasta'), altFasta.id])
-                redirect altFasta
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'AddFasta.label', default: 'AddFasta'), addFasta.id])
+                redirect addFasta
             }
-            '*'{ respond altFasta, [status: OK] }
+            '*'{ respond addFasta, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(AltFasta altFasta) {
+    def delete(FastaFile addFasta) {
         log.debug "delete"
 
-        if (altFasta == null) {
+        if (addFasta == null) {
             notFound()
             return
         }
 
-        altFasta.delete flush:true
+        addFasta.delete flush:true
 
         redirect(action: "index")
     }
@@ -139,7 +139,7 @@ class AltFastaController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'altFasta.label', default: 'AltFasta'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'addFasta.label', default: 'AddFasta'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }

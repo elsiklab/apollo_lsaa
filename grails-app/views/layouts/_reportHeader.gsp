@@ -26,7 +26,7 @@
             <p>Scaffold editor menu</p>
             <ul>
                 <li>
-                    <g:link controller="altFasta" action="index">Add fasta</g:link>
+                    <g:link controller="addFasta" action="index">Add fasta</g:link>
                 </li>
                 <li>
                     <g:link controller="editScaffolds" action="index">Edit scaffolds</g:link>

@@ -1,6 +1,6 @@
 package org.elsiklab
 
-class AltFasta {
+class FastaFile {
 
     static constraints = {
     }
