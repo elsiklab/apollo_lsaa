@@ -27,6 +27,7 @@ grails.project.dependency.resolution = {
     dependencies {
         runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         compile 'com.github.samtools:htsjdk:jar:2.6.0'
+        compile 'org.biojava:biojava-core:4.2.4'
         compile group: 'org.jyaml', name: 'jyaml', version: '1.3'
     }
 
