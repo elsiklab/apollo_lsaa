@@ -5,6 +5,8 @@ import grails.converters.JSON
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import htsjdk.samtools.reference.IndexedFastaSequenceFile
+import org.biojava.nbio.core.sequence.DNASequence
+
 
 @Transactional(readOnly = true)
 class FastaFileController {
@@ -174,13 +176,24 @@ class FastaFileController {
 
         render genome as JSON
     }
+
     def readIndexedFasta() {
         def file = '/Users/biocmd/Data/pyu_data/scf1117875582023.fa'
-        def indexedFasta = new IndexedFastaSequenceFile(new File(file));
-        def ret = indexedFasta.getSubsequenceAt('scf1117875582023', 0, 100);
-        log.debug new String(ret.getBases());
-        render "Hello world!"
+        def indexedFasta = new IndexedFastaSequenceFile(new File(file))
+        def ret = indexedFasta.getSubsequenceAt('scf1117875582023', 0, 100)
+        def str = new String(ret.getBases()).trim()
+        log.debug str
+        render ([forward: str, reverse: new DNASequence(str).getReverseComplement().getSequenceAsString()] as JSON)
     }
 
 
+
+    def getSequence() {
+        def file = '/Users/biocmd/Data/pyu_data/scf1117875582023.fa'
+        def indexedFasta = new IndexedFastaSequenceFile(new File(file))
+        def ret = indexedFasta.getSubsequenceAt('scf1117875582023', 0, 100)
+        def str = new String(ret.getBases()).trim()
+        log.debug str
+        render ([forward: str, reverse: new DNASequence(str).getReverseComplement().getSequenceAsString()] as JSON)
+    }
 }
