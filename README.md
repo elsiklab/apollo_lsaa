@@ -40,10 +40,6 @@ To develop the plugin, it is valuable to run the plugin in isolation "like a mic
 
 You can then run Apollo on port 8080 or similar
 
-Also launch the nodejs server
-
-    node taskrunner/index.js
-
 ## Run in production
 
 Run the maven-install target to build and install to the system's local maven cache
@@ -61,8 +57,6 @@ After it is installed to the local maven cache, add this to Apollo's BuildConfig
     }
 
 Apollo will then use this plugin declaration and the API's for apollo-lsaa will be setup automatically.
-
-You can then also use the taskrunner/index.js using Phusion Passenger or just as a isolated app as in development mode.
 
 # Notes
 

@@ -144,36 +144,32 @@ class AlternativeLociController {
     @Transactional
     def save() {
         String uniqueName = UUID.randomUUID()
+        log.debug params.name
         Sequence sequence = Sequence.findByName(params.name)
         if(!sequence) {
             response.status = 500
             render ([error: 'No sequence found'] as JSON)
             return
         }
-
+        log.debug sequence
 
         String name = UUID.randomUUID()
-        AlternativeRegion altloci = new AlternativeRegion(
+        AlternativeLoci alternativeLociInstance = new AlternativeLoci(
             description: params.description,
             name: name,
             uniqueName: name
-        ).save(flush: true)
+        ).save(flush: true, failOnError: true)
+        log.debug alternativeLociInstance
 
         FeatureLocation featureLoc = new FeatureLocation(
             fmin: params.start,
             fmax: params.end,
-            feature: altloci,
+            feature: alternativeLociInstance,
             sequence: sequence
-        ).save(flush:true)
-        altloci.addToFeatureLocations(featureLoc)
+        ).save(flush:true, failOnError: true)
+        alternativeLociInstance.addToFeatureLocations(featureLoc)
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'alternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
-                redirect alternativeLociInstance
-            }
-            '*' { respond alternativeLociInstance, [status: CREATED] }
-        }
+        redirect(action: "index")
     }
 
     def edit(AlternativeLoci alternativeLociInstance) {
@@ -284,13 +280,7 @@ class AlternativeLociController {
 
         alternativeLociInstance.delete flush:true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'AlternativeRegion.label', default: 'AlternativeRegion'), alternativeLociInstance.id])
-                redirect action:'index', method:'GET'
-            }
-            '*' { render status: NO_CONTENT }
-        }
+        redirect(action: "index")
     }
 
 
