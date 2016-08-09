@@ -43,7 +43,7 @@ class EditScaffoldsController {
 
     def generateScaffolds() {
         new File("${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa").withWriter { temp ->
-            AltFasta.getAll().each { it ->
+            FastaFile.getAll().each { it ->
                 new File(it.filename).withReader { input ->
                     temp << input
                 }
@@ -122,7 +122,7 @@ class EditScaffoldsController {
         file.withWriter { temp ->
             temp << ">${name}"
             temp << sequencedata
-            def editscaf = new AltFasta(
+            def editscaf = new FastaFile(
                 filename: file.getAbsolutePath(),
                 username: "admin",
                 dateCreated: new Date(),

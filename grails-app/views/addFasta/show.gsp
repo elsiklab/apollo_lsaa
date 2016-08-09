@@ -1,10 +1,10 @@
 
-<%@ page import="org.elsiklab.AltFasta" %>
+<%@ page import="org.elsiklab.FastaFile" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'addFasta.label', default: 'AltFasta')}" />
+		<g:set var="entityName" value="${message(code: 'addFasta.label', default: 'FastaFile')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>

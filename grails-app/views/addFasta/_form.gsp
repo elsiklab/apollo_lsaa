@@ -1,4 +1,4 @@
-<%@ page import="org.elsiklab.AltFasta" %>
+<%@ page import="org.elsiklab.FastaFile" %>
 
 
 

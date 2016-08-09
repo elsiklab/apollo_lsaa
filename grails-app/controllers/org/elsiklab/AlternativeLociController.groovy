@@ -34,7 +34,6 @@ class AlternativeLociController {
             description: params.description,
             name: name,
             uniqueName: name,
-            residues: params.sequencedata
         ).save(flush: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
@@ -138,22 +137,35 @@ class AlternativeLociController {
     }
 
     def create() {
+        log.debug params
         respond new AlternativeLoci(params)
     }
 
     @Transactional
-    def save(AlternativeLoci alternativeLociInstance) {
-        if (alternativeLociInstance == null) {
-            notFound()
+    def save() {
+        String uniqueName = UUID.randomUUID()
+        Sequence sequence = Sequence.findByName(params.name)
+        if(!sequence) {
+            response.status = 500
+            render ([error: 'No sequence found'] as JSON)
             return
         }
 
-        if (alternativeLociInstance.hasErrors()) {
-            respond alternativeLociInstance.errors, view:'create'
-            return
-        }
 
-        alternativeLociInstance.save flush:true
+        String name = UUID.randomUUID()
+        AlternativeRegion altloci = new AlternativeRegion(
+            description: params.description,
+            name: name,
+            uniqueName: name
+        ).save(flush: true)
+
+        FeatureLocation featureLoc = new FeatureLocation(
+            fmin: params.start,
+            fmax: params.end,
+            feature: altloci,
+            sequence: sequence
+        ).save(flush:true)
+        altloci.addToFeatureLocations(featureLoc)
 
         request.withFormat {
             form multipartForm {
