@@ -95,7 +95,6 @@ ruleset {
     NoTabCharacter 
     ParameterReassignment 
     TernaryCouldBeElvis 
-    TrailingComma 
     VectorIsObsolete 
     
     // rulesets/design.xml
@@ -305,7 +304,6 @@ ruleset {
     VariableName 
     
     // rulesets/security.xml
-    FileCreateTempFile 
     InsecureRandom 
     NonFinalPublicField 
     NonFinalSubclassOfSensitiveInterface 
@@ -349,7 +347,6 @@ ruleset {
     UnnecessaryDefInFieldDeclaration 
     UnnecessaryDefInMethodDeclaration 
     UnnecessaryDefInVariableDeclaration 
-    UnnecessaryDotClass 
     UnnecessaryDoubleInstantiation 
     UnnecessaryElseStatement 
     UnnecessaryFinalOnPrivateMethod 

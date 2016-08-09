@@ -9,9 +9,11 @@
     <g:render template="../layouts/reportHeader"/>
         <h3>Alternative loci</h3>
         <div id="list-availableStatus" class="content scaffold-list" role="main">
+
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
+
             <g:link action="create">Create</g:link>
             
             <table>

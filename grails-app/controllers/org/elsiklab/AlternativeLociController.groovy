@@ -1,5 +1,6 @@
 package org.elsiklab
 
+import static org.springframework.http.HttpStatus.*
 
 import groovy.json.JsonBuilder
 import grails.converters.JSON
@@ -12,7 +13,6 @@ import org.bbop.apollo.OrganismProperty
 import org.bbop.apollo.User
 import org.apache.shiro.SecurityUtils
 
-import static org.springframework.http.HttpStatus.*
 
 class AlternativeLociController {
 
@@ -112,9 +112,9 @@ class AlternativeLociController {
 
     def getLoci() {
         Sequence sequence = Sequence.findByName(params.sequence)
-        def features = BiologicalRegion.createCriteria().list() {
+        def features = BiologicalRegion.createCriteria().list {
             featureLocations {
-                eq('sequence',sequence)
+                eq('sequence', sequence)
             }
             'in'('class', [AlternativeRegion.class.name, AlternativeLoci.class.name])
         }
@@ -165,7 +165,7 @@ class AlternativeLociController {
         ).save(flush:true, failOnError: true)
         alternativeLociInstance.addToFeatureLocations(featureLoc)
 
-        redirect(action: "index")
+        redirect(action: 'index')
     }
 
     def edit(AlternativeLoci alternativeLociInstance) {
@@ -205,7 +205,7 @@ class AlternativeLociController {
 
         alternativeLociInstance.delete flush:true
 
-        redirect(action: "index")
+        redirect(action: 'index')
     }
 
     def showRegion(AlternativeRegion alternativeLociInstance) {
@@ -276,9 +276,8 @@ class AlternativeLociController {
 
         alternativeLociInstance.delete flush:true
 
-        redirect(action: "index")
+        redirect(action: 'index')
     }
-
 
     protected void notFound() {
         request.withFormat {

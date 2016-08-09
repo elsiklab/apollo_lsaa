@@ -86,13 +86,13 @@ class SequenceSearchController {
             track newtrack
         }
 
-        
+
         render json
     }
 
 
     def getSequenceSearchTools() {
-        def jre = ['sequence_search_tools':grailsApplication.config.lsaa.sequence_search_tools] 
+        def jre = ['sequence_search_tools':grailsApplication.config.lsaa.sequence_search_tools]
         render jre as JSON
     }
 }
