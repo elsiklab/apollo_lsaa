@@ -26,9 +26,5 @@
     </label>
     <g:textField name="description" required="" value="${alternativeLociInstance?.description}"/>
     <br />
-    <label for="residues">
-        <g:message code="alternativeLoci.value.label" default="Residues" />
-    </label>
-    <p>${alternativeLociInstance?.residues}</p>
 </div>
 
