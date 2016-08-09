@@ -31,9 +31,6 @@ log4j = {
 
 lsaa {
     appStoreDirectory = '/tmp/'
-    scaffolder {
-        path = 'scaffolder'
-    }
     sequence_search_tools = [
         blat_nuc: [
             search_exe: '/usr/local/bin/blat',
@@ -61,3 +58,5 @@ lsaa {
         ]
     ]
 }
+
+grails.resources.work.dir = "grails-app/jbrowse"

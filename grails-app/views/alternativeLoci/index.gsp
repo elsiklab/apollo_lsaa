@@ -12,11 +12,14 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
+            <g:link action="create">Create</g:link>
+            
             <table>
                 <thead>
                     <tr>
                         <g:sortableColumn property="id" title="Delete"/>
                         <g:sortableColumn property="id" title="Edit"/>
+                        <g:sortableColumn property="id" title="Show"/>
                         <g:sortableColumn property="lastUpdated" title="Last updated" params="${filters}"/>
                         <g:sortableColumn property="organism" title="Organism" params="${filters}"/>
                         <g:sortableColumn property="sequencename" title="Sequence name" params="${filters}"/>
@@ -58,10 +61,10 @@
                                 ${feature.name}
                                 <g:if env="development">
                                     <g:if test="${feature.class.name == 'org.elsiklab.AlternativeLoci'}">
-                                        <a href="${g.createLink(absolute:true, base: 'http://localhost/apollo', uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
+                                        <a href="${g.createLink(absolute:true, base: 'jbrowse', uri: '?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
                                     </g:if>
                                     <g:if test="${feature.class.name == 'org.elsiklab.AlternativeRegion'}">
-                                        <a href="${g.createLink(absolute:true, base: 'http://localhost/apollo', uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
+                                        <a href="${g.createLink(absolute:true, base: 'jbrowse', uri: '?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
                                     </g:if>
                                 </g:if>
                                 <g:if env="production">

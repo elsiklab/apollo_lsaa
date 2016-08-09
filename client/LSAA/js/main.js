@@ -25,41 +25,36 @@ function(
             var thisB = this;
             this.contextPath = browser.config.contextPath || '..';
 
-
-            browser.afterMilestone('completely initialized', function() {
+            browser.afterMilestone('initView', function() {
                 if (!registry.byId('dropdownmenu_tools')) {
-                    setTimeout(1000, function() {
-                        browser.renderGlobalMenu('tools', { text: 'Tools' }, browser.menuBar);
-                    });
+                    var ret = browser.renderGlobalMenu('tools', { text: 'Tools' }, browser.menuBar);
+
+                    browser.addGlobalMenuItem('tools', new MenuItem({
+                        label: 'LSAA - annotate correction',
+                        iconClass: 'dijitIconBookmark',
+                        onClick: function() {
+                            new LSAADialog({ browser: this.browser, contextPath: this.contextPath }).show();
+                        }
+                    }));
+
+                    browser.addGlobalMenuItem('tools', new MenuItem({
+                        label: 'LSAA - annotate inversion',
+                        iconClass: 'dijitIconUndo',
+                        onClick: function() {
+                            new ReverseDialog({ browser: this.browser, contextPath: this.contextPath }).show();
+                        }
+                    }));
+                    browser.addGlobalMenuItem('tools', new MenuItem({
+                        label: 'LSAA - View report',
+                        iconClass: 'dijitIconTable',
+                        onClick: function() {
+                            window.open(thisB.contextPath + '/alternativeLoci');
+                        }
+                    }));
+
+                    browser.addGlobalMenuItem('tools', new MenuSeparator());
                 }
-
-                browser.addGlobalMenuItem('tools', new MenuItem({
-                    label: 'LSAA - annotate correction',
-                    iconClass: 'dijitIconBookmark',
-                    onClick: lang.hitch(thisB, 'createLSAA')
-                }));
-
-                browser.addGlobalMenuItem('tools', new MenuItem({
-                    label: 'LSAA - annotate inversion',
-                    iconClass: 'dijitIconUndo',
-                    onClick: lang.hitch(thisB, 'createReverse')
-                }));
-                browser.addGlobalMenuItem('tools', new MenuItem({
-                    label: 'LSAA - View report',
-                    iconClass: 'dijitIconTable',
-                    onClick: function() { window.open(thisB.contextPath + '/alternativeLoci'); }
-                }));
-
-                browser.addGlobalMenuItem('tools', new MenuSeparator());
             });
-        },
-        createLSAA: function() {
-            var dialog = new LSAADialog({ browser: this.browser, contextPath: this.contextPath });
-            dialog.show();
-        },
-        createReverse: function() {
-            var dialog = new ReverseDialog({ browser: this.browser, contextPath: this.contextPath });
-            dialog.show();
         }
     });
 });

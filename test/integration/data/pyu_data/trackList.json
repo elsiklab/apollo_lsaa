@@ -23,15 +23,9 @@
          "label" : "Augustus"
       },
       {
-         "style" : {
-            "className" : "feature"
-         },
-         "key" : "Augustus_canvas",
          "storeClass" : "JBrowse/Store/SeqFeature/NCList",
-         "trackType" : null,
          "urlTemplate" : "tracks/Augustus_canvas/{refseq}/trackData.json",
-         "compress" : 0,
-         "type" : "FeatureTrack",
+         "type" : "CanvasFeatures",
          "label" : "Augustus_canvas"
       }
    ],
@@ -39,5 +33,7 @@
       "url" : "names/",
       "type" : "Hash"
    },
-   "formatVersion" : 1
+   "formatVersion" : 1,
+   "classicMenu": true,
+   "plugins": ["PairedReadViewer", "LSAA"]
 }

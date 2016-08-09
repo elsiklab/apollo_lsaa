@@ -7,17 +7,18 @@ A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loc
 
 # Installation
 
-## Install client plugin
-
+## Install client plugin to root apollo
+    
     scripts/copy_client.sh
 
-This copies the jbrowse plugins into ../../web-app/jbrowse/plugins
+This copies the jbrowse plugins into ../../web-app/jbrowse, which would be the location of Apollo in production mode
 
-## Install ruby tools
+## Install the jbrowse for testing
 
-    gem install scaffolder scaffolder-tools
+    scripts/install_dev.sh
+    
+This copies the jbrowse plugins into web-app/jbrowse, which is used in development mode
 
-This needs ruby 2.0.0
 
 # Tests
 

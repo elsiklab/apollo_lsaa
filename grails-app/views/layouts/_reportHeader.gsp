@@ -34,9 +34,6 @@
                 <li>
                     <g:link controller="alternativeLoci" action="index">Alternative loci</g:link>
                 </li>
-                <li>
-                    <g:link controller="alternativeLoci" action="create">Create new altloci</g:link>
-                </li>
             </ul>
         </div>
     </div>

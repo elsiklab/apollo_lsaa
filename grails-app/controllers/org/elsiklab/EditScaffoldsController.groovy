@@ -142,45 +142,22 @@ class EditScaffoldsController {
     }
 
     def convertToMap() {
-        def rev = AlternativeLoci.createCriteria().list() {
+        def res = AlternativeLoci.createCriteria().list() {
             featureLocations {
                 order('fmin','ascending')
             }
         }
-//        def ins = AlternativeLoci.createCriteria().list() {
-//            eq('insert',true)
-//            featureLocations {
-//                order('fmin','ascending')
-//            }
-//        }
-//        def del = AlternativeLoci.createCriteria().list() {
-//            eq('deletion',true)
-//            featureLocations {
-//                order('fmin','ascending')
-//            }
-//        }
-
         def map = []
         def prevstart = 1
 
-        def s = Sequence.findByName(rev[0].featureLocation.sequence.name)
+        def s = Sequence.findByName(res[0].featureLocation.sequence.name)
         def current
 
-        rev.eachWithIndex { it, i ->
+        res.eachWithIndex { it, i ->
 
             def fmin = it.featureLocation.fmin
             def fmax = it.featureLocation.fmax
-            if(it.insertion) {
-                map << [
-                    sequence: [ 
-                        source: it.name,
-                        start: fmin,
-                        stop: fmax,
-                        inserts: [
-                        ]
-                    ]
-                ]
-            }
+           
             if(i>0) map << current
             
             if(it.reverse) {
@@ -217,5 +194,9 @@ class EditScaffoldsController {
 
     def convertToYaml() {
         return Yaml.dump(this.convertToMap())
+    }
+
+    def downloadYaml() {
+        render this.convertToMap()
     }
 }

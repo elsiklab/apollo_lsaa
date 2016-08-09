@@ -8,3 +8,4 @@ web-app/WEB-INF/tld/fmt.tld
 hs_err*.log
 node_modules
 src/groovy/apollo-lsaa-config.groovy
+web-app/jbrowse

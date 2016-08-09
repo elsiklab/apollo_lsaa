@@ -3,7 +3,6 @@ define([
     'dojo/dom-construct',
     'dijit/focus',
     'dijit/form/TextBox',
-    'dijit/form/SimpleTextarea',
     'dojo/on',
     'dojo/request',
     'dijit/form/Button',
@@ -15,7 +14,6 @@ function(
     dom,
     focus,
     TextBox,
-    TextArea,
     on,
     request,
     Button,
@@ -52,7 +50,7 @@ function(
                             start: thisB.start.get('value'),
                             end: thisB.end.get('value'),
                             sequence: thisB.sequence.get('value'),
-                            description: thisB.description.get('value'),
+                            description: thisB.description.get('value')
                         },
                         handleAs: 'json',
                         method: 'post'
@@ -96,7 +94,7 @@ function(
                 dom.create('label', { 'for': 'lsaa_name', innerHTML: 'Reference sequence: ' }), this.sequence.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_start', innerHTML: 'Start: ' }), this.start.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_end', innerHTML: 'End: ' }), this.end.domNode, br(),
-                dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Description: ' }), this.description.domNode, br(),
+                dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Description: ' }), this.description.domNode, br()
             ]);
 
             this.inherited(arguments);

@@ -3,7 +3,6 @@ define([
     'dojo/dom-construct',
     'dijit/focus',
     'dijit/form/TextBox',
-    'dijit/form/SimpleTextarea',
     'dojo/on',
     'dojo/request',
     'dijit/form/Button',
@@ -15,7 +14,6 @@ function(
     dom,
     focus,
     TextBox,
-    TextArea,
     on,
     request,
     Button,
@@ -90,7 +88,7 @@ function(
             this.start = new TextBox({id: 'lsaa_start'});
             this.end = new TextBox({id: 'lsaa_end'});
             this.description = new TextBox({id: 'lsaa_description'});
-            this.sequencedata = new TextArea({id: 'sequencedata', style: 'height: 60px;'});
+            this.sequencedata = dom.create('textarea', { style: { height: '60px', width: '100%' }, id: 'sequencedata' });
             var br = function() { return dom.create('br'); };
 
             this.set('content', [
@@ -99,7 +97,7 @@ function(
                 dom.create('label', { 'for': 'lsaa_start', innerHTML: 'Start: ' }), this.start.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_end', innerHTML: 'End: ' }), this.end.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Description: ' }), this.description.domNode, br(),
-                dom.create('label', { 'for': 'sequencedata', innerHTML: 'Sequence data: ' }), this.sequencedata.domNode, br()
+                dom.create('label', { 'for': 'sequencedata', innerHTML: 'Sequence data: ' }), this.sequencedata, br()
             ]);
 
             this.inherited(arguments);

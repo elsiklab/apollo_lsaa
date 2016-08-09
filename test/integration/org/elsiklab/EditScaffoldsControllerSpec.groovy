@@ -3,9 +3,8 @@ package org.elsiklab
 import grails.test.spock.IntegrationSpec
 import grails.test.mixin.TestFor
 import org.bbop.apollo.Sequence
-/**
- * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
- */
+
+
 @TestFor(EditScaffoldsController)
 class EditScaffoldsControllerSpec extends IntegrationSpec {
 

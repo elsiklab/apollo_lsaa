@@ -143,15 +143,12 @@ class AlternativeLociController {
 
     @Transactional
     def save() {
-        String uniqueName = UUID.randomUUID()
-        log.debug params.name
         Sequence sequence = Sequence.findByName(params.name)
         if(!sequence) {
             response.status = 500
             render ([error: 'No sequence found'] as JSON)
             return
         }
-        log.debug sequence
 
         String name = UUID.randomUUID()
         AlternativeLoci alternativeLociInstance = new AlternativeLoci(
@@ -159,7 +156,6 @@ class AlternativeLociController {
             name: name,
             uniqueName: name
         ).save(flush: true, failOnError: true)
-        log.debug alternativeLociInstance
 
         FeatureLocation featureLoc = new FeatureLocation(
             fmin: params.start,
