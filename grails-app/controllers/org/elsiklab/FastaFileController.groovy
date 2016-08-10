@@ -6,6 +6,7 @@ import grails.converters.JSON
 import grails.transaction.Transactional
 import htsjdk.samtools.reference.IndexedFastaSequenceFile
 import org.biojava.nbio.core.sequence.DNASequence
+import org.apache.commons.io.FileUtils
 
 @Transactional(readOnly = true)
 class FastaFileController {
@@ -43,31 +44,35 @@ class FastaFileController {
     }
 
     @Transactional
-    def create() {
+    def uploadFile() {
         def fastaFile
-        if(params.fastaFile) {
-            def f = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
-            f.GithWriter { out ->
-                out << params.fastaFile
-            }
-            fastaFile = new FastaFile(filename: f.getAbsolutePath(), username: 'admin', dateCreated: new Date(), lastUpdated: new Date()).save()
+        def fileStream = request.getFile('fastaFile').getInputStream()
+        def targetFile = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
+        FileUtils.copyInputStreamToFile(fileStream, targetFile)
+        log.debug targetFile.getAbsolutePath()
+        fastaFile = new FastaFile(
+            filename: targetFile.getAbsolutePath(),
+            username: 'admin',
+            dateCreated: new Date(),
+            lastUpdated: new Date()
+        ).save(flush: true)
+
+        redirect(action: 'index')
+    }
+    @Transactional
+    def uploadText() {
+        def fastaFile
+        def targetFile = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
+        targetFile.withWriter { out ->
+            out << params.fastaFile
         }
 
-        else if(params.addFile) {
-            if(new File(params.addFile).exists()) {
-                fastaFile = new FastaFile(filename: params.addFile, username: 'admin', dateCreated: new Date(), lastUpdated: new Date()).save()
-            }
-            else {
-                respond 'Error: file does not exist', view: 'index', error: 'Error'
-            }
-        }
-
-        if (fastaFile.hasErrors()) {
-            respond fastaFile.errors, view:'create'
-            return
-        }
-
-        fastaFile.save flush:true
+        fastaFile = new FastaFile(
+            filename: f.getAbsolutePath(),
+            username: 'admin',
+            dateCreated: new Date(),
+            lastUpdated: new Date()
+        ).save(flush: true)
 
         redirect(action: 'index')
     }
@@ -189,5 +194,9 @@ class FastaFileController {
 
         log.debug map
         render map as JSON
+    }
+
+    def saveVideoFile(){
+        
     }
 }

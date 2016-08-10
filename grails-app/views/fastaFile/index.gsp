@@ -9,7 +9,7 @@
             width: 100%;
             height: 400px;
         }
-        .container {
+        .formcontainer {
             display: flex;
         }
         .left {
@@ -24,32 +24,38 @@
         .header {
             padding: 20px;
         }
+        .container {
+            margin-left: 20px;
+        }
         </style>
     </head>
     <body>
     <g:render template="../layouts/reportHeader"/>
+    <div class="container">
         <h3 class="header">Submit sequence</h3>
 
         <g:if test="${flash.message}">
             <div class="message row col-sm-12" role="status">${flash.message}</div>
         </g:if>
 
-        <g:link action="create">Create</g:link>
-
-        <g:form name="scaffold" action="create" class="container">
+        <div class="formcontainer">
             <div class="left">
                 <p>Submit sequence in FASTA format</p>
-                <g:textArea name="fastaFile" class="fastaFile"></g:textArea><br />
-                <g:submitButton name="Submit"></g:submitButton>
+                <g:form name="scaffold" action="uploadText">
+                    <g:textArea name="fastaFile" class="fastaFile"></g:textArea><br />
+                    <g:submitButton name="Submit"></g:submitButton>
+                </g:form>
             </div>
             <div class="center">
-                <p>--or--</p>
             </div>
             <div class="right"> 
-                <p>Submit path to existing FASTA file on filesystem</p>
-                <g:textField name="addFile"></g:textField>
+                <p>Upload a FASTA file</p>
+                <g:form action="uploadFile" method="post" enctype="multipart/form-data">
+                    <input type="file" name="fastaFile" />
+                    <g:submitButton name="Submit"></g:submitButton>
+                </g:form>
             </div>
-        </g:form>
+        </div>
 
         <p id="output"></p>
 
@@ -93,6 +99,7 @@
             <div class="pagination">
                 <g:paginate total="${featureCount ?: 0}" params="${params}"/>
             </div>
+        </div>
         </div>
     </body>
 </html>

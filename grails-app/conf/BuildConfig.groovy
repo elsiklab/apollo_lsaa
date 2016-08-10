@@ -29,6 +29,7 @@ grails.project.dependency.resolution = {
         compile 'com.github.samtools:htsjdk:jar:2.6.0'
         compile 'org.biojava:biojava-core:4.2.4'
         compile group: 'org.jyaml', name: 'jyaml', version: '1.3'
+        compile group: 'commons-io', name: 'commons-io', version: '2.5'
     }
 
     plugins {
