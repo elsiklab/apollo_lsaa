@@ -144,53 +144,6 @@ class FastaFileController {
         }
     }
 
-    def readFasta() {
-        def file = '/Users/biocmd/Data/pyu_data/scf1117875582023.fa'
-        def genome = []
-        def currentSeq
-        def firstSeq = false
-        def filetxt = new File(file).text
-
-        filetxt.split('\n').each { it ->
-            if (it[0] == '>') {
-                if (currentSeq) {
-                    genome.push(currentSeq)
-                    firstSeq = true
-                }
-                currentSeq = [
-                    name: it.substring(1),
-                    seq: ''
-                ]
-            }
-            else {
-                currentSeq.seq += it
-            }
-        }
-        if(!firstSeq) {
-            genome.push(currentSeq)
-        }
-
-        render genome as JSON
-    }
-
-    def readIndexedFasta() {
-        def file = '/Users/biocmd/Data/pyu_data/scf1117875582023.fa'
-        def indexedFasta = new IndexedFastaSequenceFile(new File(file))
-        def ret = indexedFasta.getSubsequenceAt('scf1117875582023', 0, 100)
-        def str = new String(ret.getBases()).trim()
-        log.debug str
-        render ([forward: str, reverse: new DNASequence(str).getReverseComplement().getSequenceAsString()] as JSON)
-    }
-
-    def getSequence() {
-        def file = '/Users/biocmd/Data/pyu_data/scf1117875582023.fa'
-        def indexedFasta = new IndexedFastaSequenceFile(new File(file))
-        def ret = indexedFasta.getSubsequenceAt('scf1117875582023', 0, 100)
-        def str = new String(ret.getBases()).trim()
-        log.debug str
-        render ([forward: str, reverse: new DNASequence(str).getReverseComplement().getSequenceAsString()] as JSON)
-    }
-
 
     def getTransformedSequence() {
         def res = AlternativeLoci.createCriteria().list() {
@@ -209,10 +162,6 @@ class FastaFileController {
             if(i > 0) {
                 map << current
             }
-
-            def indexedFasta = new IndexedFastaSequenceFile(new File(file))
-            def s = indexedFasta.getSubsequenceAt('scf1117875582023', it, it)
-
             map << [
                 sequence: [
                     source: it.name,
@@ -232,7 +181,7 @@ class FastaFileController {
                 sequence: [
                     source: it.name,
                     start: it.featureLocation.fmax + 1,
-                    stop: i == res.size() - 1 ? s.length - 1 : res[i + 1].featureLocation.fmin
+                    stop: i == res.size() - 1 ? (it.end_file - it.start_file) - 1 : res[i + 1].featureLocation.fmin
                 ]
             ]
             prevstart = it.featureLocation.fmin

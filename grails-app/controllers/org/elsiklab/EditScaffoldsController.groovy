@@ -9,11 +9,7 @@ import org.ho.yaml.exception.YamlException
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
 
-
-
-
 class EditScaffoldsController {
-
 
     def grailsApplication
 
@@ -95,7 +91,6 @@ class EditScaffoldsController {
 
         render ([success: true] as JSON)
     }
-
 
     def createCorrection(String sequence, Integer start, Integer end, String description, String sequencedata) {
         String name = UUID.randomUUID()

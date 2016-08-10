@@ -51,3 +51,5 @@ grails.project.dependency.resolution = {
 }
 
 codenarc.ruleSetFiles = 'file:.codenarc'
+codenarc.processViews = true
+

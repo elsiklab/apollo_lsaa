@@ -29,11 +29,50 @@ class AlternativeLociController {
             return
         }
 
+        if(!params.sequencedata.length()) {
+            response.status = 500
+            render ([error: 'No sequencedata provided'] as JSON)
+            return
+        }
+
+        new Sequence(
+            name: name,
+            organism: sequence.organism,
+            start: 0,
+            end: params.sequencedata.length(),
+            length: params.sequencedata.length(),
+            seqChunkSize: 20000
+        ).save()
+
+        def filename
+
+        new File("${sequence.organism.directory}/${name}.fa").with {
+            write('>' + name + '\n' + params.sequencedata + '\n')
+            filename = absolutePath
+            ("prepare-refseqs.pl --fasta ${absolutePath} --out ${sequence.organism.directory}").execute()
+            ("generate-names.pl --completionLimit 0 --out ${sequence.organism.directory}").execute()
+
+            new OrganismProperty(key: 'blatdb', organism: sequence.organism, value: name).save()
+            new OrganismProperty(key: 'blatdbpath', organism: sequence.organism, value: absolutePath).save()
+
+            // remake fasta index, blat db, blast db
+            ("makeblastdb -dbtype nucl -in ${absolutePath} -title ${name}").execute()
+        }
         String name = UUID.randomUUID()
+        def fastafile = new FastaFile(
+            filename: filename,
+            dateCreated: new Date(),
+            dateModified: new Date(),
+            username: "admin"
+        ).save(flush: true)
+
         AlternativeLoci altloci = new AlternativeLoci(
             description: params.description,
             name: name,
             uniqueName: name,
+            start_file: 0,
+            end_file: params.sequencedata.length(),
+            fasta_file: fastafile
         ).save(flush: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
@@ -51,28 +90,6 @@ class AlternativeLociController {
         }
         altloci.addToOwners(owner)
 
-        if(params.sequencedata.length()) {
-            new Sequence(
-                name: name,
-                organism: sequence.organism,
-                start: 0,
-                end: params.sequencedata.length(),
-                length: params.sequencedata.length(),
-                seqChunkSize: 20000
-            ).save()
-
-            new File("${sequence.organism.directory}/${name}.fa").with {
-                write('>' + name + '\n' + params.sequencedata + '\n')
-                ("prepare-refseqs.pl --fasta ${absolutePath} --out ${sequence.organism.directory}").execute()
-                ("generate-names.pl --completionLimit 0 --out ${sequence.organism.directory}").execute()
-
-                new OrganismProperty(key: 'blatdb', organism: sequence.organism, value: name).save()
-                new OrganismProperty(key: 'blatdbpath', organism: sequence.organism, value: absolutePath).save()
-
-                // remake fasta index, blat db, blast db
-                ("makeblastdb -dbtype nucl -in ${absolutePath} -title ${name}").execute()
-            }
-        }
         render ([success: 'create loci success'] as JSON)
     }
 

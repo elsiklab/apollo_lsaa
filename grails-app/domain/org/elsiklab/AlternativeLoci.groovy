@@ -14,9 +14,6 @@ class AlternativeLoci extends BiologicalRegion {
     static constraints = {
         reversed nullable: true
         description nullable: true
-        file nullable: true
-        start_file nullable: true
-        end_file nullable: true
     }
 
     String description
