@@ -6,6 +6,7 @@ class FastaFile {
     }
 
     String filename
+    String originalname
     String username
     Date dateCreated
     Date lastUpdated

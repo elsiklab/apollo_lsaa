@@ -54,7 +54,8 @@ class FastaFileController {
             filename: targetFile.getAbsolutePath(),
             username: 'admin',
             dateCreated: new Date(),
-            lastUpdated: new Date()
+            lastUpdated: new Date(),
+            originalname: request.getFile('fastaFile').name
         ).save(flush: true)
 
         redirect(action: 'index')
@@ -71,7 +72,8 @@ class FastaFileController {
             filename: f.getAbsolutePath(),
             username: 'admin',
             dateCreated: new Date(),
-            lastUpdated: new Date()
+            lastUpdated: new Date(),
+            originalname: 'admin-'+new Date()
         ).save(flush: true)
 
         redirect(action: 'index')

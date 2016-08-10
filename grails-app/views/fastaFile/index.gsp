@@ -64,7 +64,7 @@
             <table>
                 <thead>
                     <tr>
-                        <g:sortableColumn property="filename" title="Filename" params="${filters}"/>
+                        <g:sortableColumn property="originalname" title="File" params="${filters}"/>
                         <g:sortableColumn property="user" title="Username" params="${filters}"/>
                         <g:sortableColumn property="dateCreated" title="Date created" params="${filters}"/>
                         <g:sortableColumn property="lastUpdated" title="Last updated" params="${filters}"/>
@@ -80,7 +80,7 @@
                                 <g:link action="edit" id="${feature.id}">Edit</g:link>
                             </td>
                             <td>
-                                ${feature.filename}
+                                ${feature.originalname}
                             </td>
                             <td>
                                 ${feature.username}

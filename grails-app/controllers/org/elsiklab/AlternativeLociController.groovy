@@ -59,11 +59,12 @@ class AlternativeLociController {
             ("makeblastdb -dbtype nucl -in ${absolutePath} -title ${name}").execute()
         }
         String name = UUID.randomUUID()
-        def fastafile = new FastaFile(
+        def fastaFile = new FastaFile(
             filename: filename,
             dateCreated: new Date(),
             dateModified: new Date(),
-            username: "admin"
+            username: "admin",
+            originalname: "admin-" + new Date()
         ).save(flush: true)
 
         AlternativeLoci altloci = new AlternativeLoci(
@@ -72,7 +73,7 @@ class AlternativeLociController {
             uniqueName: name,
             start_file: 0,
             end_file: params.sequencedata.length(),
-            fasta_file: fastafile
+            fastaFile: fastaFile
         ).save(flush: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
@@ -166,12 +167,16 @@ class AlternativeLociController {
             render ([error: 'No sequence found'] as JSON)
             return
         }
+        def fastaFile = FastaFile.findById(params.fasta_file)
 
         String name = UUID.randomUUID()
         AlternativeLoci alternativeLociInstance = new AlternativeLoci(
             description: params.description,
             name: name,
-            uniqueName: name
+            uniqueName: name,
+            start_file: params.start_file,
+            end_file: params.end_file,
+            fasta_file: fasta_file
         ).save(flush: true, failOnError: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
@@ -214,11 +219,16 @@ class AlternativeLociController {
 
     @Transactional
     def delete(AlternativeLoci alternativeLociInstance) {
-
         if (alternativeLociInstance == null) {
             notFound()
             return
         }
+
+        def success = new File(alternativeLociInstance.fasta_file.filename).delete()
+        if(!success) {
+            log.warn "Error deleting file"
+        }
+
 
         alternativeLociInstance.delete flush:true
 

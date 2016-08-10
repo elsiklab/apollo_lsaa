@@ -21,7 +21,7 @@ class AlternativeLoci extends BiologicalRegion {
 
     Integer start_file
     Integer end_file
-    FastaFile file
+    FastaFile fasta_file
 
 
     static mapping = {
