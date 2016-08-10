@@ -4,10 +4,19 @@
     <head>
         <meta name="layout" content="main">
         <title>LSAA - Alternative Loci</title>
+        <style>
+        .container {
+            margin-left: 20px;
+        }
+        .header {
+            padding: 20px;
+        }
+        </style>
     </head>
     <body>
     <g:render template="../layouts/reportHeader"/>
-        <h3>Alternative loci</h3>
+    <div class="container">
+        <h3 class="header">Alternative loci</h3>
         <div id="list-availableStatus" class="content scaffold-list" role="main">
 
             <g:if test="${flash.message}">
@@ -63,10 +72,10 @@
                                 ${feature.name}
                                 <g:if env="development">
                                     <g:if test="${feature.class.name == 'org.elsiklab.AlternativeLoci'}">
-                                        <a href="${g.createLink(absolute:true, base: 'jbrowse', uri: '?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
+                                        <a href="${g.createLink(absolute:true, base: '../jbrowse', uri: '?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
                                     </g:if>
                                     <g:if test="${feature.class.name == 'org.elsiklab.AlternativeRegion'}">
-                                        <a href="${g.createLink(absolute:true, base: 'jbrowse', uri: '?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
+                                        <a href="${g.createLink(absolute:true, base: '../jbrowse', uri: '?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax+ '&organism='+feature.featureLocation.sequence.organism.id)}">locus</a>
                                     </g:if>
                                 </g:if>
                                 <g:if env="production">
@@ -95,6 +104,7 @@
             <div class="pagination">
                 <g:paginate total="${alternativeLociInstanceCount ?: 0}" />
             </div>
+        </div>
         </div>
     </body>
 </html>
