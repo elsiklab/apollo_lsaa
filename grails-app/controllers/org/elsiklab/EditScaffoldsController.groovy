@@ -7,6 +7,7 @@ import org.ho.yaml.Yaml
 import org.ho.yaml.exception.YamlException
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
+import org.bbop.apollo.Organism
 
 class EditScaffoldsController {
 
@@ -74,6 +75,8 @@ class EditScaffoldsController {
         Sequence seq = Sequence.findByNameAndOrganism(params.sequence, params.organism)
         FastaFile fastaFile = FastaFile.findByOrganism(organism)
 
+        createReversal(organism, seq, fastaFile);
+
         AlternativeLoci altloci = new AlternativeLoci(
             name: sequence,
             uniqueName: name,
@@ -119,7 +122,7 @@ class EditScaffoldsController {
         AlternativeLoci altloci = new AlternativeLoci(
             name: name,
             uniqueName: name,
-            description: params.description
+            description: params.description,
             start_file: 0,
             end_file: new File(fastaFile).length(),
             fasta_file: fastaFile
