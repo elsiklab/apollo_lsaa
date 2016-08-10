@@ -64,6 +64,9 @@
             <table>
                 <thead>
                     <tr>
+                        <g:sortableColumn property="id" title="Delete"/>
+                        <g:sortableColumn property="id" title="Edit"/>
+                        <g:sortableColumn property="id" title="Show"/>
                         <g:sortableColumn property="originalname" title="File" params="${filters}"/>
                         <g:sortableColumn property="user" title="Username" params="${filters}"/>
                         <g:sortableColumn property="dateCreated" title="Date created" params="${filters}"/>
@@ -78,6 +81,9 @@
                             </td>
                             <td>
                                 <g:link action="edit" id="${feature.id}">Edit</g:link>
+                            </td>
+                            <td>
+                                <g:link action="show" id="${feature.id}">Show</g:link>
                             </td>
                             <td>
                                 ${feature.originalname}

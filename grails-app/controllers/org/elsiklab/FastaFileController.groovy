@@ -46,7 +46,7 @@ class FastaFileController {
     @Transactional
     def uploadFile() {
         def fastaFile
-        def fileStream = request.getFile('fastaFile').getInputStream()
+        def fileStream = reqFile.getFile('fastaFile').getInputStream()
         def targetFile = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
         FileUtils.copyInputStreamToFile(fileStream, targetFile)
         log.debug targetFile.getAbsolutePath()
@@ -55,7 +55,7 @@ class FastaFileController {
             username: 'admin',
             dateCreated: new Date(),
             lastUpdated: new Date(),
-            originalname: request.getFile('fastaFile').name
+            originalname: request.getFile('fastaFile').originalName
         ).save(flush: true)
 
         redirect(action: 'index')

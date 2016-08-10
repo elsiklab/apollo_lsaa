@@ -3,7 +3,6 @@ package org.elsiklab
 import static org.springframework.http.HttpStatus.*
 
 import grails.converters.JSON
-import grails.transaction.Transactional
 import org.ho.yaml.Yaml
 import org.ho.yaml.exception.YamlException
 import org.bbop.apollo.FeatureLocation
@@ -19,11 +18,11 @@ class EditScaffoldsController {
             def ret = Yaml.load(yamlfile)
             render view: 'index', model: [yaml: yamlfile.text]
         }
-        catch(YamlException e) {
+        catch (YamlException e) {
             e.printStackTrace()
             render view: 'index', model: [yaml: yamlfile.text, flash: [message: 'Error parsing YAML']]
         }
-        catch(FileNotFoundException e) {
+        catch (FileNotFoundException e) {
             e.printStackTrace()
             render view: 'index', model: [yaml: '']
         }
@@ -38,7 +37,7 @@ class EditScaffoldsController {
 
     def generateScaffolds() {
         new File("${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa").withWriter { temp ->
-            FastaFile.getAll().each { it ->
+            FastaFile.all.each { it ->
                 new File(it.filename).withReader { input ->
                     temp << input
                 }
@@ -61,7 +60,6 @@ class EditScaffoldsController {
             response.outputStream.flush()
         }
     }
-
 
     def loadFromAltLoci() {
         new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml").withWriter { temp ->
@@ -92,35 +90,35 @@ class EditScaffoldsController {
         render ([success: true] as JSON)
     }
 
-    def createCorrection(String sequence, Integer start, Integer end, String description, String sequencedata) {
+    def createCorrection() {
         String name = UUID.randomUUID()
-        Sequence s = Sequence.findByName(sequence)
+        Sequence seq = Sequence.findByName(params.sequence)
 
         AlternativeLoci altloci = new AlternativeLoci(
             name: name,
             uniqueName: name,
-            description: description
+            description: params.description
         ).save(flush: true, failOnError: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
-            fmin: start,
-            fmax: end,
+            fmin: params.start,
+            fmax: start.end,
             feature: altloci,
-            sequence: s
+            sequence: seq
         ).save(flush:true)
         altloci.addToFeatureLocations(featureLoc)
-
 
         def file = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
 
         file.withWriter { temp ->
             temp << ">${name}"
-            temp << sequencedata
-            def editscaf = new FastaFile(
-                filename: file.getAbsolutePath(),
+            temp << params.sequencedata
+            editscaf = new FastaFile(
+                filename: file.absolutePath,
                 username: 'admin',
                 dateCreated: new Date(),
-                lastModified: new Date()
+                lastModified: new Date(),
+                originalname: 'admin-' + new Date()
             ).save(flush:true)
         }
 
@@ -128,15 +126,14 @@ class EditScaffoldsController {
         render ([success: true] as JSON)
     }
 
-
     def getReversals() {
-         return AlternativeLoci.createCriteria().list() {
+         return AlternativeLoci.createCriteria().list {
              eq('reversed', true)
          }
     }
 
     def convertToMap() {
-        def res = AlternativeLoci.createCriteria().list() {
+        def res = AlternativeLoci.createCriteria().list {
             featureLocations {
                 order('fmin', 'ascending')
             }
@@ -152,9 +149,9 @@ class EditScaffoldsController {
             def fmin = it.featureLocation.fmin
             def fmax = it.featureLocation.fmax
 
-            if(i>0) map << current
+            if (i > 0) map << current
 
-            if(it.reversed) {
+            if (it.reversed) {
                 map << [
                     sequence: [
                         source: it.name,
