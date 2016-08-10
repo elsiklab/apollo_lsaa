@@ -68,15 +68,20 @@ class EditScaffoldsController {
         redirect(action: 'index')
     }
 
-    def createReversal(String sequence, Integer start, Integer end, String description) {
+    def createReversal() {
         String name = UUID.randomUUID()
-        Sequence s = Sequence.findByName(sequence)
+        Organism organism = Sequence.findByNameAndOrganism(params.organism)
+        Sequence seq = Sequence.findByNameAndOrganism(params.sequence, params.organism)
+        FastaFile fastaFile = FastaFile.findByOrganism(organism)
 
         AlternativeLoci altloci = new AlternativeLoci(
             name: sequence,
             uniqueName: name,
             description: description,
-            reversed: true
+            reversed: true,
+            start_file: 0,
+            end_file: new File(fastaFile.filename).length(),
+            fasta_file: fastaFile
         ).save(flush: true, failOnError: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
@@ -85,6 +90,7 @@ class EditScaffoldsController {
             feature: altloci,
             sequence: s
         ).save(flush:true)
+
         altloci.addToFeatureLocations(featureLoc)
 
         render ([success: true] as JSON)
@@ -92,12 +98,31 @@ class EditScaffoldsController {
 
     def createCorrection() {
         String name = UUID.randomUUID()
-        Sequence seq = Sequence.findByName(params.sequence)
+        Organism organism = Sequence.findByNameAndOrganism(params.organism)
+        Sequence seq = Sequence.findByNameAndOrganism(params.sequence, params.organism)
+        FastaFile fastaFile
+
+        def file = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
+        file.withWriter { temp ->
+            filename = temp.absolutePath
+            temp << ">${name}"
+            temp << params.sequencedata
+            fastaFile = new FastaFile(
+                filename: file.absolutePath,
+                username: 'admin',
+                dateCreated: new Date(),
+                lastModified: new Date(),
+                originalname: 'admin-' + new Date()
+            ).save(flush: true)
+        }
 
         AlternativeLoci altloci = new AlternativeLoci(
             name: name,
             uniqueName: name,
             description: params.description
+            start_file: 0,
+            end_file: new File(fastaFile).length(),
+            fasta_file: fastaFile
         ).save(flush: true, failOnError: true)
 
         FeatureLocation featureLoc = new FeatureLocation(
@@ -106,21 +131,9 @@ class EditScaffoldsController {
             feature: altloci,
             sequence: seq
         ).save(flush:true)
+
         altloci.addToFeatureLocations(featureLoc)
 
-        def file = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
-
-        file.withWriter { temp ->
-            temp << ">${name}"
-            temp << params.sequencedata
-            editscaf = new FastaFile(
-                filename: file.absolutePath,
-                username: 'admin',
-                dateCreated: new Date(),
-                lastModified: new Date(),
-                originalname: 'admin-' + new Date()
-            ).save(flush:true)
-        }
 
 
         render ([success: true] as JSON)
