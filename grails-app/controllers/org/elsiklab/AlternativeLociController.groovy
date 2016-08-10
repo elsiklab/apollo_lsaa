@@ -161,7 +161,7 @@ class AlternativeLociController {
 
     @Transactional
     def save() {
-        Sequence sequence = Sequence.findByName(params.name)
+        Sequence sequence = Sequence.findById(params.name)
         if(!sequence) {
             response.status = 500
             render ([error: 'No sequence found'] as JSON)
@@ -174,9 +174,9 @@ class AlternativeLociController {
             description: params.description,
             name: name,
             uniqueName: name,
-            start_file: params.start_file,
-            end_file: params.end_file,
-            fasta_file: fasta_file
+            start_file: params.start_file ?: 0,
+            end_file: params.end_file ?: new File(fastaFile.filename).length(),
+            fasta_file: fastaFile
         ).save(flush: true, failOnError: true)
 
         FeatureLocation featureLoc = new FeatureLocation(

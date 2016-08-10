@@ -7,6 +7,7 @@ import grails.transaction.Transactional
 import htsjdk.samtools.reference.IndexedFastaSequenceFile
 import org.biojava.nbio.core.sequence.DNASequence
 import org.apache.commons.io.FileUtils
+import java.text.SimpleDateFormat 
 
 @Transactional(readOnly = true)
 class FastaFileController {
@@ -46,7 +47,7 @@ class FastaFileController {
     @Transactional
     def uploadFile() {
         def fastaFile
-        def fileStream = reqFile.getFile('fastaFile').getInputStream()
+        def fileStream = request.getFile('fastaFile').getInputStream()
         def targetFile = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
         FileUtils.copyInputStreamToFile(fileStream, targetFile)
         log.debug targetFile.getAbsolutePath()
@@ -55,7 +56,7 @@ class FastaFileController {
             username: 'admin',
             dateCreated: new Date(),
             lastUpdated: new Date(),
-            originalname: request.getFile('fastaFile').originalName
+            originalname: request.getFile('fastaFile').originalFilename
         ).save(flush: true)
 
         redirect(action: 'index')
@@ -67,13 +68,14 @@ class FastaFileController {
         targetFile.withWriter { out ->
             out << params.fastaFile
         }
+        def now = new Date()
 
         fastaFile = new FastaFile(
-            filename: f.getAbsolutePath(),
+            filename: targetFile.getAbsolutePath(),
             username: 'admin',
-            dateCreated: new Date(),
-            lastUpdated: new Date(),
-            originalname: 'admin-'+new Date()
+            dateCreated: now,
+            lastUpdated: now,
+            originalname: 'admin-'+new SimpleDateFormat("YYMMdd_HHmmss").format(now)
         ).save(flush: true)
 
         redirect(action: 'index')
