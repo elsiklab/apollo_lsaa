@@ -63,8 +63,8 @@ class AlternativeLociController {
             filename: filename,
             dateCreated: new Date(),
             dateModified: new Date(),
-            username: "admin",
-            originalname: "admin-" + new Date()
+            username: 'admin',
+            originalname: 'admin-' + new Date()
         ).save(flush: true)
 
         AlternativeLoci altloci = new AlternativeLoci(
@@ -81,7 +81,7 @@ class AlternativeLociController {
             fmax: params.end,
             feature: altloci,
             sequence: sequence
-        ).save(flush:true)
+        ).save(flush: true)
         altloci.addToFeatureLocations(featureLoc)
 
         def owner = User.findByUsername(SecurityUtils.subject.principal ?: 'admin')
@@ -126,29 +126,21 @@ class AlternativeLociController {
     }
 
     @Transactional
-    def save() {
+    def save(AlternativeLoci instance) {
         def sequence = Sequence.findById(params.name)
-        if(!sequence) {
-            render text: ([error: 'No sequence found'] as JSON), status: 500
-        }
-        else {
+        if(sequence) {
             def fastaFile = FastaFile.findById(params.fasta_file)
-            if(!fastaFile) {
-                render text: ([error: 'No FASTA file found'] as JSON), status: 500
-            }
-            else {
+            if(fastaFile) {
                 def file = new File(fastaFile.filename)
-                if(!file) {
-                    render text: ([error: 'FASTA file path was moved'] as JSON), status: 500
-                }
-                else {
+                if(file) {
                     String name = UUID.randomUUID()
+                    log.debug "${params.start} ${params.end} ${file.length()}"
                     AlternativeLoci alternativeLociInstance = new AlternativeLoci(
                         description: params.description,
                         name: name,
                         uniqueName: name,
-                        start_file: params.start_file ?: 0,
-                        end_file: params.end_file ?: file.length(),
+                        start_file: params.start_file == "" ? 0 : params.start_file,
+                        end_file: params.end_file == "" ? file.length() : params.end_file,
                         fasta_file: fastaFile
                     ).save(flush: true, failOnError: true)
 
@@ -162,7 +154,16 @@ class AlternativeLociController {
 
                     redirect(action: 'index')
                 }
+                else {
+                    render text: ([error: 'FASTA file path was moved'] as JSON), status: 500
+                }
             }
+            else {
+                render text: ([error: 'No FASTA file found'] as JSON), status: 500
+            }
+        }
+        else {
+            render text: ([error: 'No sequence found'] as JSON), status: 500
         }
     }
 
@@ -171,25 +172,36 @@ class AlternativeLociController {
     }
 
     @Transactional
-    def update(AlternativeLoci alternativeLociInstance) {
-        if (alternativeLociInstance == null) {
-            notFound()
-            return
-        }
-
-        if (alternativeLociInstance.hasErrors()) {
-            respond alternativeLociInstance.errors, view:'edit'
-            return
-        }
-
-        alternativeLociInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'AlternativeLoci.label', default: 'AlternativeLoci'), alternativeLociInstance.id])
-                redirect action:'index', method:'GET'
+    def update(AlternativeLoci instance) {
+        log.debug instance
+        def sequence = Sequence.findById(params.name)
+        if(sequence) {
+            def fastaFile = FastaFile.findById(params.fasta_file)
+            if(fastaFile) {
+                def file = new File(fastaFile.filename)
+                if(file) {
+                    AlternativeLoci altloci = AlternativeLoci.findById(params.name)
+                    log.debug altloci
+                    altloci.description = params.description
+                    altloci.start_file = params.start_file ?: 0
+                    altloci.end_file = params.end_file ?: file.length()
+                    altloci.fasta_file = fastaFile
+                    altloci.featureLocation = params.start
+                    altloci.featureLocation = params.end
+                    altloci.featureLocation.sequence = sequence
+                    altloci.save(flush: true, failOnError: true)
+                    redirect(action: 'edit')
+                }
+                else {
+                    render text: ([error: 'FASTA file path was moved'] as JSON), status: 500
+                }
             }
-            '*' { respond alternativeLociInstance, [status: OK] }
+            else {
+                render text: ([error: 'No FASTA file found'] as JSON), status: 500
+            }
+        }
+        else {
+            render text: ([error: 'No sequence found'] as JSON), status: 500
         }
     }
 
@@ -199,12 +211,6 @@ class AlternativeLociController {
             notFound()
             return
         }
-
-        def success = new File(alternativeLociInstance.fasta_file.filename).delete()
-        if(!success) {
-            log.warn "Error deleting file"
-        }
-
 
         alternativeLociInstance.delete flush:true
 

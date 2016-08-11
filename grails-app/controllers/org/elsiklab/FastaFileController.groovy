@@ -4,10 +4,8 @@ import static org.springframework.http.HttpStatus.*
 
 import grails.converters.JSON
 import grails.transaction.Transactional
-import htsjdk.samtools.reference.IndexedFastaSequenceFile
-import org.biojava.nbio.core.sequence.DNASequence
 import org.apache.commons.io.FileUtils
-import java.text.SimpleDateFormat 
+import java.text.SimpleDateFormat
 
 @Transactional(readOnly = true)
 class FastaFileController {
@@ -19,20 +17,20 @@ class FastaFileController {
 
         def list = FastaFile.createCriteria().list(max: params.max, offset:params.offset) {
             if(params.sort == 'username') {
-                order('username', params.order)
+                order ('username', params.order)
             }
             if(params.sort == 'filename') {
-                order('filename', params.order)
+                order ('filename', params.order)
             }
             else if(params.sort == 'lastUpdated') {
-                order('lastUpdated', params.order)
+                order ('lastUpdated', params.order)
             }
             else if(params.sort == 'dateCreated') {
-                order('dateCreated', params.order)
+                order ('dateCreated', params.order)
             }
             else if(params.sort == 'organism') {
                 organism {
-                    order('commonName',params.order)
+                    order ('commonName',params.order)
                 }
             }
         }
@@ -47,12 +45,11 @@ class FastaFileController {
     @Transactional
     def uploadFile() {
         def fastaFile
-        def fileStream = request.getFile('fastaFile').getInputStream()
+        def fileStream = request.getFile('fastaFile').inputStream
         def targetFile = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
         FileUtils.copyInputStreamToFile(fileStream, targetFile)
-        log.debug targetFile.getAbsolutePath()
         fastaFile = new FastaFile(
-            filename: targetFile.getAbsolutePath(),
+            filename: targetFile.absolutePath,
             username: 'admin',
             dateCreated: new Date(),
             lastUpdated: new Date(),
@@ -71,11 +68,11 @@ class FastaFileController {
         def now = new Date()
 
         fastaFile = new FastaFile(
-            filename: targetFile.getAbsolutePath(),
+            filename: targetFile.absolutePath,
             username: 'admin',
             dateCreated: now,
             lastUpdated: now,
-            originalname: 'admin-'+new SimpleDateFormat("YYMMdd_HHmmss").format(now)
+            originalname: 'admin-' + new SimpleDateFormat("E YYMMdd_HHmmss").format(now)
         ).save(flush: true)
 
         redirect(action: 'index')
@@ -137,6 +134,10 @@ class FastaFileController {
             notFound()
             return
         }
+        def success = new File(fastaFile.filename).delete()
+        if(!success) {
+            log.warn 'Error deleting file '+fastaFile.filename
+        } 
 
         fastaFile.delete flush:true
 

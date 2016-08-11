@@ -43,6 +43,13 @@
         <g:message code="alternativeLoci.value.label" default="Description" />
     </label>
     <g:textField name="description" value="${alternativeLociInstance?.description}"/>
+    <br />
+    <label for="reversed">
+        <g:message code="alternativeLoci.value.label" default="Reverse complement?" />
+    </label>
+    <g:checkBox name="reversed" value="${alternativeLociInstance?.reversed}"/>
+
+
 
     <br />
 </div>
