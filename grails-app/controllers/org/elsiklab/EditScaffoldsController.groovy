@@ -10,6 +10,7 @@ import org.bbop.apollo.Organism
 class EditScaffoldsController {
 
     def grailsApplication
+    def editScaffoldsService
 
     def index() {
         render view: 'index'
@@ -41,7 +42,7 @@ class EditScaffoldsController {
     }
 
 
-    def createReversal(def params) {
+    def createReversal() {
         String name = UUID.randomUUID()
         Organism organism = Organism.findByCommonName(params.organism)
         if(!organism) {
@@ -132,12 +133,12 @@ class EditScaffoldsController {
     }
 
     def getTransformedYaml() {
-        def map = getTransformedSequence(getReversals())
+        def map = editScaffoldsService.getTransformedSequence(editScaffoldsService.getReversals())
         render text: Yaml.dump(map)
     }
 
     def getTransformedSequence() {
-        def map = getTransformedSequence(getReversals())
+        def map = editScaffoldsService.getTransformedSequence(editScaffoldsService.getReversals())
         render text: map as JSON
     } 
 }

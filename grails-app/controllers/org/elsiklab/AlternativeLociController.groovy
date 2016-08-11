@@ -134,7 +134,6 @@ class AlternativeLociController {
                 def file = new File(fastaFile.filename)
                 if(file) {
                     String name = UUID.randomUUID()
-                    log.debug "${params.start} ${params.end} ${file.length()}"
                     AlternativeLoci alternativeLociInstance = new AlternativeLoci(
                         description: params.description,
                         name: name,
@@ -173,7 +172,6 @@ class AlternativeLociController {
 
     @Transactional
     def update(AlternativeLoci instance) {
-        log.debug instance
         def sequence = Sequence.findById(params.name)
         if(sequence) {
             def fastaFile = FastaFile.findById(params.fasta_file)
@@ -181,7 +179,6 @@ class AlternativeLociController {
                 def file = new File(fastaFile.filename)
                 if(file) {
                     AlternativeLoci altloci = AlternativeLoci.findById(params.name)
-                    log.debug altloci
                     altloci.description = params.description
                     altloci.start_file = params.start_file ?: 0
                     altloci.end_file = params.end_file ?: file.length()

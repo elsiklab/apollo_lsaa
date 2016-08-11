@@ -10,7 +10,7 @@ class EditScaffoldsService {
     def serviceMethod() {
 
     }
-    def getTranformedSequence(ArrayList<AlternativeLoci> list) {
+    def getTransformedSequence(def list) {
         def map = []
         int prevstart = 1 
         for(int i = 0; i < list.size(); i++) {

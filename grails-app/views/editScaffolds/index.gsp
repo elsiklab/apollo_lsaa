@@ -29,25 +29,9 @@
         </g:if>
         <div class="container">
             <div class="left">
-                <g:form name="scaffold" action="editScaffold">
-                    <g:textArea name="scaffoldEditor" class="scaffoldEditor" value="${yaml}"></g:textArea><br />
-                    <g:submitButton name="Submit"></g:submitButton>
-                </g:form>
-                <g:form name="generate" url="${grailsApplication.config.lsaa.taskrunnerURL}">
-                    <g:submitButton name="Generate scaffolds"></g:submitButton>
-                </g:form>
-                <g:form name="load" action="loadFromAltLoci">
-                    <g:submitButton name="Load yaml from alternate loci"></g:submitButton>
-                </g:form>
-            </div>
-            <div class="right">
+                <p><g:link action="getTransformedSequence">Get transformed sequence(JSON)</g:link></p>
+                <p><g:link action="getTransformedYaml">Get transformed sequence (YAML)</g:link></p>
             </div>
         </div>
-
-
-
-
-
-        <p id="output"></p>
     </body>
 </html>

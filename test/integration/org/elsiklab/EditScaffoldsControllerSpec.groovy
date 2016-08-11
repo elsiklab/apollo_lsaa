@@ -5,7 +5,6 @@ import grails.test.mixin.TestFor
 import org.bbop.apollo.Sequence
 import org.bbop.apollo.Organism
 
-
 @TestFor(EditScaffoldsController)
 class EditScaffoldsControllerSpec extends IntegrationSpec {
 
@@ -43,30 +42,29 @@ class EditScaffoldsControllerSpec extends IntegrationSpec {
 
     def cleanup() {
     }
-    void 'test reversal'() {
-        when:
-            params.sequence = 'scf1117875582023'
-            params.start = 1000
-            params.end = 2000
-            params.description = 'inversion'
-            params.organism = 'pyu'
-            controller.createReversal(params)
-            def res = controller.getReversals()
-            def map = controller.convertToMap()
-        then:
-            res.size() == 1
-            map.size == 3
-            map[1].sequence.source == 'scf1117875582023'
-    }
     void 'test badseq'() {
         when:
-            params.sequence = 'bad sequence'
-            params.start = 1000
-            params.end = 2000
-            params.description = 'inversion'
-            params.organism = 'pyu'
-            def ret = controller.createReversal(params)
+            controller.params.sequence = 'bad sequence'
+            controller.params.start = 1000
+            controller.params.end = 2000
+            controller.params.description = 'inversion'
+            controller.params.organism = 'pyu'
+            controller.createReversal()
         then:
             controller.response.status == 500
+            AlternativeLoci.count == 0
     }
+    void 'test reversal'() {
+        when:
+            controller.params.sequence = 'scf1117875582023'
+            controller.params.start = 1000
+            controller.params.end = 2000
+            controller.params.description = 'inversion'
+            controller.params.organism = 'pyu'
+            controller.createReversal()
+        then:
+            controller.response.status == 200
+            AlternativeLoci.count == 1
+    }
+    
 }

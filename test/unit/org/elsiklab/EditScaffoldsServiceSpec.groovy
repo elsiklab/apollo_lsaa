@@ -10,11 +10,13 @@ import spock.lang.Specification
 class EditScaffoldsServiceSpec extends Specification {
 
     def setup() {
+        
     }
 
     def cleanup() {
     }
 
-    void "test something"() {
+    void "test getting reversals"() {
+        service.getReversals
     }
 }
