@@ -3,8 +3,6 @@ package org.elsiklab
 import static org.springframework.http.HttpStatus.*
 
 import grails.converters.JSON
-import org.ho.yaml.Yaml
-import org.ho.yaml.exception.YamlException
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
 import org.bbop.apollo.Organism
@@ -14,26 +12,7 @@ class EditScaffoldsController {
     def grailsApplication
 
     def index() {
-        def yamlfile = new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml")
-        try {
-            def ret = Yaml.load(yamlfile)
-            render view: 'index', model: [yaml: yamlfile.text]
-        }
-        catch (YamlException e) {
-            e.printStackTrace()
-            render view: 'index', model: [yaml: yamlfile.text, flash: [message: 'Error parsing YAML']]
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace()
-            render view: 'index', model: [yaml: '']
-        }
-    }
-
-    def editScaffold() {
-        new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml").withWriter { out ->
-            out.write params.scaffoldEditor
-        }
-        redirect(action: 'index')
+        render view: 'index'
     }
 
     def generateScaffolds() {
@@ -46,8 +25,7 @@ class EditScaffoldsController {
             def ap = grailsApplication.config.lsaa.appStoreDirectory
 
             new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withWriter { out ->
-                log.debug "${grailsApplication.config.lsaa.scaffolder.path} sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa"
-                ("${grailsApplication.config.lsaa.scaffolder.path} sequence ${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml ${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa").execute().waitForProcessOutput(out, System.err)
+                out << "Hello World!"
             }
         }
         redirect(action: 'downloadFasta')
@@ -62,12 +40,6 @@ class EditScaffoldsController {
         }
     }
 
-    def loadFromAltLoci() {
-        new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.yaml").withWriter { temp ->
-            temp << convertToYaml()
-        }
-        redirect(action: 'index')
-    }
 
     def createReversal(def params) {
         String name = UUID.randomUUID()
@@ -94,7 +66,7 @@ class EditScaffoldsController {
                     start_file: 0,
                     end_file: new File(fastaFile.filename).length(),
                     fasta_file: fastaFile
-                ).save(flush: true, failOnError: true)
+                ).save(flush: true)
 
                 FeatureLocation featureLoc = new FeatureLocation(
                     fmin: params.start,
@@ -113,68 +85,59 @@ class EditScaffoldsController {
     def createCorrection() {
         String name = UUID.randomUUID()
         Organism organism = Sequence.findByNameAndOrganism(params.organism)
-        Sequence seq = Sequence.findByNameAndOrganism(params.sequence, params.organism)
-        FastaFile fastaFile
-
-        def file = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
-        file.withWriter { temp ->
-            filename = temp.absolutePath
-            temp << ">${name}"
-            temp << params.sequencedata
-            fastaFile = new FastaFile(
-                filename: file.absolutePath,
-                username: 'admin',
-                dateCreated: new Date(),
-                lastModified: new Date(),
-                originalname: 'admin-' + new Date()
-            ).save(flush: true)
+        if(!organism) {
+            render text: ([error: 'No organism found'] as JSON), status: 500
         }
+        else {
+            Sequence seq = Sequence.findByNameAndOrganism(params.sequence, organism)
+            if(!seq) {
+                render text: ([error: 'No sequence found'] as JSON), status: 500 
+            } 
+            else {
+                def file = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
+                file.withWriter { temp ->
+                    filename = temp.absolutePath
+                    temp << ">${name}"
+                    temp << params.sequencedata
+                    fastaFile = new FastaFile(
+                        filename: file.absolutePath,
+                        username: 'admin',
+                        dateCreated: new Date(),
+                        lastModified: new Date(),
+                        originalname: 'admin-' + new Date()
+                    ).save(flush: true)
+                }
 
-        AlternativeLoci altloci = new AlternativeLoci(
-            name: name,
-            uniqueName: name,
-            description: params.description,
-            start_file: 0,
-            end_file: new File(fastaFile).length(),
-            fasta_file: fastaFile
-        ).save(flush: true, failOnError: true)
+                AlternativeLoci altloci = new AlternativeLoci(
+                    name: name,
+                    uniqueName: name,
+                    description: params.description,
+                    start_file: 0,
+                    end_file: new File(fastaFile).length(),
+                    fasta_file: fastaFile
+                ).save(flush: true)
 
-        FeatureLocation featureLoc = new FeatureLocation(
-            fmin: params.start,
-            fmax: start.end,
-            feature: altloci,
-            sequence: seq
-        ).save(flush:true)
+                FeatureLocation featureLoc = new FeatureLocation(
+                    fmin: params.start,
+                    fmax: start.end,
+                    feature: altloci,
+                    sequence: seq
+                ).save(flush: true)
 
-        altloci.addToFeatureLocations(featureLoc)
+                altloci.addToFeatureLocations(featureLoc)
 
-
-
-        render ([success: true] as JSON)
+                render ([success: true] as JSON)
+            }
+        }
     }
 
-    def getReversals() {
-         return AlternativeLoci.createCriteria().list {
-             eq('reversed', true)
-         }
-    }
-
-    def convertToYaml() {
-        return Yaml.dump(convertToMap())
-    }
-
-    def downloadYaml() {
-        render convertToMap()
+    def getTransformedYaml() {
+        def map = getTransformedSequence(getReversals())
+        render text: Yaml.dump(map)
     }
 
     def getTransformedSequence() {
-        def res = AlternativeLoci.createCriteria().list() {
-            featureLocations {
-                order('fmin','ascending')
-            }   
-        }   
-
-        def map = getTransformedSequence()
-        render map as JSON
+        def map = getTransformedSequence(getReversals())
+        render text: map as JSON
     } 
 }

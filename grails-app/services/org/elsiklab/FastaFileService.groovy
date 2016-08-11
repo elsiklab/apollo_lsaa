@@ -1,4 +1,4 @@
-package apollo.lsaa
+package org.elsiklab
 
 import grails.transaction.Transactional
 import htsjdk.samtools.reference.IndexedFastaSequenceFile

@@ -1,6 +1,8 @@
-package apollo.lsaa
+package org.elsiklab
 
 import grails.transaction.Transactional
+import org.ho.yaml.Yaml
+import org.ho.yaml.exception.YamlException
 
 @Transactional
 class EditScaffoldsService {
@@ -40,5 +42,13 @@ class EditScaffoldsService {
             prevstart = curr.featureLocation.fmin
         }
         return map
+    }
+
+    def getReversals() {
+        return AlternativeLoci.createCriteria().list {
+            featureLocations {
+                order('fmin', 'ascending')
+            }
+        }
     }
 }
