@@ -159,60 +159,22 @@ class EditScaffoldsController {
          }
     }
 
-    def convertToMap() {
-        def res = AlternativeLoci.createCriteria().list {
-            featureLocations {
-                order('fmin', 'ascending')
-            }
-        }
-        def map = []
-        def prevstart = 1
-
-        def s = Sequence.findByName(res[0].featureLocation.sequence.name)
-        def current
-
-        res.eachWithIndex { it, i ->
-
-            def fmin = it.featureLocation.fmin
-            def fmax = it.featureLocation.fmax
-
-            if (i > 0) map << current
-
-            if (it.reversed) {
-                map << [
-                    sequence: [
-                        source: it.name,
-                        start: prevstart,
-                        stop: fmin - 1
-                    ]
-                ]
-                map << [
-                    sequence: [
-                        source: it.name,
-                        start: fmin,
-                        stop: fmax,
-                        reverse: it.reversed
-                    ]
-                ]
-                map << [
-                    sequence: [
-                        source: it.name,
-                        start: fmax + 1,
-                        stop: i == res.size() - 1 ? s.length - 1 : res[i + 1].featureLocation.fmin
-                    ]
-                ]
-            }
-
-            prevstart = fmin
-        }
-        return map
-    }
-
     def convertToYaml() {
-        return Yaml.dump(this.convertToMap())
+        return Yaml.dump(convertToMap())
     }
 
     def downloadYaml() {
-        render this.convertToMap()
+        render convertToMap()
     }
+
+    def getTransformedSequence() {
+        def res = AlternativeLoci.createCriteria().list() {
+            featureLocations {
+                order('fmin','ascending')
+            }   
+        }   
+
+        def map = getTransformedSequence()
+        render map as JSON
+    } 
 }

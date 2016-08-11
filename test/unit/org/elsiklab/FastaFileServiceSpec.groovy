@@ -1,4 +1,4 @@
-package apollo.lsaa
+package org.elsiklab
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification
@@ -6,8 +6,8 @@ import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
  */
-@TestFor(EditScaffoldsService)
-class EditScaffoldsServiceSpec extends Specification {
+@TestFor(FastaFileService)
+class FastaFileServiceSpec extends Specification {
 
     def setup() {
     }
@@ -16,5 +16,7 @@ class EditScaffoldsServiceSpec extends Specification {
     }
 
     void "test something"() {
+        expect:
+            1 == 1
     }
 }

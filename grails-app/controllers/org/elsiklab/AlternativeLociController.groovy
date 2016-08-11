@@ -94,39 +94,6 @@ class AlternativeLociController {
         render ([success: 'create loci success'] as JSON)
     }
 
-    def addRegion() {
-
-        Sequence sequence = Sequence.findByName(params.sequence)
-        if(!sequence) {
-            response.status = 500
-            render ([error: 'No sequence found'] as JSON)
-            return
-        }
-
-        String name = UUID.randomUUID()
-        AlternativeRegion altloci = new AlternativeRegion(
-            description: params.description,
-            name: name,
-            uniqueName: name
-        ).save(flush: true)
-
-        FeatureLocation featureLoc = new FeatureLocation(
-            fmin: params.start,
-            fmax: params.end,
-            feature: altloci,
-            sequence: sequence
-        ).save(flush:true)
-        altloci.addToFeatureLocations(featureLoc)
-
-        def owner = User.findByUsername(SecurityUtils.subject.principal ?: 'admin')
-        if (!owner && Environment.current != Environment.PRODUCTION) {
-            owner = new User(username: 'admin', passwordHash: 'admin', firstName: 'admin', lastName: 'admin')
-            owner.save(flush: true)
-        }
-        altloci.addToOwners(owner)
-
-        render ([success: 'create loci success'] as JSON)
-    }
 
     def getLoci() {
         Sequence sequence = Sequence.findByName(params.sequence)
@@ -134,7 +101,7 @@ class AlternativeLociController {
             featureLocations {
                 eq('sequence', sequence)
             }
-            'in'('class', [AlternativeRegion.class.name, AlternativeLoci.class.name])
+            'eq'('class', AlternativeLoci.class.name)
         }
         JsonBuilder json = new JsonBuilder ()
         json.features features, { it ->
@@ -155,39 +122,48 @@ class AlternativeLociController {
     }
 
     def create() {
-        log.debug params
         respond new AlternativeLoci(params)
     }
 
     @Transactional
     def save() {
-        Sequence sequence = Sequence.findById(params.name)
+        def sequence = Sequence.findById(params.name)
         if(!sequence) {
-            response.status = 500
-            render ([error: 'No sequence found'] as JSON)
-            return
+            render text: ([error: 'No sequence found'] as JSON), status: 500
         }
-        def fastaFile = FastaFile.findById(params.fasta_file)
+        else {
+            def fastaFile = FastaFile.findById(params.fasta_file)
+            if(!fastaFile) {
+                render text: ([error: 'No FASTA file found'] as JSON), status: 500
+            }
+            else {
+                def file = new File(fastaFile.filename)
+                if(!file) {
+                    render text: ([error: 'FASTA file path was moved'] as JSON), status: 500
+                }
+                else {
+                    String name = UUID.randomUUID()
+                    AlternativeLoci alternativeLociInstance = new AlternativeLoci(
+                        description: params.description,
+                        name: name,
+                        uniqueName: name,
+                        start_file: params.start_file ?: 0,
+                        end_file: params.end_file ?: file.length(),
+                        fasta_file: fastaFile
+                    ).save(flush: true, failOnError: true)
 
-        String name = UUID.randomUUID()
-        AlternativeLoci alternativeLociInstance = new AlternativeLoci(
-            description: params.description,
-            name: name,
-            uniqueName: name,
-            start_file: params.start_file ?: 0,
-            end_file: params.end_file ?: new File(fastaFile.filename).length(),
-            fasta_file: fastaFile
-        ).save(flush: true, failOnError: true)
+                    FeatureLocation featureLoc = new FeatureLocation(
+                        fmin: params.start,
+                        fmax: params.end,
+                        feature: alternativeLociInstance,
+                        sequence: sequence
+                    ).save(flush:true, failOnError: true)
+                    alternativeLociInstance.addToFeatureLocations(featureLoc)
 
-        FeatureLocation featureLoc = new FeatureLocation(
-            fmin: params.start,
-            fmax: params.end,
-            feature: alternativeLociInstance,
-            sequence: sequence
-        ).save(flush:true, failOnError: true)
-        alternativeLociInstance.addToFeatureLocations(featureLoc)
-
-        redirect(action: 'index')
+                    redirect(action: 'index')
+                }
+            }
+        }
     }
 
     def edit(AlternativeLoci alternativeLociInstance) {
@@ -235,76 +211,7 @@ class AlternativeLociController {
         redirect(action: 'index')
     }
 
-    def showRegion(AlternativeRegion alternativeLociInstance) {
-        respond alternativeLociInstance
-    }
 
-    def createRegion() {
-        respond new AlternativeRegion(params)
-    }
-
-    @Transactional
-    def saveRegion(AlternativeRegion alternativeLociInstance) {
-        if (alternativeLociInstance == null) {
-            notFound()
-            return
-        }
-
-        if (alternativeLociInstance.hasErrors()) {
-            respond alternativeLociInstance.errors, view:'create'
-            return
-        }
-
-        alternativeLociInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'alternativeLoci.label', default: 'AlternativeRegion'), alternativeLociInstance.id])
-                redirect alternativeLociInstance
-            }
-            '*' { respond alternativeLociInstance, [status: CREATED] }
-        }
-    }
-
-    def editRegion(AlternativeRegion alternativeLociInstance) {
-        render view: 'edit', model: [alternativeLociInstance: alternativeLociInstance]
-    }
-
-    @Transactional
-    def updateRegion(AlternativeRegion alternativeLociInstance) {
-        if (alternativeLociInstance == null) {
-            notFound()
-            return
-        }
-
-        if (alternativeLociInstance.hasErrors()) {
-            respond alternativeLociInstance.errors, view:'edit'
-            return
-        }
-
-        alternativeLociInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'AlternativeRegion.label', default: 'AlternativeRegion'), alternativeLociInstance.id])
-                redirect action:'index', method:'GET'
-            }
-            '*' { respond alternativeLociInstance, [status: OK] }
-        }
-    }
-
-    @Transactional
-    def deleteRegion(AlternativeRegion alternativeLociInstance) {
-
-        if (alternativeLociInstance == null) {
-            notFound()
-            return
-        }
-
-        alternativeLociInstance.delete flush:true
-
-        redirect(action: 'index')
-    }
 
     protected void notFound() {
         request.withFormat {
@@ -368,7 +275,7 @@ class AlternativeLociController {
                     }
                 }
             }
-            'in'('class', [AlternativeRegion.class.name, AlternativeLoci.class.name])
+            'eq'('class', AlternativeLoci.class.name)
         }
 
         render view: 'index', model: [features: list, sort: params.sort, alternativeLociInstanceCount: list.totalCount]
