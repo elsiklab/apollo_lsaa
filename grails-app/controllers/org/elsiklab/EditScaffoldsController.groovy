@@ -69,34 +69,45 @@ class EditScaffoldsController {
         redirect(action: 'index')
     }
 
-    def createReversal() {
+    def createReversal(def params) {
         String name = UUID.randomUUID()
-        Organism organism = Sequence.findByNameAndOrganism(params.organism)
-        Sequence seq = Sequence.findByNameAndOrganism(params.sequence, params.organism)
-        FastaFile fastaFile = FastaFile.findByOrganism(organism)
+        Organism organism = Organism.findByCommonName(params.organism)
+        if(!organism) {
+            render text: ([error: 'No organism found'] as JSON), status: 500
+        }
+        else {
+            Sequence seq = Sequence.findByNameAndOrganism(params.sequence, organism)
+            FastaFile fastaFile = FastaFile.findByOrganism(organism)
 
-        createReversal(organism, seq, fastaFile);
+            if(!seq) {
+                render text: ([error: 'No sequence found'] as JSON), status: 500
+            }
+            else if(!fastaFile) {
+                render text: ([error: 'No representative FASTA found for organism'] as JSON), status: 500
+            }
+            else {
+                AlternativeLoci altloci = new AlternativeLoci(
+                    name: params.sequence,
+                    uniqueName: name,
+                    description: params.description,
+                    reversed: true,
+                    start_file: 0,
+                    end_file: new File(fastaFile.filename).length(),
+                    fasta_file: fastaFile
+                ).save(flush: true, failOnError: true)
 
-        AlternativeLoci altloci = new AlternativeLoci(
-            name: sequence,
-            uniqueName: name,
-            description: description,
-            reversed: true,
-            start_file: 0,
-            end_file: new File(fastaFile.filename).length(),
-            fasta_file: fastaFile
-        ).save(flush: true, failOnError: true)
+                FeatureLocation featureLoc = new FeatureLocation(
+                    fmin: params.start,
+                    fmax: params.end,
+                    feature: altloci,
+                    sequence: seq
+                ).save(flush:true)
 
-        FeatureLocation featureLoc = new FeatureLocation(
-            fmin: start,
-            fmax: end,
-            feature: altloci,
-            sequence: s
-        ).save(flush:true)
+                altloci.addToFeatureLocations(featureLoc)
 
-        altloci.addToFeatureLocations(featureLoc)
-
-        render ([success: true] as JSON)
+                render ([success: true] as JSON)
+            }
+        }
     }
 
     def createCorrection() {

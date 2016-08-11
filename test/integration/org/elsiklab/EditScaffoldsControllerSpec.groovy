@@ -11,34 +11,62 @@ class EditScaffoldsControllerSpec extends IntegrationSpec {
 
     def setup() {
         def organism = new Organism(
-            commonName: "UMD3.1",
-            directory: "test/integration/data/umd31"
-        ).save()
+            commonName: 'pyu',
+            directory: 'test/integration/data/pyu_data/'
+        ).save(flush: true, failOnError: true)
         new Sequence(
-            length: 10000,
-            seqChunkSize: 0,
+            name: 'scf1117875582023',
+            organism: organism,
+            length: 1683196,
+            seqChunkSize: 20000,
             start: 0,
-            end: 10000,
-            name:"GK000015.2",
+            end: 1683196
+        ).save(flush: true, failOnError: true)
+        new Sequence(
+            name: 'scf1117875582023',
+            organism: organism,
+            length: 1683196,
+            seqChunkSize: 20000,
+            start: 0,
+            end: 1683196
+        ).save(flush: true, failOnError: true)
+        new FastaFile(
+            filename: 'test/integration/resources/pyu_data/scf1117875582023.fa',
+            lastUpdated: new Date(),
+            dateCreated: new Date(),
+            originalname: 'scf1117875582023.fa',
+            username: 'admin',
             organism: organism
-        ).save()
+        ).save(flush: true, failOnError: true)
+    
     }
 
     def cleanup() {
     }
-    void "test reversal"() {
+    void 'test reversal'() {
         when:
-            params.sequence = "GK000015.2"
+            params.sequence = 'scf1117875582023'
             params.start = 1000
             params.end = 2000
-            params.description = "inversion"
-            params.organism = "UMD3.1"
-            controller.createReversal()
+            params.description = 'inversion'
+            params.organism = 'pyu'
+            controller.createReversal(params)
             def res = controller.getReversals()
             def map = controller.convertToMap()
         then:
             res.size() == 1
             map.size == 3
-            map[1].sequence.source == "GK000015.2"
+            map[1].sequence.source == 'scf1117875582023'
+    }
+    void 'test badseq'() {
+        when:
+            params.sequence = 'bad sequence'
+            params.start = 1000
+            params.end = 2000
+            params.description = 'inversion'
+            params.organism = 'pyu'
+            def ret = controller.createReversal(params)
+        then:
+            controller.response.status == 500
     }
 }

@@ -9,8 +9,8 @@ class AlternativeLociControllerIntegrationSpec extends IntegrationSpec {
 
     def setup() {
         Organism organism = new Organism(
-                directory: "test/integration/resources/"
-                , commonName: "honeybee"
+                commonName: "UMD3.1",
+                directory: "test/integration/resources/umd31"
         ).save(flush: true)
         new Sequence(
                 start: 0,

@@ -15,5 +15,5 @@ class FastaFile {
     String username
     Date dateCreated
     Date lastUpdated
-    Organism defaultOrganism
+    Organism organism
 }

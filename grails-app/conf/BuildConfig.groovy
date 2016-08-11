@@ -35,15 +35,13 @@ grails.project.dependency.resolution = {
     plugins {
         build ':tomcat:7.0.70'
         build(':release:3.1.0',
-              ':rest-client-builder:2.1.0') {
+              ':rest-client-builder:2.1.0',
+              ':scaffolding:2.1.2',
+              ':shiro:1.2.1') {
             export = false
         }
         compile ':apollo-domain-classes:1.0.10'
         compile ':codenarc:0.25.2'
-        compile ':shiro:1.2.1'
-        compile ':scaffolding:2.1.2'
-
-
         runtime ':redis:1.6.6'
         runtime ':hibernate4:4.3.5.5'
         runtime ':cors:1.3.0'
