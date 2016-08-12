@@ -18,18 +18,21 @@ class FastaFileService {
 
     def readIndexedFastaRegion(String file, String contig, Integer start, Integer end) {
         def indexedFasta = new IndexedFastaSequenceFile(new File(file))
-        def ret = indexedFasta.getSubsequenceAt('scf1117875582023', 0, 100)
-        def str = new String(ret.getBases()).trim()
-        return [forward: str, reverse: new DNASequence(str).getReverseComplement().getSequenceAsString()]
+        def ret = indexedFasta.getSubsequenceAt(contig, start, end)
+        return new String(ret.getBases()).trim()
     }
 
     def readIndexedFastaReverse(String file, String contig) {
-        def str = readIndexedFasta(file, contig)
+        def str = this.readIndexedFasta(file, contig)
         return new DNASequence(str).getReverseComplement().getSequenceAsString()
     }
 
     def readIndexedFastaRegionReverse(String file, String contig, Integer start, Integer end) {
-        def str = readIndexedFastaRegion(file, contig, start, end)
+        def str = this.readIndexedFastaRegion(file, contig, start, end)
         return new DNASequence(str).getReverseComplement().getSequenceAsString()
+    }
+
+    def readSequence(String file, String contig, Integer start, Integer end, Boolean reverse) {
+        return reverse ? this.readIndexedFastaRegionReverse(file, contig, start, end) : this.readIndexedFastaRegion(file, contig, start, end)
     }
 }

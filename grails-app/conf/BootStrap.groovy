@@ -25,14 +25,6 @@ class BootStrap {
                 start: 0,
                 end: 1683196
             ).save(flush: true, failOnError: true)
-            new Sequence(
-                name: 'scf1117875582023',
-                organism: organism,
-                length: 1683196,
-                seqChunkSize: 20000,
-                start: 0,
-                end: 1683196
-            ).save(flush: true, failOnError: true)
             new FastaFile(
                 filename: 'test/integration/resources/pyu_data/scf1117875582023.fa',
                 lastUpdated: new Date(),

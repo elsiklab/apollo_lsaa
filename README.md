@@ -13,41 +13,30 @@ A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loc
 
 This copies the jbrowse plugins into ../../web-app/jbrowse, which would be the location of Apollo in production mode
 
-## Install the jbrowse for testing
+## Bootstrap you data
 
-    scripts/install_dev.sh
-    
-This copies the jbrowse plugins into web-app/jbrowse, which is used in development mode
-
-
-# Tests
-
-## Run tests
-
-    grails test-app
-
-## Run codenarc
-
-    grails codenarc
-
+By default the bootstrapping should be setup for your organism in grails-app/conf/BootStrap.groovy
 
 # Deploy
 
 ## Run in development
 
-To develop the plugin, it is valuable to run the plugin in isolation "like a microservice" separately from the main application
+
+In dev, you can install jbrowse into web-app/jbrowse with this script
+
+    scripts/install_dev.sh
+
+The app can also be run stand-alone without Apollo2
 
     grails run-app -reloading -Dserver.port=8085 --stacktrace
 
-You can then run Apollo on port 8080 or similar
-
 ## Run in production
 
-Run the maven-install target to build and install to the system's local maven cache
+Run this to install to the system's local maven cache
 
     grails refresh-dependencies && grails maven-install
 
-After it is installed to the local maven cache, add this to Apollo's BuildConfig.groovy
+After that, add apollo-lsaa as a dependency Apollo's BuildConfig.groovy
 
     grails.project.dependency.resolution = {
         ...
@@ -58,6 +47,14 @@ After it is installed to the local maven cache, add this to Apollo's BuildConfig
     }
 
 Apollo will then use this plugin declaration and the API's for apollo-lsaa will be setup automatically.
+
+# Tests
+
+## Run tests/lint
+
+    grails test-app
+    grails codenarc
+
 
 # Notes
 

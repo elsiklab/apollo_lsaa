@@ -134,10 +134,12 @@ class FastaFileController {
             notFound()
             return
         }
+
         def success = new File(fastaFile.filename).delete()
-        if(!success) {
+        if (!success) {
             log.warn 'Error deleting file '+fastaFile.filename
-        } 
+        }
+
 
         fastaFile.delete flush:true
 

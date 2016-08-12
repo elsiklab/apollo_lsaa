@@ -29,8 +29,9 @@
         </g:if>
         <div class="container">
             <div class="left">
-                <p><g:link action="getTransformedSequence">Get transformed sequence(JSON)</g:link></p>
+                <p><g:link action="getTransformedJSON">Get transformed sequence (JSON)</g:link></p>
                 <p><g:link action="getTransformedYaml">Get transformed sequence (YAML)</g:link></p>
+                <p><g:link action="getTransformedSequence">Get transformed sequence (FASTA)</g:link></p>
             </div>
         </div>
     </body>
