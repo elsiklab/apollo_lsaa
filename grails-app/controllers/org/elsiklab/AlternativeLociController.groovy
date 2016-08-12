@@ -126,13 +126,13 @@ class AlternativeLociController {
     }
 
     @Transactional
-    def save(AlternativeLoci instance) {
+    def save() {
         def sequence = Sequence.findById(params.name)
         if(sequence) {
             def fastaFile = FastaFile.findById(params.fasta_file)
             if(fastaFile) {
                 def file = new File(fastaFile.filename)
-                if(file) {
+                if(file.isFile()) {
                     String name = UUID.randomUUID()
                     AlternativeLoci alternativeLociInstance = new AlternativeLoci(
                         description: params.description,

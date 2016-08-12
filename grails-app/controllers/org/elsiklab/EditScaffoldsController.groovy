@@ -17,22 +17,12 @@ class EditScaffoldsController {
     }
 
     def generateScaffolds() {
-        new File("${grailsApplication.config.lsaa.appStoreDirectory}/temp.fa").withWriter { temp ->
-            FastaFile.all.each { it ->
-                new File(it.filename).withReader { input ->
-                    temp << input
-                }
-            }
-            def ap = grailsApplication.config.lsaa.appStoreDirectory
+        
+        def ap = grailsApplication.config.lsaa.appStoreDirectory
 
-            new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withWriter { out ->
-                out << "Hello World!"
-            }
+        new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withWriter { out ->
+            out << "Hello World!"
         }
-        redirect(action: 'downloadFasta')
-    }
-
-    def downloadFasta() {
         new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withReader { stream ->
             response.setHeader 'Content-disposition', 'attachment;filename=output.fa'
             response.contentType = 'application/octet-stream'

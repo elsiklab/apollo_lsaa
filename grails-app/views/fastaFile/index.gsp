@@ -92,10 +92,10 @@
                                 ${feature.username}
                             </td>
                             <td>
-                                <g:formatDate format="E dd-MMM-yy" date="${feature.lastUpdated}"/>
+                                <g:formatDate format="E dd-MMM-yy HH:MM" date="${feature.lastUpdated}"/>
                             </td>
                             <td>
-                                <g:formatDate format="E dd-MMM-yy" date="${feature.dateCreated}"/>
+                                <g:formatDate format="E dd-MMM-yy HH:MM" date="${feature.dateCreated}"/>
                             </td>
                         </tr>
                     </g:each>
