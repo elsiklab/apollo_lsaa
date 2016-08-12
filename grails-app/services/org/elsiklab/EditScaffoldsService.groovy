@@ -17,14 +17,14 @@ class EditScaffoldsService {
         def map = []
         def prevstart = 1 
         def fastaFile = FastaFile.findByOrganism(organism)
-        log.debug fastaFile
 
         for(int i = 0; i < list.size(); i++) {
             AlternativeLoci curr = list[i];
             AlternativeLoci next = list[i + 1]; 
+            log.debug "${curr.end_file - curr.start_file}"
             map << [
                 sequence: [
-                    source: curr.name,
+                    source: curr.featureLocation.sequence.name,
                     start: prevstart,
                     stop: curr.featureLocation.fmin - 1,
                     filename: fastaFile.filename,
@@ -33,18 +33,19 @@ class EditScaffoldsService {
             ]   
             map << [
                 sequence: [
-                    source: curr.name,
+                    source: curr.name_file,
                     start: curr.featureLocation.fmin,
                     stop: curr.featureLocation.fmax,
                     reverse: curr.reversed ?: false,
-                    filename: curr.fasta_file.filename
+                    filename: curr.fasta_file.filename,
+                    external: true
                 ]   
             ]   
             map << [
                 sequence: [
-                    source: curr.name,
+                    source: curr.featureLocation.sequence.name,
                     start: curr.featureLocation.fmax + 1,
-                    stop: curr == list.last() ? (curr.end_file - curr.start_file) - 1 : next.featureLocation.fmin,
+                    stop: (i == list.size() - 1) ? (curr.featureLocation.sequence.length) - 1 : next.featureLocation.fmin,
                     filename: fastaFile.filename,
                     reverse: false
                 ]   
@@ -63,7 +64,6 @@ class EditScaffoldsService {
     }
     def getTransformedSequence(def list, def organism) {
         String string = ''
-        log.debug organism
         def ret = this.getTransformations(this.getReversals(), organism)
         log.debug ret
         ret.each { it ->

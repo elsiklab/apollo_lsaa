@@ -38,6 +38,7 @@
                         <g:sortableColumn property="owners" title="Owner" params="${filters}"/>
                         <g:sortableColumn property="cvterm" title="CV Term" params="${filters}"/>
                         <g:sortableColumn property="description" title="Description" params="${filters}"/>
+                        <g:sortableColumn property="reversed" title="Reversed" params="${filters}"/>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,10 +57,11 @@
                                     <a href="${g.createLink(absolute:true, uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
                                 </g:if>
                             </td>
-                            <td>${feature.start_file}..${feature.end_file}</td>
+                            <td>${feature.name_file}:${feature.start_file}..${feature.end_file}</td>
                             <td>${feature.owner?.username}</td>
                             <td>${feature.cvTerm}</td>
                             <td>${feature.description}</td>
+                            <td>${feature.reversed}</td>
                         </tr>
                     </g:each>
                 </tbody>

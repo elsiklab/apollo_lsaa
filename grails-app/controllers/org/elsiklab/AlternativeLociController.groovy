@@ -73,6 +73,7 @@ class AlternativeLociController {
             uniqueName: name,
             start_file: 0,
             end_file: params.sequencedata.length(),
+            name_file: params.name_file,
             fastaFile: fastaFile
         ).save(flush: true)
 
@@ -140,7 +141,9 @@ class AlternativeLociController {
                         uniqueName: name,
                         start_file: params.start_file == "" ? 0 : params.start_file,
                         end_file: params.end_file == "" ? file.length() : params.end_file,
-                        fasta_file: fastaFile
+                        name_file: params.name_file,
+                        fasta_file: fastaFile,
+                        reversed: params.reversed
                     ).save(flush: true, failOnError: true)
 
                     FeatureLocation featureLoc = new FeatureLocation(
@@ -178,14 +181,16 @@ class AlternativeLociController {
             if(fastaFile) {
                 def file = new File(fastaFile.filename)
                 if(file) {
-                    AlternativeLoci altloci = AlternativeLoci.findById(params.name)
+                    AlternativeLoci altloci = AlternativeLoci.findById(params.id)
                     altloci.description = params.description
-                    altloci.start_file = params.start_file ?: 0
-                    altloci.end_file = params.end_file ?: file.length()
+                    altloci.start_file = Integer.parseInt(params.start_file) ?: 0
+                    altloci.end_file = Integer.parseInt(params.end_file) ?: file.length()
+                    altloci.name_file = params.name_file
                     altloci.fasta_file = fastaFile
-                    altloci.featureLocation = params.start
-                    altloci.featureLocation = params.end
+                    altloci.featureLocation.fmin = Integer.parseInt(params.start)
+                    altloci.featureLocation.fmax = Integer.parseInt(params.end)
                     altloci.featureLocation.sequence = sequence
+                    // gives error on save currently
                     altloci.save(flush: true, failOnError: true)
                     redirect(action: 'edit')
                 }

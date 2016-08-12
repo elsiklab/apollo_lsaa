@@ -29,6 +29,11 @@
     <g:select name="fasta_file" required="" value="${alternativeLociInstance?.fasta_file?.originalname}" from="${FastaFile.list()}" optionKey="id" optionValue="originalname" />
     <br />
 
+    <label for="name_file">
+        <g:message code="alternativeLoci.value.name_file" default="Sequence name (if not from reference)" />
+    </label>
+    <g:textField name="name_file" value="${alternativeLociInstance?.name_file}"/>
+    <br />
     <label for="start_file">
         <g:message code="alternativeLoci.value.start_file" default="Start (fasta)" />
     </label>

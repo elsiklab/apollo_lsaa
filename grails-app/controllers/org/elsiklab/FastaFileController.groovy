@@ -6,6 +6,7 @@ import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.io.FileUtils
 import java.text.SimpleDateFormat
+import htsjdk.samtools.reference.FastaSequenceIndex
 
 @Transactional(readOnly = true)
 class FastaFileController {
@@ -56,6 +57,14 @@ class FastaFileController {
             originalname: request.getFile('fastaFile').originalFilename
         ).save(flush: true)
 
+        def sout = new StringBuilder(), serr = new StringBuilder()
+        def proc = ("samtools faidx "+targetFile.absolutePath).execute()
+        proc.consumeProcessOutput(sout, serr)
+        proc.waitForOrKill(1000)
+        if(serr.toString() != "") {
+            log.error serr
+        }
+
         redirect(action: 'index')
     }
     @Transactional
@@ -74,6 +83,14 @@ class FastaFileController {
             lastUpdated: now,
             originalname: 'admin-' + new SimpleDateFormat("E YYMMdd_HHmmss").format(now)
         ).save(flush: true)
+
+        def sout = new StringBuilder(), serr = new StringBuilder()
+        def proc = ("samtools faidx "+targetFile.absolutePath).execute()
+        proc.consumeProcessOutput(sout, serr)
+        proc.waitForOrKill(1000)
+        if(serr.toString() != "") {
+            log.error serr
+        }   
 
         redirect(action: 'index')
     }
