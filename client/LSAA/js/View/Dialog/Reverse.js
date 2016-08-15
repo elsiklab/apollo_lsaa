@@ -22,11 +22,11 @@ function(
 ) {
     return declare(ActionBarDialog, {
         autofocus: false,
-        title: 'Create alternative loci',
+        title: 'Create reversal',
 
         constructor: function(args) {
             this.browser = args.browser;
-            this.setCallback    = args.setCallback || function() {};
+            this.setCallback = args.setCallback || function() {};
             this.cancelCallback = args.cancelCallback || function() {};
             this.contextPath = args.contextPath || '..';
         },
@@ -51,6 +51,7 @@ function(
                             end: thisB.end.get('value'),
                             sequence: thisB.sequence.get('value'),
                             description: thisB.description.get('value')
+                            organism: thisB.browser.config.dataset_id
                         },
                         handleAs: 'json',
                         method: 'post'

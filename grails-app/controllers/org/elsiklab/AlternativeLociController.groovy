@@ -95,6 +95,7 @@ class AlternativeLociController {
     }
 
     def getLoci() {
+        log.debug "here"
         Sequence sequence = Sequence.findByName(params.sequence)
         def features = BiologicalRegion.createCriteria().list {
             featureLocations {

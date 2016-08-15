@@ -51,7 +51,8 @@ function(
                             end: thisB.end.get('value'),
                             sequence: thisB.sequence.get('value'),
                             description: thisB.description.get('value'),
-                            sequencedata: thisB.sequencedata.get('value')
+                            sequencedata: thisB.sequencedata.get('value'),
+                            organism: thisB.browser.config.dataset_id
                         },
                         handleAs: 'json',
                         method: 'post'
