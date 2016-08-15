@@ -8,8 +8,6 @@ import org.bbop.apollo.Organism
 @TestFor(EditScaffoldsController)
 class EditScaffoldsControllerSpec extends IntegrationSpec {
 
-    def editScaffoldsService
-
     def setup() {
         def organism = new Organism(
             commonName: 'pyu',
@@ -59,13 +57,5 @@ class EditScaffoldsControllerSpec extends IntegrationSpec {
         then:
             controller.response.status == 200
             AlternativeLoci.count == 1
-    }
-
-
-    void "test getting reversals"() {
-        when:
-            def map = editScaffoldsService.getTransformedSequence(editScaffoldsService.getReversals(), organism)
-        then:
-            map[0] == [ sequence: [ source: "scf1117875582023", start: 100, stop: 200, reverse: true, filename: "test/integration/resources/pyu_data/scf1117875582023.fa", external: true ] ]
     }
 }
