@@ -66,4 +66,3 @@ redis {
 }
 
 
-grails.resources.work.dir = "grails-app/jbrowse"
