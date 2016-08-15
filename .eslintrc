@@ -4,7 +4,6 @@
     "no-var": 0,
     "no-eval": 0,
     "no-console": 0,
-    "space-in-parens": ["error", "never"],
     "object-shorthand": 0,
     "indent": ["error", 4],
     "max-len": ["error", 220, 4],
