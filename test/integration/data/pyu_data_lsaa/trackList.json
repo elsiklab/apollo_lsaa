@@ -1,0 +1,51 @@
+{
+   "tracks" : [
+      {
+         "seqType" : "dna",
+         "key" : "Reference sequence",
+         "storeClass" : "JBrowse/Store/SeqFeature/REST",
+         "chunkSize" : 20000,
+         "baseUrl" : "../editScaffolds/",
+         "label" : "DNA",
+         "type" : "SequenceTrack",
+         "category" : "Reference sequence"
+      },
+      {
+         "style" : {
+            "className" : "feature"
+         },
+         "key" : "Augustus",
+         "storeClass" : "JBrowse/Store/SeqFeature/NCList",
+         "trackType" : null,
+         "urlTemplate" : "tracks/Augustus/{refseq}/trackData.json",
+         "compress" : 0,
+         "type" : "FeatureTrack",
+         "label" : "Augustus"
+      },
+      {
+         "storeClass" : "JBrowse/Store/SeqFeature/NCList",
+         "urlTemplate" : "tracks/Augustus_canvas/{refseq}/trackData.json",
+         "type" : "CanvasFeatures",
+         "label" : "Augustus_canvas"
+      }
+   ],
+   "names" : {
+      "url" : "names/",
+      "type" : "Hash"
+   },
+   "formatVersion" : 1,
+   "classicMenu": true,
+   "plugins": ["PairedReadViewer", "LSAA"],
+   "bookmarkService": "../alternativeLoci/getLoci",
+   "dataset_id": "pyu_transformed",
+   "datasets": {
+       "pyu": {
+           "name": "Pythium ultimum",
+           "url": "?data=data"
+       },
+       "pyu_transformed": {
+           "name": "Pythium ultimum (lsaa)",
+           "url": "?data=data_transformed"
+       }
+   }
+}
