@@ -92,7 +92,7 @@ function(
             var br = function() { return dom.create('br'); };
 
             this.set('content', [
-                dom.create('p', { innerHTML: 'Provide coordinate and alternate sequences for assembly fix. See the <a href="http://genomes.missouri.edu/help.html">Help Guide</a> for additional information.' }), br(),
+                dom.create('p', { innerHTML: 'Provide coordinate and alternate sequences for assembly fix. See the <a href="../help">help guide</a> for additional information.' }), br(),
                 dom.create('label', { 'for': 'lsaa_name', innerHTML: 'Reference sequence: ' }), this.sequence.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_start', innerHTML: 'Start: ' }), this.start.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_end', innerHTML: 'End: ' }), this.end.domNode, br(),

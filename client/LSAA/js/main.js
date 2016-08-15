@@ -27,7 +27,7 @@ function(
 
             browser.afterMilestone('initView', function() {
                 if (!registry.byId('dropdownmenu_tools')) {
-                    var ret = browser.renderGlobalMenu('tools', { text: 'Tools' }, browser.menuBar);
+                    browser.renderGlobalMenu('tools', { text: 'Tools' }, browser.menuBar);
 
                     browser.addGlobalMenuItem('tools', new MenuItem({
                         label: 'LSAA - annotate correction',

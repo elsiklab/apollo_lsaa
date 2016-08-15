@@ -10,7 +10,10 @@
             height: 400px
         }
         .container {
-            display: flex;
+            margin-left: 20px;
+        }
+        .header {
+            padding: 20px;
         }
         .left {
             flex: 1;
@@ -22,12 +25,13 @@
     </head>
     <body>
     <g:render template="../layouts/reportHeader"/>
-        <h3>Scaffold editor</h3>
-        <p>Use the scaffolder syntax to edit the genome arrangement</p>
-        <g:if test="${error}">
-            <div class="message" role="status">${error}</div>
-        </g:if>
+        <h3 class="header">Scaffold editor</h3>
+        
         <div class="container">
+            <g:if test="${error}">
+                <div class="message" role="status">${error}</div>
+            </g:if>
+            <p>Use the scaffolder syntax to edit the genome arrangement</p>
             <div class="left">
                 <p><g:link action="getTransformedJSON">Get transformed sequence (JSON)</g:link></p>
                 <p><g:link action="getTransformedYaml">Get transformed sequence (YAML)</g:link></p>

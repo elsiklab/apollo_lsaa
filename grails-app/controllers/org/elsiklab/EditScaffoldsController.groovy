@@ -124,17 +124,17 @@ class EditScaffoldsController {
     }
 
     def getTransformedYaml() {
-        def map = editScaffoldsService.getTransformations(editScaffoldsService.getReversals(), Organism.findByCommonName('pyu'))
+        def map = editScaffoldsService.getTransformations(Organism.findByCommonName('pyu'))
         render text: Yaml.dump(map)
     }
 
     def getTransformedJSON() {
-        def map = editScaffoldsService.getTransformations(editScaffoldsService.getReversals(), Organism.findByCommonName('pyu'))
+        def map = editScaffoldsService.getTransformations(Organism.findByCommonName('pyu'))
         render text: map as JSON
     }
 
     def getTransformedSequence() {
-        def map = editScaffoldsService.getTransformedSequence(editScaffoldsService.getReversals(), Organism.findByCommonName('pyu'))
+        def map = editScaffoldsService.getTransformedSequence(Organism.findByCommonName('pyu'))
         render text: map
     }
 }

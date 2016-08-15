@@ -13,15 +13,15 @@ class EditScaffoldsService {
 
     }
 
-    def getTransformations(def list, def organism) {
+    def getTransformations(def organism) {
         def map = []
         def prevstart = 1 
         def fastaFile = FastaFile.findByOrganism(organism)
+        def list = this.getAltLoci(organism)
 
         for(int i = 0; i < list.size(); i++) {
             AlternativeLoci curr = list[i];
             AlternativeLoci next = list[i + 1]; 
-            log.debug "${curr.end_file - curr.start_file}"
             map << [
                 sequence: [
                     source: curr.featureLocation.sequence.name,
@@ -54,21 +54,24 @@ class EditScaffoldsService {
         return map
     }
 
-    def getReversals() {
+    def getAltLoci(def organism) {
         return AlternativeLoci.createCriteria().list {
             featureLocations {
                 order('fmin', 'ascending')
+                sequence {
+                    eq('organism', organism)
+                }
             }
         }
     }
+
     def getTransformedSequence(def list, def organism) {
         String string = ''
-        def ret = this.getTransformations(this.getReversals(), organism)
+        def ret = this.getTransformations(organism)
         log.debug ret
         ret.each { it ->
             string += fastaFileService.readSequence(it.sequence.filename, it.sequence.source, it.sequence.start, it.sequence.stop, it.sequence.reverse)
         }
         return string
     }
-
 }
