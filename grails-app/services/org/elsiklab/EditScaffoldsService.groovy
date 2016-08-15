@@ -37,8 +37,7 @@ class EditScaffoldsService {
                     start: curr.featureLocation.fmin,
                     stop: curr.featureLocation.fmax,
                     reverse: curr.reversed ?: false,
-                    filename: curr.fasta_file.filename,
-                    external: true
+                    filename: curr.fasta_file.filename
                 ]   
             ]   
             map << [

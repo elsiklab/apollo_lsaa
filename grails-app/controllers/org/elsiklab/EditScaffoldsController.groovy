@@ -77,15 +77,9 @@ class EditScaffoldsController {
     def createCorrection() {
         String name = UUID.randomUUID()
         Organism organism = Sequence.findByNameAndOrganism(params.organism)
-        if(!organism) {
-            render text: ([error: 'No organism found'] as JSON), status: 500
-        }
-        else {
+        if(organism) {
             Sequence seq = Sequence.findByNameAndOrganism(params.sequence, organism)
-            if(!seq) {
-                render text: ([error: 'No sequence found'] as JSON), status: 500
-            }
-            else {
+            if(seq) {
                 def file = File.createTempFile('fasta', null, new File(grailsApplication.config.lsaa.appStoreDirectory))
                 file.withWriter { temp ->
                     filename = temp.absolutePath
@@ -120,6 +114,12 @@ class EditScaffoldsController {
 
                 render ([success: true] as JSON)
             }
+            else {
+                render text: ([error: 'No sequence found'] as JSON), status: 500
+            }
+        }
+        else {
+            render text: ([error: 'No organism found'] as JSON), status: 500
         }
     }
 
@@ -135,7 +135,6 @@ class EditScaffoldsController {
 
     def getTransformedSequence() {
         def map = editScaffoldsService.getTransformedSequence(editScaffoldsService.getReversals(), Organism.findByCommonName('pyu'))
-        log.debug map
         render text: map
     }
 }

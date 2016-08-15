@@ -6,7 +6,6 @@ import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.io.FileUtils
 import java.text.SimpleDateFormat
-import htsjdk.samtools.reference.FastaSequenceIndex
 
 @Transactional(readOnly = true)
 class FastaFileController {
@@ -31,7 +30,7 @@ class FastaFileController {
             }
             else if(params.sort == 'organism') {
                 organism {
-                    order ('commonName',params.order)
+                    order ('commonName', params.order)
                 }
             }
         }
@@ -58,10 +57,10 @@ class FastaFileController {
         ).save(flush: true)
 
         def sout = new StringBuilder(), serr = new StringBuilder()
-        def proc = ("samtools faidx "+targetFile.absolutePath).execute()
+        def proc = ('samtools faidx ' + targetFile.absolutePath).execute()
         proc.consumeProcessOutput(sout, serr)
         proc.waitForOrKill(1000)
-        if(serr.toString() != "") {
+        if(serr.toString() != '') {
             log.error serr
         }
 
@@ -81,16 +80,16 @@ class FastaFileController {
             username: 'admin',
             dateCreated: now,
             lastUpdated: now,
-            originalname: 'admin-' + new SimpleDateFormat("E YYMMdd_HHmmss").format(now)
+            originalname: 'admin-' + new SimpleDateFormat('E YYMMdd_HHmmss').format(now)
         ).save(flush: true)
 
         def sout = new StringBuilder(), serr = new StringBuilder()
-        def proc = ("samtools faidx "+targetFile.absolutePath).execute()
+        def proc = ('samtools faidx ' + targetFile.absolutePath).execute()
         proc.consumeProcessOutput(sout, serr)
         proc.waitForOrKill(1000)
-        if(serr.toString() != "") {
+        if(serr.toString() != '') {
             log.error serr
-        }   
+        }
 
         redirect(action: 'index')
     }
@@ -103,7 +102,7 @@ class FastaFileController {
         }
 
         if (fastaFile.hasErrors()) {
-            respond fastaFile.errors, view:'create'
+            respond fastaFile.errors, view: 'create'
             return
         }
 
@@ -130,7 +129,7 @@ class FastaFileController {
         }
 
         if (fastaFile.hasErrors()) {
-            respond fastaFile.errors, view:'edit'
+            respond fastaFile.errors, view: 'edit'
             return
         }
 
@@ -154,7 +153,7 @@ class FastaFileController {
 
         def success = new File(fastaFile.filename).delete()
         if (!success) {
-            log.warn 'Error deleting file '+fastaFile.filename
+            log.warn 'Error deleting file ' + fastaFile.filename
         }
 
 
