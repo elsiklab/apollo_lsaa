@@ -1,0 +1,8 @@
+# Bos taurus chromosome MT, Bos_taurus_UMD_3.1.1 non-nuclear
+#
+# This file provides assembly instructions for sequence NC_006853.1
+# included in assembly GCF_000003055.6
+##agp-version 2.0
+# Format: object object_beg object_end part_number component_type component_id component_beg component_end  orientation
+#   Gaps: object object_beg object_end part_number     N          gap_length   gap_type      linkage        evidence
+chrMT	1	16338	1	O	NC_006853.1	1	16338	+
