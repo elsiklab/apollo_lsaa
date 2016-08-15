@@ -13,7 +13,6 @@ import org.bbop.apollo.OrganismProperty
 import org.bbop.apollo.User
 import org.apache.shiro.SecurityUtils
 
-
 class AlternativeLociController {
 
     def permissionService
@@ -94,7 +93,6 @@ class AlternativeLociController {
 
         render ([success: 'create loci success'] as JSON)
     }
-
 
     def getLoci() {
         Sequence sequence = Sequence.findByName(params.sequence)
@@ -218,8 +216,6 @@ class AlternativeLociController {
 
         redirect(action: 'index')
     }
-
-
 
     protected void notFound() {
         request.withFormat {
