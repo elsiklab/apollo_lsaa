@@ -35,5 +35,12 @@
    },
    "formatVersion" : 1,
    "classicMenu": true,
-   "plugins": ["PairedReadViewer", "LSAA"]
+   "plugins": ["PairedReadViewer", "LSAA"],
+   "bookmarkService": "../alternativeLoci/getLoci",
+   "dataset_id": "pyu",
+   "datasets": {
+       "pyu": {
+           "name": "Pythium ultimum"
+       }
+   }
 }

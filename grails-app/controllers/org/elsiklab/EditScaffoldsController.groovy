@@ -44,10 +44,10 @@ class EditScaffoldsController {
                         uniqueName: name,
                         description: params.description,
                         reversed: true,
-                        start_file: 0,
-                        end_file: new File(fastaFile.filename).length(),
+                        start_file: params.start,
+                        end_file: params.end,
                         fasta_file: fastaFile,
-                        name_file: fastaFile.filename
+                        name_file: seq.name
                     ).save(flush: true, failOnError: true)
 
                     FeatureLocation featureLoc = new FeatureLocation(

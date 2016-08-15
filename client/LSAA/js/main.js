@@ -33,7 +33,7 @@ function(
                         label: 'LSAA - annotate correction',
                         iconClass: 'dijitIconBookmark',
                         onClick: function() {
-                            new LSAADialog({ browser: this.browser, contextPath: this.contextPath }).show();
+                            new LSAADialog({ browser: thisB.browser, contextPath: thisB.contextPath }).show();
                         }
                     }));
 
@@ -41,7 +41,7 @@ function(
                         label: 'LSAA - annotate inversion',
                         iconClass: 'dijitIconUndo',
                         onClick: function() {
-                            new ReverseDialog({ browser: this.browser, contextPath: this.contextPath }).show();
+                            new ReverseDialog({ browser: thisB.browser, contextPath: thisB.contextPath }).show();
                         }
                     }));
                     browser.addGlobalMenuItem('tools', new MenuItem({

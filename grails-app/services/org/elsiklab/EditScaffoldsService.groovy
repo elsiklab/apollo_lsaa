@@ -65,7 +65,7 @@ class EditScaffoldsService {
         }
     }
 
-    def getTransformedSequence(def list, def organism) {
+    def getTransformedSequence(def organism) {
         String string = ''
         def ret = this.getTransformations(organism)
         log.debug ret

@@ -50,7 +50,7 @@ function(
                             start: thisB.start.get('value'),
                             end: thisB.end.get('value'),
                             sequence: thisB.sequence.get('value'),
-                            description: thisB.description.get('value')
+                            description: thisB.description.get('value'),
                             organism: thisB.browser.config.dataset_id
                         },
                         handleAs: 'json',
