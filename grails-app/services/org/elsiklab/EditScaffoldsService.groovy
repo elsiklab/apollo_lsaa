@@ -70,7 +70,6 @@ class EditScaffoldsService {
     def getTransformedSequence(def organism) {
         String string = ''
         def ret = this.getTransformations(organism)
-        log.debug ret
         ret.each { it ->
             string += fastaFileService.readSequence(it.sequence.filename, it.sequence.source, it.sequence.start, it.sequence.stop, it.sequence.reverse)
         }

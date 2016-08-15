@@ -137,4 +137,11 @@ class EditScaffoldsController {
         def map = editScaffoldsService.getTransformedSequence(Organism.findByCommonName('pyu'))
         render text: map
     }
+
+    def features() {
+        def map = editScaffoldsService.getTransformedSequence(Organism.findByCommonName('pyu'))
+        def start = Integer.parseInt(params.start) >= 0 ? Integer.parseInt(params.start) : 0
+        def end = Integer.parseInt(params.end)
+        render ([features: [[seq: map.substring(start, end), start: start, end: end]]] as JSON)
+    }
 }
