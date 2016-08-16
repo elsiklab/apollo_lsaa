@@ -60,6 +60,7 @@ function(
                         thisB.browser.clearHighlight();
                         thisB.browser.view.redrawRegion(new Location(thisB.sequence.get('value') + ':' + thisB.start.get('value') + '..' + thisB.end.get('value')));
                     }, function(error) {
+                        thisB.error.innerHTML = error;
                         console.error(error);
                     });
                 }
@@ -88,6 +89,7 @@ function(
             this.start = new TextBox({id: 'lsaa_start'});
             this.end = new TextBox({id: 'lsaa_end'});
             this.description = new TextBox({id: 'lsaa_description'});
+            this.error = dom.create('div', { 'id': 'error', 'class': 'errormsg' });
             var br = function() { return dom.create('br'); };
 
             this.set('content', [
@@ -96,7 +98,8 @@ function(
                 dom.create('label', { 'for': 'lsaa_name', innerHTML: 'Reference sequence: ' }), this.sequence.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_start', innerHTML: 'Start: ' }), this.start.domNode, br(),
                 dom.create('label', { 'for': 'lsaa_end', innerHTML: 'End: ' }), this.end.domNode, br(),
-                dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Description: ' }), this.description.domNode, br()
+                dom.create('label', { 'for': 'lsaa_descritpion', innerHTML: 'Description: ' }), this.description.domNode, br(),
+                this.error, br()
             ]);
 
             this.inherited(arguments);
