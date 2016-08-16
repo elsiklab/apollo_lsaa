@@ -7,10 +7,7 @@ class UrlMappings {
             }
         }
 
-        "/" {
-            controller = "alternativeLoci"
-            action = "index"
-        }
+        "/"(view:"/index")
         "500"(view:'/error')
 	}
 }
