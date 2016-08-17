@@ -1,6 +1,6 @@
 // configuration for plugin testing - will not be included in the plugin zip
 grails.config.locations = [
-        "file:src/groovy/${appName}-config.groovy"        // dev only
+        "file:src/java/${appName}-config.groovy"        // dev only
         , "classpath:${appName}-config.groovy"    // for production deployment
         , "classpath:${appName}-config.properties"
 ]
