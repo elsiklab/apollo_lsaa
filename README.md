@@ -7,9 +7,17 @@ A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loc
 
 # Setup
 
-## Bootstrap you data
+## Configuration
 
 By default the bootstrapping should be setup for your organism in grails-app/conf/BootStrap.groovy
+
+The configuration of the database can be setup in src/java/apollo-lsaa-groovy.config (if running apollo-lsaa standalone) or from apollo-config.groovy (if using apollo-lsaa as an Apollo plugin)
+
+## Domain classes
+
+Note: we are currently using the apollo-domain-classes plugin from https://github.com/elsiklab/apollo_domain_classes
+
+Follow setup steps for apollo-domain-classes before installing apollo-lsaa (if apollo-domain-classes is accepted on grails plugin central, this is not necessary)
 
 ## Run in development
 
@@ -54,11 +62,5 @@ This copies the jbrowse plugins into ../../web-app/jbrowse, which would be the l
 
     grails test-app
     grails codenarc
-
-
-# Notes
-
-Note: we are currently using the "apollo-domain-classes" modification from https://github.com/GMOD/Apollo/pull/962
-
 
 
