@@ -25,12 +25,12 @@ grails.project.dependency.resolution = {
         mavenCentral()
     }
     dependencies {
-        compile 'com.github.samtools:htsjdk:jar:2.6.0'
-        compile 'org.biojava:biojava-core:4.2.4'
         compile group: 'org.jyaml', name: 'jyaml', version: '1.3'
         compile group: 'commons-io', name: 'commons-io', version: '2.5'
         compile group: 'com.h2database', name: 'h2', version: '1.4.192'
         compile group: 'org.postgresql', name: 'postgresql', version: '9.4.1209'
+        compile group: 'com.github.samtools', name: 'htsjdk', version: '2.6.0'
+        compile group: 'org.biojava', name: 'biojava-core', version: '4.2.4'
     }
 
     plugins {
