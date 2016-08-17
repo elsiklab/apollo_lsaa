@@ -1,10 +1,10 @@
 #!/bin/bash
 
 cd web-app
-git clone --depth 1 https://github.com/gmod/jbrowse
-cd jbrowse
-bower install
-cd ../../
+wget --quiet jbrowse.org/releases/JBrowse-1.12.1.zip
+unzip JBrowse-1.12.1.zip
+mv JBrowse-1.12.1 jbrowse
+cd -
 rm -rf web-app/jbrowse/data
 rm -rf web-app/jbrowse/data_transformed
 cp -R test/integration/data/pyu_data web-app/jbrowse/data

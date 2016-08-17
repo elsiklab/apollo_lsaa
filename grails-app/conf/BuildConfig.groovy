@@ -45,7 +45,7 @@ grails.project.dependency.resolution = {
         compile ':apollo-domain-classes:1.0.10'
         runtime ':hibernate4:4.3.5.5'
         runtime ':cors:1.3.0'
-        compile ':asset-pipeline:2.8.0'
+        compile ':asset-pipeline:2.11.0'
     }
 }
 

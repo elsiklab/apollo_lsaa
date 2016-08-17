@@ -27,6 +27,12 @@
          "urlTemplate" : "tracks/Augustus_canvas/{refseq}/trackData.json",
          "type" : "CanvasFeatures",
          "label" : "Augustus_canvas"
+      },  
+      {   
+          "storeClass": "JBrowse/Store/SeqFeature/REST",
+          "baseUrl": "../altLociTrack/",
+          "type": "CanvasFeatures",
+          "label": "LSAA_annotations"
       }
    ],
    "names" : {
@@ -36,7 +42,6 @@
    "formatVersion" : 1,
    "classicMenu": true,
    "plugins": ["PairedReadViewer", "LSAA"],
-   "bookmarkService": "../alternativeLoci/getLoci",
    "dataset_id": "pyu_transformed",
    "datasets": {
        "pyu": {

@@ -94,27 +94,6 @@ class AlternativeLociController {
         render ([success: 'create loci success'] as JSON)
     }
 
-    def getLoci() {
-        Sequence sequence = Sequence.findByName(params.sequence)
-        def features = BiologicalRegion.createCriteria().list {
-            featureLocations {
-                eq('sequence', sequence)
-            }
-            'eq'('class', AlternativeLoci.class.name)
-        }
-        JsonBuilder json = new JsonBuilder ()
-        json.features features, { it ->
-            start it.featureLocation.fmin
-            id it.uniqueName
-            end it.featureLocation.fmax
-            ref it.featureLocation.sequence.name
-            description it.description
-            color 'rgba(50,50,190,0.2)'
-            seqName it.uniqueName
-        }
-
-        render json.toString()
-    }
 
     def show(AlternativeLoci alternativeLociInstance) {
         respond alternativeLociInstance

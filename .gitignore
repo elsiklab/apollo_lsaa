@@ -9,3 +9,4 @@ hs_err*.log
 node_modules
 src/groovy/apollo-lsaa-config.groovy
 web-app/jbrowse
+web-app/JBrowse-1.12.1.zip
