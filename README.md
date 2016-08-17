@@ -5,19 +5,11 @@
 A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loci (locus specific alternate assemblies)
 
 
-# Installation
-
-## Install client plugin to root apollo
-    
-    scripts/copy_client.sh
-
-This copies the jbrowse plugins into ../../web-app/jbrowse, which would be the location of Apollo in production mode
+# Setup
 
 ## Bootstrap you data
 
 By default the bootstrapping should be setup for your organism in grails-app/conf/BootStrap.groovy
-
-# Deploy
 
 ## Run in development
 
@@ -26,27 +18,35 @@ In dev, you can install jbrowse into web-app/jbrowse with this script
 
     scripts/install_dev.sh
 
-The app can also be run stand-alone without Apollo2
+The app can also be run as a stand-alone app without running Apollo2 proper
 
-    grails run-app -reloading -Dserver.port=8085 --stacktrace
+    grails run-app
+
+If something is on port 8080 use `grails run-app -Dserver.port=8085` instead
 
 ## Run in production
 
-Run this to install to the system's local maven cache
+Install the plugin to your maven cache
 
-    grails refresh-dependencies && grails maven-install
+    grails refresh-dependencies
+    grails maven-install
 
-After that, add apollo-lsaa as a dependency Apollo's BuildConfig.groovy
+After that, add the plugin to Apollo's BuildConfig.groovy
 
     grails.project.dependency.resolution = {
         ...
         plugins {
             compile ":apollo-domain-classes:1.0.10"
-            compile ":apollo-lsaa:1.0.3"
+            compile ":apollo-lsaa:1.0.4"
         }
     }
 
-Apollo will then use this plugin declaration and the API's for apollo-lsaa will be setup automatically.
+Apollo will then use this plugin for apollo-lsaa automatically. The plugins can be installed using
+
+    scripts/copy_client.sh
+
+This copies the jbrowse plugins into ../../web-app/jbrowse, which would be the location of Apollo in production mode
+
 
 # Tests
 
@@ -59,5 +59,6 @@ Apollo will then use this plugin declaration and the API's for apollo-lsaa will 
 # Notes
 
 Note: we are currently using the "apollo-domain-classes" modification from https://github.com/GMOD/Apollo/pull/962
+
 
 
