@@ -51,6 +51,11 @@ function(
                             window.open(thisB.contextPath + '/alternativeLoci');
                         }
                     }));
+                    this.browser.afterMilestone('initView', function() {
+                        var toolsMenu = dijit.byId('dropdownbutton_lsaa');
+                        var helpMenu = dijit.byId('dropdownbutton_help');
+                        domConstruct.place(toolsMenu.domNode, helpMenu.domNode, 'before');
+                    }); 
                 }
             });
         }
