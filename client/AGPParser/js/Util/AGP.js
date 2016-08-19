@@ -6,12 +6,12 @@ function(
     array,
     lang
 ) {
-    var agp_field_names = 'seq_id start end part_number component_type gap_length gap_type linkage linkage_evidence'.split(' ');
+    var fieldNames = 'seq_id start end part_number component_type gap_length gap_type linkage linkage_evidence'.split(' ');
 
     return {
 
-        parse_feature: function( line ) {
-            line = line.replace(/(\r\n|\n|\r)/gm,"");
+        parse_feature: function( pline ) {
+            var line = pline.replace(/(\r\n|\n|\r)/gm, '');
             var f = array.map( line.split('\t'), function(a) {
                 if ( a == '.' ) {
                     return null;
@@ -24,8 +24,8 @@ function(
             f[1] = this.unescape( f[1] );
 
             var parsed = {};
-            for ( var i = 0; i < agp_field_names.length; i++ ) {
-                parsed[ agp_field_names[i] ] = f[i] == '.' ? null : f[i];
+            for ( var i = 0; i < fieldNames.length; i++ ) {
+                parsed[ fieldNames[i] ] = f[i] == '.' ? null : f[i];
             }
             if ( parsed.start !== null ) {
                 parsed.start = parseInt( parsed.start, 10 );
@@ -80,7 +80,7 @@ function(
             var translate_strand = ['-', '.', '+'];
             var fields = [];
             for ( var i = 0; i < 8; i++ ) {
-                var val = f[ agp_field_names[i] ];
+                var val = f[ fieldNames[i] ];
                 if (i == 6) {
                     fields[i] = val === null || val === undefined ? '.' : translate_strand[val + 1];
                 }

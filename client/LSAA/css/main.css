@@ -26,3 +26,8 @@
 .global_highlight_mod {
     cursor: pointer;
 }
+
+.errormsg {
+    padding: 20px;
+    color: red;
+}

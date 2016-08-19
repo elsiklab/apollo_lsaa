@@ -40,36 +40,36 @@ function(
             var featuresSorted = true;
             var seenRefs = this.refSeqs = {};
             var parser = new Parser({
-                    featureCallback: function(fs) {
-                        array.forEach( fs, function( feature ) {
-                            var prevFeature = features[ features.length - 1 ];
-                            var regRefName = thisB.browser.regularizeReferenceName( feature.seq_id );
-                            if ( regRefName in seenRefs && prevFeature && prevFeature.seq_id != feature.seq_id )
-                                featuresSorted = false;
-                            if ( prevFeature && prevFeature.seq_id == feature.seq_id && feature.start < prevFeature.start )
-                                featuresSorted = false;
+                featureCallback: function(fs) {
+                    array.forEach( fs, function( feature ) {
+                        var prevFeature = features[ features.length - 1 ];
+                        var regRefName = thisB.browser.regularizeReferenceName( feature.seq_id );
+                        if ( regRefName in seenRefs && prevFeature && prevFeature.seq_id != feature.seq_id )
+                            featuresSorted = false;
+                        if ( prevFeature && prevFeature.seq_id == feature.seq_id && feature.start < prevFeature.start )
+                            featuresSorted = false;
 
-                            if ( !( regRefName in seenRefs ))
-                                seenRefs[ regRefName ] = features.length;
+                        if ( !( regRefName in seenRefs ))
+                            seenRefs[ regRefName ] = features.length;
 
-                            features.push( feature );
-                        });
-                    },
-                    endCallback: function()  {
-                        if ( !featuresSorted ) {
-                            features.sort( thisB._compareFeatureData );
-                            thisB._rebuildRefSeqs( features );
-                        }
+                        features.push( feature );
+                    });
+                },
+                endCallback: function()  {
+                    if ( !featuresSorted ) {
+                        features.sort( thisB._compareFeatureData );
+                        thisB._rebuildRefSeqs( features );
+                    }
 
-                        thisB._estimateGlobalStats()
+                    thisB._estimateGlobalStats()
                          .then( function( stats ) {
                              thisB.globalStats = stats;
                              thisB._deferred.stats.resolve();
                          });
 
-                        thisB._deferred.features.resolve( features );
-                    }
-                });
+                    thisB._deferred.features.resolve( features );
+                }
+            });
             var fail = lang.hitch( this, '_failAllDeferred' );
             this.data.fetchLines(
                 function( line ) {
@@ -131,9 +131,9 @@ function(
             for ( ; i < bare.length; i++ ) {
                 var f = converted[i] ||
                 ( converted[i] = function(b, i) {
-                        bare[i] = false;
-                        return this._formatFeature( b );
-                    }.call( this, bare[i], i )
+                    bare[i] = false;
+                    return this._formatFeature( b );
+                }.call( this, bare[i], i )
                 );
                 if ( f._reg_seq_id != refName || f.get('start') > query.end )
                     break;

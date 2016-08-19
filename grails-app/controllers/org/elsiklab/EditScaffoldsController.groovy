@@ -128,12 +128,12 @@ class EditScaffoldsController {
         render text: Yaml.dump(map)
     }
 
-    def getTransformedJSON() {
+    def getTransformedJSON(Organism organism) {
         def map = editScaffoldsService.getTransformations(organism)
         render text: map as JSON
     }
 
-    def getTransformedSequence() {
+    def getTransformedSequence(Organism organism) {
         def map = editScaffoldsService.getTransformedSequence(organism)
         render text: map
     }

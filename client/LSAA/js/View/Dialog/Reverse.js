@@ -60,7 +60,7 @@ function(
                         thisB.browser.clearHighlight();
                         thisB.browser.view.redrawRegion(new Location(thisB.sequence.get('value') + ':' + thisB.start.get('value') + '..' + thisB.end.get('value')));
                     }, function(error) {
-                        thisB.error.innerHTML = error;
+                        thisB.error.innerHTML = error.message + '<br>' + ((error.response || {}).data || {}).error;
                         console.error(error);
                     });
                 }
