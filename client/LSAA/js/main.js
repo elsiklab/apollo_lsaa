@@ -26,33 +26,31 @@ function(
             this.contextPath = browser.config.contextPath || '..';
 
             browser.afterMilestone('initView', function() {
-                if (!registry.byId('dropdownmenu_tools')) {
-                    browser.renderGlobalMenu('tools', { text: 'Tools' }, browser.menuBar);
+                if (!registry.byId('dropdownmenu_lsaa')) {
+                    browser.renderGlobalMenu('lsaa', { text: 'LSAA' }, browser.menuBar);
 
-                    browser.addGlobalMenuItem('tools', new MenuItem({
-                        label: 'LSAA - annotate correction',
+                    browser.addGlobalMenuItem('lsaa', new MenuItem({
+                        label: 'Annotate correction',
                         iconClass: 'dijitIconBookmark',
                         onClick: function() {
                             new LSAADialog({ browser: thisB.browser, contextPath: thisB.contextPath }).show();
                         }
                     }));
 
-                    browser.addGlobalMenuItem('tools', new MenuItem({
-                        label: 'LSAA - annotate inversion',
+                    browser.addGlobalMenuItem('lsaa', new MenuItem({
+                        label: 'Annotate inversion',
                         iconClass: 'dijitIconUndo',
                         onClick: function() {
                             new ReverseDialog({ browser: thisB.browser, contextPath: thisB.contextPath }).show();
                         }
                     }));
-                    browser.addGlobalMenuItem('tools', new MenuItem({
-                        label: 'LSAA - View report',
+                    browser.addGlobalMenuItem('lsaa', new MenuItem({
+                        label: 'View report',
                         iconClass: 'dijitIconTable',
                         onClick: function() {
                             window.open(thisB.contextPath + '/alternativeLoci');
                         }
                     }));
-
-                    browser.addGlobalMenuItem('tools', new MenuSeparator());
                 }
             });
         }
