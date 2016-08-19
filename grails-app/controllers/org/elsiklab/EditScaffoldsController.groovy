@@ -123,25 +123,20 @@ class EditScaffoldsController {
         }
     }
 
-    def getTransformedYaml() {
-        def map = editScaffoldsService.getTransformations(Organism.findByCommonName('pyu'))
+    def getTransformedYaml(Organism organism) {
+        def map = editScaffoldsService.getTransformations(organism)
         render text: Yaml.dump(map)
     }
 
     def getTransformedJSON() {
-        def map = editScaffoldsService.getTransformations(Organism.findByCommonName('pyu'))
+        def map = editScaffoldsService.getTransformations(organism)
         render text: map as JSON
     }
 
     def getTransformedSequence() {
-        def map = editScaffoldsService.getTransformedSequence(Organism.findByCommonName('pyu'))
+        def map = editScaffoldsService.getTransformedSequence(organism)
         render text: map
     }
 
-    def features() {
-        def map = editScaffoldsService.getTransformedSequence(Organism.findByCommonName('pyu'))
-        def start = Integer.parseInt(params.start) >= 0 ? Integer.parseInt(params.start) : 0
-        def end = Integer.parseInt(params.end)
-        render ([features: [[seq: map.substring(start, end), start: start, end: end]]] as JSON)
-    }
+    
 }

@@ -15,13 +15,12 @@ class AltLociTrackController {
         }
         JsonBuilder json = new JsonBuilder ()
         json.features features, { it ->
-            start it.featureLocation.fmin
             uniqueID it.uniqueName
+            start it.featureLocation.fmin
             end it.featureLocation.fmax
             ref it.featureLocation.sequence.name
             description it.description
             color 'rgba(50,50,190,0.2)'
-            seqName it.uniqueName
         }
 
         render json.toString()
