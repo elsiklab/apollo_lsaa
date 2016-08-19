@@ -2,7 +2,6 @@ package org.elsiklab
 
 import static org.springframework.http.HttpStatus.*
 
-import groovy.json.JsonBuilder
 import grails.converters.JSON
 import grails.util.Environment
 import grails.transaction.Transactional
@@ -94,7 +93,6 @@ class AlternativeLociController {
         render ([success: 'create loci success'] as JSON)
     }
 
-
     def show(AlternativeLoci alternativeLociInstance) {
         respond alternativeLociInstance
     }
@@ -116,8 +114,8 @@ class AlternativeLociController {
                         description: params.description,
                         name: name,
                         uniqueName: name,
-                        start_file: params.start_file == "" ? 0 : params.start_file,
-                        end_file: params.end_file == "" ? file.length() : params.end_file,
+                        start_file: params.start_file == '' ? 0 : params.start_file,
+                        end_file: params.end_file == '' ? file.length() : params.end_file,
                         name_file: params.name_file,
                         fasta_file: fastaFile,
                         reversed: params.reversed
@@ -158,17 +156,16 @@ class AlternativeLociController {
             if(fastaFile) {
                 def file = new File(fastaFile.filename)
                 if(file) {
-                    AlternativeLoci altloci = AlternativeLoci.findById(params.id)
-                    altloci.description = params.description
-                    altloci.start_file = Integer.parseInt(params.start_file) ?: 0
-                    altloci.end_file = Integer.parseInt(params.end_file) ?: file.length()
-                    altloci.name_file = params.name_file
-                    altloci.fasta_file = fastaFile
-                    altloci.featureLocation.fmin = Integer.parseInt(params.start)
-                    altloci.featureLocation.fmax = Integer.parseInt(params.end)
-                    altloci.featureLocation.sequence = sequence
+                    instance.description = params.description
+                    instance.start_file = Integer.parseInt(params.start_file) ?: 0
+                    instance.end_file = Integer.parseInt(params.end_file) ?: file.length()
+                    instance.name_file = params.name_file
+                    instance.fasta_file = fastaFile
+                    instance.featureLocation.fmin = Integer.parseInt(params.start)
+                    instance.featureLocation.fmax = Integer.parseInt(params.end)
+                    instance.featureLocation.sequence = sequence
                     // gives error on save currently
-                    altloci.save(flush: true, failOnError: true)
+                    instance.save(flush: true, failOnError: true)
                     redirect(action: 'edit')
                 }
                 else {

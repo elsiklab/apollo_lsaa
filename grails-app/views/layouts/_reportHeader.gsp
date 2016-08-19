@@ -35,7 +35,7 @@
                     <g:link controller="alternativeLoci" action="index">Alternative loci</g:link>
                 </li>
                 <li>
-                    <a href="${g.createLink(absolute:true, base: 'jbrowse/')}">JBrowse</a>
+                    <a href="${g.createLink(url: 'jbrowse/')}">JBrowse</a>
                 </li>
             </ul>
         </div>
