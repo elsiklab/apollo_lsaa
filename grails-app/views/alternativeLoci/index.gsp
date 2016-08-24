@@ -51,7 +51,7 @@
                             <td>${feature.featureLocation?.sequence?.name}:${feature.featureLocation.fmin}..${feature.featureLocation.fmax}</td>
                             <td>
                                 <g:if env="development">
-                                    <a href="${g.createLink(absolute:true, base: 'jbrowse/', uri: '?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
+                                    <a href="${g.createLink(relativeUri: '../jbrowse/?loc=' + feature.featureLocation?.sequence?.name + ':' + feature.featureLocation.fmin + '..' + feature.featureLocation.fmax + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
                                 </g:if>
                                 <g:if env="production">
                                     <a href="${g.createLink(absolute:true, uri: '/' + feature.featureLocation.sequence.organism.commonName+'/jbrowse/?loc=' + feature.name + '&organism='+feature.featureLocation.sequence.organism.id)}">alt locus</a>
