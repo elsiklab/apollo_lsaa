@@ -8,6 +8,7 @@ A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loc
 
 Grails 2.5.5
 Java 8
+Samtools installed globally
 
 
 # Setup
