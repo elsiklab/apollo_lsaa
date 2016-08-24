@@ -4,6 +4,11 @@
 
 A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loci (locus specific alternate assemblies)
 
+# Prerequisites
+
+Grails 2.5.5
+Java 8
+
 
 # Setup
 
