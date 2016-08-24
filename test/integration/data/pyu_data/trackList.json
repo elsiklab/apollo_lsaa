@@ -43,6 +43,7 @@
    "classicMenu": true,
    "plugins": ["PairedReadViewer", "LSAA"],
    "dataset_id": "pyu",
+   "organism_id": "pyu",
    "datasets": {
        "pyu": {
            "name": "Pythium ultimum",
