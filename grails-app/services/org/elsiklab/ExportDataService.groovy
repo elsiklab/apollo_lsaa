@@ -5,7 +5,7 @@ import org.ho.yaml.Yaml
 import org.ho.yaml.exception.YamlException
 
 @Transactional
-class EditScaffoldsService {
+class ExportDataService {
 
     def fastaFileService
 
@@ -18,10 +18,8 @@ class EditScaffoldsService {
         def prevstart = 1
         def fastaFile = FastaFile.findByOrganism(organism)
         def list = this.getAltLoci(organism)
-        log.debug "here ${organism}"
 
         for(int i = 0; i < list.size(); i++) {
-            log.debug "here2"
             AlternativeLoci curr = list[i];
             AlternativeLoci next = list[i + 1];
             if(curr.reversed) {

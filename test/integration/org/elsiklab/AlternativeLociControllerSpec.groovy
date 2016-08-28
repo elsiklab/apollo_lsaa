@@ -5,8 +5,8 @@ import grails.test.mixin.TestFor
 import org.bbop.apollo.Sequence
 import org.bbop.apollo.Organism
 
-@TestFor(EditScaffoldsService)
-class EditScaffoldsServiceIntegrationSpec extends IntegrationSpec {
+@TestFor(AlternativeLociController)
+class AlternativeLociControllerSpec extends IntegrationSpec {
 
     def setup() {
         def organism = new Organism(
@@ -34,14 +34,28 @@ class EditScaffoldsServiceIntegrationSpec extends IntegrationSpec {
     def cleanup() {
     }
 
-    void "test something"() {
-        assert 1==1
-    }
-    void "test getting reversals"() {
+    void 'test badseq'() {
         when:
-            def map = service.getTransformedSequence(organism)
+            controller.params.sequence = 'bad sequence'
+            controller.params.start = 1000
+            controller.params.end = 2000
+            controller.params.description = 'inversion'
+            controller.params.organism = 'pyu'
+            controller.createReversal()
         then:
-            //map[0] == [ sequence: [ source: "scf1117875582023", start: 100, stop: 200, reverse: true, filename: "test/integration/resources/pyu_data/scf1117875582023.fa", external: true ] ]
-            1==1
+            controller.response.status == 500
+            AlternativeLoci.count == 0
+    }
+    void 'test reversal'() {
+        when:
+            controller.params.sequence = 'scf1117875582023'
+            controller.params.start = 1000
+            controller.params.end = 2000
+            controller.params.description = 'inversion'
+            controller.params.organism = 'pyu'
+            controller.createReversal()
+        then:
+            controller.response.status == 200
+            AlternativeLoci.count == 1
     }
 }

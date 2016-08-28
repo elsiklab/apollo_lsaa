@@ -29,7 +29,7 @@
                     <g:link controller="fastaFile" action="index">Add fasta</g:link>
                 </li>
                 <li>
-                    <g:link controller="editScaffolds" action="index">Edit scaffolds</g:link>
+                    <g:link controller="exportData" action="index">Export data</g:link>
                 </li>
                 <li>
                     <g:link controller="alternativeLoci" action="index">Alternative loci</g:link>

@@ -5,12 +5,12 @@ import org.bbop.apollo.Organism
 
 class AltLociSequenceController {
 
-    def editScaffoldsService
+    def exportDataService
 
     def index() { }
 
     def features() {
-        def map = editScaffoldsService.getTransformedSequence(Organism.findByCommonName(params.organism))
+        def map = exportDataService.getTransformedSequence(Organism.findByCommonName(params.organism))
         def start = Integer.parseInt(params.start) >= 0 ? Integer.parseInt(params.start) : 0
         def end = Integer.parseInt(params.end)
         render ([features: [[seq: map.substring(start, end), start: start, end: end]]] as JSON)

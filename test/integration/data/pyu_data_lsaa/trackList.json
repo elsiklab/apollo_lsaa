@@ -5,7 +5,7 @@
          "key" : "Reference sequence",
          "storeClass" : "JBrowse/Store/SeqFeature/REST",
          "chunkSize" : 20000,
-         "baseUrl" : "../editScaffolds/",
+         "baseUrl" : "../exportData/",
          "label" : "DNA",
          "type" : "SequenceTrack",
          "category" : "Reference sequence"
