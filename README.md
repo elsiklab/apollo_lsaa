@@ -17,7 +17,7 @@ Samtools installed globally
 
 By default the bootstrapping should be setup for your organism in grails-app/conf/BootStrap.groovy
 
-The configuration of the database can be setup in src/java/apollo-lsaa-groovy.config (if running apollo-lsaa standalone) or from apollo-config.groovy (if using apollo-lsaa as an Apollo plugin)
+The configuration of the database can be setup in apollo-lsaa-groovy.config (if running apollo-lsaa standalone) or from apollo-config.groovy (if using apollo-lsaa as an Apollo plugin)
 
 ## Domain classes
 
