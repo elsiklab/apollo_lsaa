@@ -6,6 +6,7 @@ import grails.converters.JSON
 import org.bbop.apollo.FeatureLocation
 import org.bbop.apollo.Sequence
 import org.bbop.apollo.Organism
+import org.ho.yaml.Yaml
 
 class EditScaffoldsController {
 
@@ -123,19 +124,37 @@ class EditScaffoldsController {
         }
     }
 
-    def getTransformedYaml(Organism organism) {
+    def getTransformedYaml() {
+        def organism = Organism.findById(params.organism);
         def map = editScaffoldsService.getTransformations(organism)
         render text: Yaml.dump(map)
     }
 
-    def getTransformedJSON(Organism organism) {
+    def getTransformedJSON() {
+        def organism = Organism.findById(params.organism);
         def map = editScaffoldsService.getTransformations(organism)
         render text: map as JSON
     }
 
-    def getTransformedSequence(Organism organism) {
+    def getTransformedSequence() {
+        def organism = Organism.findById(params.organism);
         def map = editScaffoldsService.getTransformedSequence(organism)
         render text: map
+    }
+
+    def export() {
+        if(params.type == "YAML") {
+            getTransformedYaml()
+        }
+        else if(params.type == "JSON") {
+            getTransformedJSON()
+        }
+        else if(params.type == "FASTA") {
+            getTransformedSequence()
+        }
+        else {
+            render text: "hello"
+        }
     }
 
     

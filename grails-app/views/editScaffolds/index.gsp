@@ -1,4 +1,5 @@
 <%@ page import="org.elsiklab.AlternativeLoci" %>
+<%@ page import="org.bbop.apollo.Organism" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,11 +32,16 @@
             <g:if test="${error}">
                 <div class="message" role="status">${error}</div>
             </g:if>
-            <p>Use the scaffolder syntax to edit the genome arrangement</p>
             <div class="left">
-                <p><g:link action="getTransformedJSON">Get transformed sequence (JSON)</g:link></p>
-                <p><g:link action="getTransformedYaml">Get transformed sequence (YAML)</g:link></p>
-                <p><g:link action="getTransformedSequence">Get transformed sequence (FASTA)</g:link></p>
+                <g:form action="export">
+                    <g:select name="organism" required="" from="${Organism.list()}" optionValue="commonName" optionKey="id" />
+                    <select name="type">
+                        <option>JSON</option>
+                        <option>YAML</option>
+                        <option>FASTA</option>
+                    </select>
+                    <g:submitButton name="Submit"></g:submitButton>
+                </g:form>
             </div>
         </div>
     </body>
