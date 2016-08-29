@@ -17,54 +17,48 @@ class ExportDataController {
         render view: 'index'
     }
 
-    def generateScaffolds() {
-
-        def ap = grailsApplication.config.lsaa.appStoreDirectory
-
-        new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withWriter { out ->
-            out << 'hello'
-        }
-        new File("${grailsApplication.config.lsaa.appStoreDirectory}/out.fa").withReader { stream ->
-            response.setHeader 'Content-disposition', 'attachment;filename=output.fa'
-            response.contentType = 'application/octet-stream'
-            response.outputStream << stream
-            response.outputStream.flush()
-        }
-    }
-
-
     def getTransformedYaml() {
-        def organism = Organism.findById(params.organism);
+        def organism = Organism.findById(params.organism)
         def map = exportDataService.getTransformations(organism)
+        response.contentType = 'text/plain'
+        if(params.download == 'Download') {
+            response.setHeader 'Content-disposition', 'attachment;filename=output.yaml'
+        }
         render text: Yaml.dump(map)
     }
 
     def getTransformedJSON() {
-        def organism = Organism.findById(params.organism);
+        def organism = Organism.findById(params.organism)
         def map = exportDataService.getTransformations(organism)
+        response.contentType = 'application/json'
+        if(params.download == 'Download') {
+            response.setHeader 'Content-disposition', 'attachment;filename=output.json'
+        }
         render text: map as JSON
     }
 
     def getTransformedSequence() {
-        def organism = Organism.findById(params.organism);
+        def organism = Organism.findById(params.organism)
         def map = exportDataService.getTransformedSequence(organism)
+        if(params.download == 'Download') {
+            response.setHeader 'Content-disposition', 'attachment;filename=output.fa'
+        }
+        response.contentType = 'text/plain'
         render text: map
     }
 
     def export() {
-        if(params.type == "YAML") {
+        if(params.type == 'YAML') {
             getTransformedYaml()
         }
-        else if(params.type == "JSON") {
+        else if(params.type == 'JSON') {
             getTransformedJSON()
         }
-        else if(params.type == "FASTA") {
+        else if(params.type == 'FASTA') {
             getTransformedSequence()
         }
         else {
-            render text: "hello"
+            render text: 'Unknown download method'
         }
     }
-
-    
 }

@@ -279,16 +279,16 @@ class AlternativeLociController {
                         fasta_file: fastaFile,
                         name_file: seq.name
                     ).save(flush: true, failOnError: true)
- 
+
                     FeatureLocation featureLoc = new FeatureLocation(
                         fmin: params.start,
                         fmax: params.end,
                         feature: altloci,
                         sequence: seq
                     ).save(flush: true, failOnError: true)
- 
+
                     altloci.addToFeatureLocations(featureLoc)
- 
+
                     render ([success: true] as JSON)
                 }
                 else {
@@ -322,7 +322,7 @@ class AlternativeLociController {
                         originalname: 'admin-' + new Date()
                     ).save(flush: true)
                 }
- 
+
                 AlternativeLoci altloci = new AlternativeLoci(
                     name: name,
                     uniqueName: name,
@@ -331,16 +331,16 @@ class AlternativeLociController {
                     end_file: new File(fastaFile).length(),
                     fasta_file: fastaFile
                 ).save(flush: true)
- 
+
                 FeatureLocation featureLoc = new FeatureLocation(
                     fmin: params.start,
                     fmax: start.end,
                     feature: altloci,
                     sequence: seq
                 ).save(flush: true)
- 
+
                 altloci.addToFeatureLocations(featureLoc)
- 
+
                 render ([success: true] as JSON)
             }
             else {

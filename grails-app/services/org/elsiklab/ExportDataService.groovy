@@ -32,29 +32,27 @@ class ExportDataService {
         for(int i = 0; i < list.size(); i++) {
             curr = list[i]
             next = list[i + 1]
-            if(curr.reversed) {
                 
-                map << [
-                    sequence: [
-                        source: curr.name_file,
-                        start: curr.featureLocation.fmin,
-                        stop: curr.featureLocation.fmax,
-                        reverse: curr.reversed ?: false,
-                        filename: curr.fasta_file.filename
-                    ]
+            map << [
+                sequence: [
+                    source: curr.name_file,
+                    start: curr.featureLocation.fmin,
+                    stop: curr.featureLocation.fmax,
+                    reverse: curr.reversed ?: false,
+                    filename: curr.fasta_file.filename
                 ]
+            ]
 
-                prevstart = (i == list.size() - 1) ? (curr.featureLocation.sequence.length) - 1 : next.featureLocation.fmin
-                map << [
-                    sequence: [
-                        source: curr.featureLocation.sequence.name,
-                        start: curr.featureLocation.fmax + 1,
-                        stop: prevstart,
-                        filename: fastaFile.filename,
-                        reverse: false
-                    ]
+            prevstart = (i == list.size() - 1) ? (curr.featureLocation.sequence.length) - 1 : next.featureLocation.fmin
+            map << [
+                sequence: [
+                    source: curr.featureLocation.sequence.name,
+                    start: curr.featureLocation.fmax + 1,
+                    stop: prevstart,
+                    filename: fastaFile.filename,
+                    reverse: false
                 ]
-            }
+            ]
         }
         return map
     }

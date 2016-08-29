@@ -40,6 +40,10 @@
                         <option>YAML</option>
                         <option>FASTA</option>
                     </select>
+                    <select name="download">
+                        <option value="text">View</option>
+                        <option value"download">Download</option>
+                    </select>
                     <g:submitButton name="Submit"></g:submitButton>
                 </g:form>
             </div>
