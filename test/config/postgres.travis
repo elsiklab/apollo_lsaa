@@ -4,7 +4,7 @@ environments {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             username = "postgres"
             driverClassName = "org.postgresql.Driver"
-            dialect = "org.bbop.apollo.ImprovedPostgresDialect"
+            dialect = "org.elsiklab.ImprovedPostgresDialect"
             url = "jdbc:postgresql://localhost/apollo_lsaa"
         }
     }
