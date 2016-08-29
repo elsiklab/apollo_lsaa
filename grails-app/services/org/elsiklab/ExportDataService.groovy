@@ -18,20 +18,22 @@ class ExportDataService {
         def prevstart = 1
         def fastaFile = FastaFile.findByOrganism(organism)
         def list = this.getAltLoci(organism)
-
+        AlternativeLoci curr = list[0]
+        AlternativeLoci next = list[1]
+        map << [
+            sequence: [
+                source: curr.featureLocation.sequence.name,
+                start: prevstart,
+                stop: curr.featureLocation.fmin - 1,
+                filename: fastaFile.filename,
+                reverse: false
+            ]
+        ]
         for(int i = 0; i < list.size(); i++) {
-            AlternativeLoci curr = list[i];
-            AlternativeLoci next = list[i + 1];
+            curr = list[i]
+            next = list[i + 1]
             if(curr.reversed) {
-                map << [
-                    sequence: [
-                        source: curr.featureLocation.sequence.name,
-                        start: prevstart,
-                        stop: curr.featureLocation.fmin - 1,
-                        filename: fastaFile.filename,
-                        reverse: false
-                    ]
-                ]
+                
                 map << [
                     sequence: [
                         source: curr.name_file,
@@ -41,17 +43,18 @@ class ExportDataService {
                         filename: curr.fasta_file.filename
                     ]
                 ]
+
+                prevstart = (i == list.size() - 1) ? (curr.featureLocation.sequence.length) - 1 : next.featureLocation.fmin
                 map << [
                     sequence: [
                         source: curr.featureLocation.sequence.name,
                         start: curr.featureLocation.fmax + 1,
-                        stop: (i == list.size() - 1) ? (curr.featureLocation.sequence.length) - 1 : next.featureLocation.fmin,
+                        stop: prevstart,
                         filename: fastaFile.filename,
                         reverse: false
                     ]
                 ]
             }
-            prevstart = curr.featureLocation.fmin
         }
         return map
     }
