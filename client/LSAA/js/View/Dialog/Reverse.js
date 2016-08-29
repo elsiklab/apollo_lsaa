@@ -58,7 +58,7 @@ function(
                     }).then(function() {
                         thisB.hide();
                         thisB.browser.clearHighlight();
-                        thisB.browser.view.redrawRegion(new Location(thisB.sequence.get('value') + ':' + thisB.start.get('value') + '..' + thisB.end.get('value')));
+                        thisB.browser.view.redrawTracks();
                     }, function(error) {
                         thisB.error.innerHTML = error.message + '<br>' + ((error.response || {}).data || {}).error;
                         console.error(error);
