@@ -18,7 +18,8 @@ cache:
 before_install:
     - npm install -g bower
 before_script:
-    - psql -c 'create database "apollo-test";' -U postgres;
+    - cp test/config/postgres.travis apollo-lsaa-config.groovy;
+    - psql -c 'create database apollo_lsaa;' -U postgres;
     - git clone https://github.com/elsiklab/apollo_domain_classes.git
     - cd apollo_domain_classes && ./grailsw refresh-dependencies && ./grailsw maven-install && cd -
 script:
