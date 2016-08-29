@@ -39,7 +39,9 @@ class ExportDataService {
                     start: curr.featureLocation.fmin,
                     stop: curr.featureLocation.fmax,
                     reverse: curr.reversed ?: false,
-                    filename: curr.fasta_file.filename
+                    filename: curr.fasta_file.filename,
+                    modstart: curr.start_file,
+                    modend: curr.end_file
                 ]
             ]
 
@@ -72,7 +74,7 @@ class ExportDataService {
         String string = ''
         def ret = this.getTransformations(organism)
         ret.each { it ->
-            string += fastaFileService.readSequence(it.sequence.filename, it.sequence.source, it.sequence.start, it.sequence.stop, it.sequence.reverse)
+            string += fastaFileService.readSequence(it.sequence.filename, it.sequence.source, it.sequence.modstart ?: it.sequence.start, it.sequence.modend ?: it.sequence.stop, it.sequence.reverse)
         }
         return string
     }

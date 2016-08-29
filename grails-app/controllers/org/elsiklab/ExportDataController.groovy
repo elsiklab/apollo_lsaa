@@ -34,7 +34,9 @@ class ExportDataController {
         if(params.download == 'Download') {
             response.setHeader 'Content-disposition', 'attachment;filename=output.json'
         }
-        render text: map as JSON
+        def json = map as JSON
+        json.prettyPrint = true
+        render text: json
     }
 
     def getTransformedSequence() {
