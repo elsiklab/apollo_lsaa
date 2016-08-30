@@ -38,11 +38,13 @@ grails.project.dependency.resolution = {
         build(':release:3.1.0',
               ':rest-client-builder:2.1.0',
               ':scaffolding:2.1.2',
+              ':hibernate4:4.3.5.5',
+              ':asset-pipeline:2.11.0',
               ':codenarc:0.25.2') {
             export = false
         }
         compile ':shiro:1.2.1'
-        compile ':apollo-domain-classes:1.0.11'
+        compile ':apollo-domain-classes:1.0.12'
         runtime ':hibernate4:4.3.5.5'
         runtime ':cors:1.3.0'
         compile ':asset-pipeline:2.11.0'
