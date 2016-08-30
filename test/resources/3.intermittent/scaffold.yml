@@ -1,0 +1,13 @@
+---
+  -
+    sequence:
+      source: "A"
+      start: 1
+      stop: 8
+  -
+    sequence:
+      source: "B"
+  -
+    sequence:
+      source: "A"
+      start: 9

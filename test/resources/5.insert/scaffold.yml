@@ -1,0 +1,9 @@
+---
+  -
+    sequence:
+      source: "A"
+      inserts:
+      -
+          source: "B"
+          open: 9
+          close: 9

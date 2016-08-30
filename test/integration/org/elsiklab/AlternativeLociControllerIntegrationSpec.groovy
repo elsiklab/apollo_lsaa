@@ -1,10 +1,11 @@
 package org.elsiklab
 
 import grails.test.spock.IntegrationSpec
+import grails.test.mixin.TestFor
 import org.bbop.apollo.Sequence
 import org.bbop.apollo.Organism
 
-
+@TestFor(AlternativeLociController)
 class AlternativeLociControllerIntegrationSpec extends IntegrationSpec {
 
     def setup() {

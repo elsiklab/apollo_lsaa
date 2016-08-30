@@ -1,0 +1,11 @@
+---
+  -
+    sequence:
+      source: "A"
+      reverse: true
+  -
+    sequence:
+      source: "B"
+  -
+    sequence:
+      source: "C"

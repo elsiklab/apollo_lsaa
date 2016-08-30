@@ -1,0 +1,10 @@
+---
+  -
+    sequence:
+      source: "A"
+  -
+    sequence:
+      source: "B"
+  -
+    sequence:
+      source: "C"

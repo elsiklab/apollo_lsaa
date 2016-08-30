@@ -16,7 +16,13 @@ class FastaFileServiceSpec extends Specification {
     }
 
     void "test something"() {
-        expect:
-            1 == 1
+        when:
+            def a = service.readIndexedFasta('test/resources/1.plain/sequence.fa','A')
+            def b = service.readIndexedFasta('test/resources/1.plain/sequence.fa','B')
+            def c = service.readIndexedFasta('test/resources/1.plain/sequence.fa','C')
+        then:
+            a == 'GGGGGGGG'
+            b == 'TTTTTTTT'
+            c == 'AAAAAAAA'
     }
 }
