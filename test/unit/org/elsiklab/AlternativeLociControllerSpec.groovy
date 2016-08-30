@@ -1,12 +1,13 @@
 package org.elsiklab
 
-import grails.test.spock.IntegrationSpec
+import spock.lang.Specification
 import grails.test.mixin.TestFor
 import org.bbop.apollo.Sequence
 import org.bbop.apollo.Organism
 
 @TestFor(AlternativeLociController)
-class AlternativeLociControllerSpec extends IntegrationSpec {
+@Mock([Organism, Sequence, FastaFile, AlternativeLoci])
+class AlternativeLociControllerSpec extends Specification {
 
     def setup() {
         def organism = new Organism(
