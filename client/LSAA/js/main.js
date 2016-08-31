@@ -47,7 +47,6 @@ function(
                     label: 'Search sequence',
                     iconClass: 'dijitIconSearch',
                     onClick: function() {
-                        console.log('wtf');
                         new SequenceSearchDialog({
                             browser: thisB.browser,
                             contextPath: thisB.contextPath,
@@ -65,7 +64,7 @@ function(
                                 thisB.browser.config.highlightSearchedRegions = highlightSearchedRegions;
                             },
                             errorCallback: function(response) {
-                                console.log('here');
+                                console.log('erro');
                                 console.error(response);
                             }
                         }).show();

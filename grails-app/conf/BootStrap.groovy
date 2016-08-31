@@ -16,8 +16,8 @@ class BootStrap {
             if(!Organism.findByCommonName('pyu')) {
                 def organism = new Organism(
                     commonName: 'pyu',
-                    directory: 'test/data/pyu_data',
-                    blatdb: 'test/data/pyu_data/scf1117875582023.2bit'
+                    directory: 'web-app/jbrowse/data',
+                    blatdb: "${System.getProperty('user.dir')}/web-app/jbrowse/data/scf1117875582023.2bit"
                 ).save(flush: true, failOnError: true)
                 new Sequence(
                     name: 'scf1117875582023',
@@ -28,7 +28,7 @@ class BootStrap {
                     end: 1683196
                 ).save(flush: true, failOnError: true)
                 new FastaFile(
-                    filename: 'test/integration/resources/pyu_data/scf1117875582023.fa',
+                    filename: "${System.getProperty('user.dir')}/web-app/jbrowse/data/scf1117875582023.fa",
                     lastUpdated: new Date(),
                     dateCreated: new Date(),
                     originalname: 'scf1117875582023.fa',

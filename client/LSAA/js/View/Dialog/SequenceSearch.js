@@ -4,7 +4,6 @@ define([
     'dojo/request',
     'dojo/on',
     'dojo/query',
-    'dojo/Deferred',
     'dijit/Dialog',
     'dijit/layout/ContentPane',
     'dijit/_TemplatedMixin',
@@ -17,7 +16,6 @@ function(
     request,
     on,
     query,
-    Deferred,
     Dialog,
     ContentPane,
     TemplatedMixin,
@@ -52,9 +50,11 @@ function(
             this.inherited(arguments);
             console.log('here5');
 
-            on(dojo.byId('sequence_search'), 'submit', function() {
+            on(dojo.byId('sequence_search'), 'submit', function(evt) {
+                console.log('here33');
                 thisB.search(thisB.refSeqName);
-                return false;
+                console.log('here6');
+                dojo.stopEvent(evt);
             });
 
             this.getSequenceSearchTools(this.refSeqName);
@@ -183,7 +183,6 @@ function(
             });
         },
         createCombinationTrack: function(trackConf) {
-            var d = new Deferred();
             var storeConf = {
                 browser: this.browser,
                 refSeq: this.browser.refSeq,
@@ -192,12 +191,9 @@ function(
                 urlTemplate: trackConf.urlTemplate
             };
             var storeName = this.browser.addStoreConfig(null, storeConf);
+            var thisB = this;
             storeConf.name = storeName;
             this.browser.getStore(storeName, function() {
-                d.resolve(true);
-            });
-            var thisB = this;
-            d.promise.then(function() {
                 trackConf.store = storeName;
                 if (trackConf.style && trackConf.style.color) {
                     trackConf.style.color = eval('(' + trackConf.style.color + ')');

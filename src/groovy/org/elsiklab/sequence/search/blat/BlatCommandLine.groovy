@@ -28,7 +28,7 @@ class BlatCommandLine extends SequenceSearchTool {
         outputDir = config.output_dir
         removeTmpDir = config.removeTmpDir
         tmpDir = config.tmp_dir
-        gffFormatter = config.gff_exe ?: 'blat2gff.pl'
+        gffFormatter = config.gff_exe
     }
 
     @Override
@@ -50,7 +50,7 @@ class BlatCommandLine extends SequenceSearchTool {
     private Collection<BlastAlignment> runSearch(File dir, String query, String databaseId)
             throws IOException, AlignmentParsingException, InterruptedException {
         String queryArg = createQueryFasta(dir, query)
-        String databaseArg = database + (databaseId != '' ? (':' + databaseId):'')
+        String databaseArg = database
         String outputArg = dir.absolutePath + '/results.tab'
         String outputPsl = dir.absolutePath + '/results.psl'
         String outputGff = dir.absolutePath + '/results.gff'
@@ -59,9 +59,14 @@ class BlatCommandLine extends SequenceSearchTool {
         for (String option : blatOptions) {
             command += option + ' '
         }
+
+        log.debug "Running: ${command} ${databaseArg} ${queryArg} ${outputArg} -out=blast8"
         ("${command} ${databaseArg} ${queryArg} ${outputArg} -out=blast8").execute().waitForProcessOutput(System.out, System.err)
+        log.debug "Running: ${command} ${databaseArg} ${queryArg} ${outputPsl}"
         ("${command} ${databaseArg} ${queryArg} ${outputPsl}").execute().waitForProcessOutput(System.out, System.err)
-        def gffContent = ("${gffFormatter} ${outputPsl}").execute().text
+        log.debug "Running: ${gffFormatter} -f psl  -m -ver 3 -t hit -i ${outputPsl}"
+        def gffContent = ("${gffFormatter} -f psl  -m -ver 3 -t hit -i ${outputPsl}").execute().text
+        log.debug "Result: ${gffContent}"
         new File(outputGff).withWriterAppend('UTF-8') { it.write(gffContent) }
         ['flatfile-to-json.pl', '--config', $/{"glyph":"JBrowse/View/FeatureGlyph/Box"}/$,'--clientConfig',$/{"color":"function(feature){return(feature.get('strand')==-1?'blue':'red');}"}/$, '--trackType', 'JBrowse/View/Track/CanvasFeatures', '--trackLabel', "${dir.name}", '--gff', "${outputGff}", '--out', "${outputDir}"].execute().waitForProcessOutput(System.out, System.err)
 

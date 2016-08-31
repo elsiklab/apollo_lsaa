@@ -4,6 +4,7 @@ cd web-app
 wget --quiet jbrowse.org/releases/JBrowse-1.12.1.zip
 unzip JBrowse-1.12.1.zip
 mv JBrowse-1.12.1 jbrowse
+rm JBrowse-1.12.1.zip
 cd -
 rm -rf web-app/jbrowse/data
 rm -rf web-app/jbrowse/data_transformed

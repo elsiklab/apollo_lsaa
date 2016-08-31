@@ -1,4 +1,18 @@
 {
+   "datasets" : {
+      "pyu_lsaa" : {
+         "url" : "?data=data_transformed",
+         "name" : "Pythium ultimum (lsaa)"
+      },
+      "pyu" : {
+         "url" : "?data=data",
+         "name" : "Pythium ultimum"
+      }
+   },
+   "plugins" : [
+      "PairedReadViewer",
+      "LSAA"
+   ],
    "tracks" : [
       {
          "seqType" : "dna",
@@ -25,58 +39,16 @@
       {
          "storeClass" : "JBrowse/Store/SeqFeature/NCList",
          "urlTemplate" : "tracks/Augustus_canvas/{refseq}/trackData.json",
-         "type" : "CanvasFeatures",
-         "label" : "Augustus_canvas"
+         "label" : "Augustus_canvas",
+         "type" : "CanvasFeatures"
       },
       {
          "baseUrl" : "../altLociTrack/",
          "storeClass" : "JBrowse/Store/SeqFeature/REST",
-         "type" : "CanvasFeatures",
-         "label" : "LSAA_annotations"
-      },
-      {
-         "style" : {
-            "className" : "feature",
-            "color" : "function(feature){return(feature.get('strand')==-1?'blue':'red');}"
-         },
-         "key" : "blat_tmp7241143953497860094",
-         "storeClass" : "JBrowse/Store/SeqFeature/NCList",
-         "trackType" : "JBrowse/View/Track/CanvasFeatures",
-         "urlTemplate" : "tracks/blat_tmp7241143953497860094/{refseq}/trackData.json",
-         "compress" : 0,
-         "label" : "blat_tmp7241143953497860094",
-         "type" : "JBrowse/View/Track/CanvasFeatures",
-         "glyph" : "JBrowse/View/FeatureGlyph/Box"
-      },
-      {
-         "style" : {
-            "className" : "feature",
-            "color" : "function(feature){return(feature.get('strand')==-1?'blue':'red');}"
-         },
-         "key" : "blat_tmp1427685046032521930",
-         "storeClass" : "JBrowse/Store/SeqFeature/NCList",
-         "trackType" : "JBrowse/View/Track/CanvasFeatures",
-         "urlTemplate" : "tracks/blat_tmp1427685046032521930/{refseq}/trackData.json",
-         "compress" : 0,
-         "label" : "blat_tmp1427685046032521930",
-         "type" : "JBrowse/View/Track/CanvasFeatures",
-         "glyph" : "JBrowse/View/FeatureGlyph/Box"
+         "label" : "LSAA_annotations",
+         "type" : "CanvasFeatures"
       }
    ],
-   "plugins" : [
-      "PairedReadViewer",
-      "LSAA"
-   ],
-   "datasets" : {
-      "pyu_lsaa" : {
-         "name" : "Pythium ultimum (lsaa)",
-         "url" : "?data=data_transformed"
-      },
-      "pyu" : {
-         "name" : "Pythium ultimum",
-         "url" : "?data=data"
-      }
-   },
    "names" : {
       "url" : "names/",
       "type" : "Hash"
