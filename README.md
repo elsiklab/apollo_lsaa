@@ -9,8 +9,8 @@ A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loc
 * Grails 2.5.5
 * Java 8 (minimum for htsjdk)
 * Samtools (to perform faidx)
-* JBrowse scripts (e.g. cpanm git://github.com/gmod/jbrowse.git)
-* BioPerl (e.g. cpanm BioPerl)
+* JBrowse scripts (e.g. cpanm git://github.com/gmod/jbrowse.git) used for SequenceSearch
+* BioPerl (e.g. cpanm BioPerl) used for SequenceSearch
 
 
 # Setup
@@ -25,7 +25,7 @@ The configuration of the database can be setup in apollo-lsaa-groovy.config (if 
 
 Note: we are currently using the apollo-domain-classes plugin from https://github.com/elsiklab/apollo_domain_classes
 
-Follow setup steps for apollo-domain-classes before installing apollo-lsaa (if apollo-domain-classes is accepted on grails plugin central, this is not necessary)
+Follow setup steps for apollo-domain-classes before installing apollo-lsaa
 
 ## Run in development
 
@@ -52,8 +52,8 @@ After that, add the plugin to Apollo's BuildConfig.groovy
     grails.project.dependency.resolution = {
         ...
         plugins {
-            compile ":apollo-domain-classes:1.0.10"
-            compile ":apollo-lsaa:1.0.4"
+            compile ":apollo-domain-classes:1.0.12"
+            compile ":apollo-lsaa:1.0.5"
         }
     }
 
