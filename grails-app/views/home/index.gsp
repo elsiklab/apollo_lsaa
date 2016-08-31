@@ -25,7 +25,7 @@
         </style>
     </head>
     <body>
-        <g:render template="../layouts/reportHeader"/>
+        <g:render template="../layouts/homeReportHeader"/>
         <div class="container">
             <div class="left">
                 <h3 class="header">ApolloLSAA</h3>

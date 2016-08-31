@@ -3,12 +3,12 @@ define([
     'dojo/_base/array',
     'dojo/request',
     'dojo/on',
+    'dojo/query',
     'dojo/Deferred',
     'dijit/Dialog',
     'dijit/layout/ContentPane',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
-    'jquery',
     'dojo/text!./SequenceSearch.html'
 ],
 function(
@@ -16,12 +16,12 @@ function(
     array,
     request,
     on,
+    query,
     Deferred,
     Dialog,
     ContentPane,
     TemplatedMixin,
     WidgetsInTemplateMixin,
-    $,
     DialogTemplate
 ) {
     var Panel = declare([ContentPane, TemplatedMixin, WidgetsInTemplateMixin], {
@@ -30,29 +30,34 @@ function(
 
     return declare(Dialog, {
         title: 'Sequence search',
-
-        hide: function() {
-            this.inherited(arguments);
-            window.setTimeout(dojo.hitch(this, 'destroyRecursive'), 500);
-        },
-        show: function(args) {
-            var thisB = this;
+        constructor: function(args) {
+            console.log('here2');
             this.browser = args.browser;
             this.contextPath = args.contextPath || '..';
             this.seqContext = args.browser.config.seqContext || '..';
             this.errorCallback = args.errorCallback || function() { };
             this.successCallback = args.successCallback || function() { };
+            this.refSeqName = args.refseq;
+        },
 
-            this.set('content', new Panel());
-            var refSeqName = args.refseq;
+        hide: function() {
             this.inherited(arguments);
+            window.setTimeout(dojo.hitch(this, 'destroyRecursive'), 500);
+        },
+        show: function() {
+            var thisB = this;
+            console.log('here3');
+            this.set('content', new Panel());
+            console.log('here4');
+            this.inherited(arguments);
+            console.log('here5');
 
-            $('#sequence_search').submit(function() {
-                thisB.search(refSeqName);
+            on(dojo.byId('sequence_search'), 'submit', function() {
+                thisB.search(thisB.refSeqName);
                 return false;
             });
 
-            this.getSequenceSearchTools(refSeqName);
+            this.getSequenceSearchTools(this.refSeqName);
         },
 
         getSequenceSearchTools: function(refSeqName) {
@@ -97,6 +102,9 @@ function(
                 console.error('The sequence should only contain non redundant IUPAC nucleotide or amino acid codes (except for N/X)');
                 return;
             }
+
+            console.log(this.browser.config);
+            console.log(this.browser.config.organism_id);
             var sequenceToolsSelect = dojo.byId('sequence_tools_select');
             var postobj = {
                 track: refSeqName,
@@ -106,10 +114,10 @@ function(
                     database_id: dojo.byId('search_all_refseqs').checked ? null : refSeqName
                 },
                 operation: 'search_sequence',
-                organism: this.browser.config.dataset_id
+                organism: this.browser.config.organism_id
             };
 
-            $('#sequence_search_waiting').show();
+            query('#sequence_search_waiting').style('display', '');
             request(this.seqContext + '/sequenceSearch/searchSequence', {
                 data: JSON.stringify(postobj),
                 handleAs: 'json',
@@ -121,17 +129,17 @@ function(
                     console.error(response.error);
                     return;
                 }
-                $('#sequence_search_waiting').hide();
-                $('#sequence_search_matches').empty();
+                query('#sequence_search_waiting').style('display', 'none');
+                dojo.empty(query('#sequence_search_matches'));
                 if (response.matches.length === 0) {
-                    $('#sequence_search_message').show();
-                    $('#sequence_search_matches').hide();
-                    $('#sequence_search_header').hide();
+                    query('#sequence_search_message').style('display', '');
+                    query('#sequence_search_matches').style('display', 'none');
+                    query('#sequence_search_header').style('display', 'none');
                     return;
                 }
-                $('#sequence_search_message').hide();
-                $('#sequence_search_matches').show();
-                $('#sequence_search_header').show();
+                query('#sequence_search_message').style('display', 'none');
+                query('#sequence_search_matches').style('display', '');
+                query('#sequence_search_header').style('display', '');
                 var matches = dojo.byId('sequence_search_matches');
 
                 var returnedMatches = response.matches;
@@ -169,8 +177,8 @@ function(
                 thisB.resize();
                 thisB._position();
             }, function(err) {
-                $('#sequence_search_waiting').hide();
-                $('#sequence_search_message').val(err);
+                query('#sequence_search_waiting').style('display', 'none');
+                dojo.byId('sequence_search_message').val(err);
                 console.error(err);
             });
         },

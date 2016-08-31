@@ -37,7 +37,7 @@ lsaa {
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineNucleotideToNucleotide',
             name: 'Blat nucleotide',
             params: '',
-            tmp_dir: '/opt/apollo/tmp',
+            tmp_dir: '/tmp',
             removeTmpDir: false
         ],
         blat_prot: [
@@ -45,7 +45,7 @@ lsaa {
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineProteinToNucleotide',
             name: 'Blat protein',
             params: '',
-            tmp_dir: '/opt/apollo/tmp',
+            tmp_dir: '/tmp',
             removeTmpDir: false
         ],
         blast_prot: [

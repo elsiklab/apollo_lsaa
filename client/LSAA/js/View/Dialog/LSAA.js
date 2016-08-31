@@ -6,8 +6,7 @@ define([
     'dojo/on',
     'dojo/request',
     'dijit/form/Button',
-    'JBrowse/View/Dialog/WithActionBar',
-    'JBrowse/Model/Location'
+    'JBrowse/View/Dialog/WithActionBar'
 ],
 function(
     declare,
@@ -17,8 +16,7 @@ function(
     on,
     request,
     Button,
-    ActionBarDialog,
-    Location
+    ActionBarDialog
 ) {
     return declare(ActionBarDialog, {
         autofocus: false,

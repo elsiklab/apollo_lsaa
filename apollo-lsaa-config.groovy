@@ -13,7 +13,7 @@ environments {
         dataSource{
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             username = "biocmd"
-            url = "jdbc:postgresql://localhost/apollo-test"
+            url = "jdbc:postgresql://localhost/apollo_lsaa_test"
             driverClassName = "org.postgresql.Driver"
             dialect = "org.elsiklab.ImprovedPostgresDialect"
         }
@@ -31,4 +31,30 @@ environments {
 
 lsaa {
     bootstrap = true
+    sequence_search_tools = [
+        blat_nuc: [
+            search_exe: '/usr/local/bin/blat',
+            search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineNucleotideToNucleotide',
+            name: 'Blat nucleotide',
+            params: '',
+            tmp_dir: '/tmp',
+            removeTmpDir: false
+        ],
+        blat_prot: [
+            search_exe: '/usr/local/bin/blat',
+            search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineProteinToNucleotide',
+            name: 'Blat protein',
+            params: '',
+            tmp_dir: '/tmp',
+            removeTmpDir: false
+        ],
+        blast_prot: [
+            search_exe: '/usr/local/ncbi/blast/bin/tblastn',
+            formatter_exe: '/usr/local/ncbi/blast/bin/blast_formatter',
+            gff_exe: 'bp_search2gff.pl',
+            search_class: 'org.elsiklab.sequence.search.blast.BlastCommandLine',
+            name: 'Blast protein',
+            params: ''
+        ]
+    ]
 }

@@ -16,7 +16,8 @@ class BootStrap {
             if(!Organism.findByCommonName('pyu')) {
                 def organism = new Organism(
                     commonName: 'pyu',
-                    directory: 'test/integration/data/pyu_data'
+                    directory: 'test/data/pyu_data',
+                    blatdb: 'test/data/pyu_data/scf1117875582023.2bit'
                 ).save(flush: true, failOnError: true)
                 new Sequence(
                     name: 'scf1117875582023',

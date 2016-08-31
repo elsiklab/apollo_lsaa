@@ -6,9 +6,11 @@ A plugin for [Apollo](http://github.com/GMOD/Apollo) to annotate alternative loc
 
 # Prerequisites
 
-Grails 2.5.5
-Java 8
-Samtools installed globally
+* Grails 2.5.5
+* Java 8 (minimum for htsjdk)
+* Samtools (to perform faidx)
+* JBrowse scripts (e.g. cpanm git://github.com/gmod/jbrowse.git)
+* BioPerl (e.g. cpanm BioPerl)
 
 
 # Setup
