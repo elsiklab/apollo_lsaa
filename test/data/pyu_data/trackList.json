@@ -29,29 +29,60 @@
          "label" : "Augustus_canvas"
       },
       {
-          "storeClass": "JBrowse/Store/SeqFeature/REST",
-          "baseUrl": "../altLociTrack/",
-          "type": "CanvasFeatures",
-          "label": "LSAA_annotations"
+         "baseUrl" : "../altLociTrack/",
+         "storeClass" : "JBrowse/Store/SeqFeature/REST",
+         "type" : "CanvasFeatures",
+         "label" : "LSAA_annotations"
+      },
+      {
+         "style" : {
+            "className" : "feature",
+            "color" : "function(feature){return(feature.get('strand')==-1?'blue':'red');}"
+         },
+         "key" : "blat_tmp7241143953497860094",
+         "storeClass" : "JBrowse/Store/SeqFeature/NCList",
+         "trackType" : "JBrowse/View/Track/CanvasFeatures",
+         "urlTemplate" : "tracks/blat_tmp7241143953497860094/{refseq}/trackData.json",
+         "compress" : 0,
+         "label" : "blat_tmp7241143953497860094",
+         "type" : "JBrowse/View/Track/CanvasFeatures",
+         "glyph" : "JBrowse/View/FeatureGlyph/Box"
+      },
+      {
+         "style" : {
+            "className" : "feature",
+            "color" : "function(feature){return(feature.get('strand')==-1?'blue':'red');}"
+         },
+         "key" : "blat_tmp1427685046032521930",
+         "storeClass" : "JBrowse/Store/SeqFeature/NCList",
+         "trackType" : "JBrowse/View/Track/CanvasFeatures",
+         "urlTemplate" : "tracks/blat_tmp1427685046032521930/{refseq}/trackData.json",
+         "compress" : 0,
+         "label" : "blat_tmp1427685046032521930",
+         "type" : "JBrowse/View/Track/CanvasFeatures",
+         "glyph" : "JBrowse/View/FeatureGlyph/Box"
       }
    ],
+   "plugins" : [
+      "PairedReadViewer",
+      "LSAA"
+   ],
+   "datasets" : {
+      "pyu_lsaa" : {
+         "name" : "Pythium ultimum (lsaa)",
+         "url" : "?data=data_transformed"
+      },
+      "pyu" : {
+         "name" : "Pythium ultimum",
+         "url" : "?data=data"
+      }
+   },
    "names" : {
       "url" : "names/",
       "type" : "Hash"
    },
+   "dataset_id" : "pyu",
    "formatVersion" : 1,
-   "classicMenu": true,
-   "plugins": ["PairedReadViewer", "LSAA"],
-   "dataset_id": "pyu",
-   "organism_id": "pyu",
-   "datasets": {
-       "pyu": {
-           "name": "Pythium ultimum",
-           "url": "?data=data"
-       },
-       "pyu_lsaa": {
-           "name": "Pythium ultimum (lsaa)",
-           "url": "?data=data_transformed"
-       }
-   }
+   "classicMenu" : true,
+   "organism_id" : "pyu"
 }

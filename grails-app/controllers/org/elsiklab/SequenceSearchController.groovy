@@ -25,70 +25,80 @@ class SequenceSearchController {
             searchUtils.put('output_dir', organism.directory)
 
             // dynamically allocate a search_class
-            def searcher = this.class.classLoader.loadClass( searchUtils.search_class )?.newInstance()
 
-            searcher.parseConfiguration(searchUtils as JSONObject)
+            try {
+                def searcher = this.class.classLoader.loadClass( searchUtils.search_class )?.newInstance()
 
-            def results = searcher.search('searchid', search.residues, search.database_id ?: '', map)
+                searcher.parseConfiguration(searchUtils as JSONObject)
 
-            def slurper = new JsonSlurper()
-            def filetext = new File(organism.directory+'/trackList.json').text
-            def trackList = slurper.parseText(filetext)
+                def results = searcher.search('searchid', search.residues, search.database_id ?: '', map)
 
-            def newtrack = [:]
-            trackList.tracks.each { result ->
-                if(result.label == map.toString()) {
-                    newtrack = result
+                def slurper = new JsonSlurper()
+                def filetext = new File(organism.directory+'/trackList.json').text
+                def trackList = slurper.parseText(filetext)
+
+                def newtrack = [:]
+                trackList.tracks.each { result ->
+                    if(result.label == map.toString()) {
+                        newtrack = result
+                    }
                 }
-            }
+
+                log.debug "results ${results}"
 
 
-            JsonBuilder json = new JsonBuilder ()
-            json {
-                matches results.collect { TabDelimitedAlignment result ->
-                    [
-                        'identity': result.percentId,
-                        'significance': result.eValue,
-                        'subject': ({
-                            'location' ({
-                                'fmin' result.subjectStart
-                                'fmax' result.subjectEnd
-                                'strand' result.subjectStrand
-                            })
-                            'feature' ({
-                                'uniquename' result.subjectId
-                                'type'({
-                                    'name' 'region'
-                                    'cv' ({
-                                        'name' 'sequence'
+                JsonBuilder json = new JsonBuilder ()
+                json {
+                    matches results.collect { TabDelimitedAlignment result ->
+                        [
+                            'identity': result.percentId,
+                            'significance': result.eValue,
+                            'subject': ({
+                                'location' ({
+                                    'fmin' result.subjectStart
+                                    'fmax' result.subjectEnd
+                                    'strand' result.subjectStrand
+                                })
+                                'feature' ({
+                                    'uniquename' result.subjectId
+                                    'type'({
+                                        'name' 'region'
+                                        'cv' ({
+                                            'name' 'sequence'
+                                        })
                                     })
                                 })
-                            })
-                        }),
-                        'query': ({
-                            'location' ({
-                                'fmin' result.queryStart
-                                'fmax' result.queryEnd
-                                'strand' result.queryStrand
-                            })
-                            'feature' ({
-                                'uniquename' result.queryId
-                                'type' ({
-                                    'name' 'region'
-                                    'cv'({
-                                        'name' 'sequence'
+                            }),
+                            'query': ({
+                                'location' ({
+                                    'fmin' result.queryStart
+                                    'fmax' result.queryEnd
+                                    'strand' result.queryStrand
+                                })
+                                'feature' ({
+                                    'uniquename' result.queryId
+                                    'type' ({
+                                        'name' 'region'
+                                        'cv'({
+                                            'name' 'sequence'
+                                        })
                                     })
                                 })
-                            })
-                        }),
-                        'rawscore': result.bitscore
-                    ]
+                            }),
+                            'rawscore': result.bitscore
+                        ]
+                    }
+                    track newtrack
                 }
-                track newtrack
+
+
+                render json
+            } catch (IOException e) {
+                log.error e.printStackTrace()
+                render ([error: "Error: ${e.message}"]) as JSON
+                return
             }
 
-
-            render json
         }
         else {
             render ([error: "Organism not found ${request.JSON.organism}"] as JSON)

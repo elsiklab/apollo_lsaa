@@ -16,6 +16,7 @@ class BlatCommandLine extends SequenceSearchTool {
     private String blatUserOptions
     private String tmpDir
     private String outputDir
+    private String gffFormatter
     private boolean removeTmpDir
     protected String [] blatOptions
 
@@ -27,6 +28,7 @@ class BlatCommandLine extends SequenceSearchTool {
         outputDir = config.output_dir
         removeTmpDir = config.removeTmpDir
         tmpDir = config.tmp_dir
+        gffFormatter = config.gff_exe ?: 'blat2gff.pl'
     }
 
     @Override
@@ -59,7 +61,7 @@ class BlatCommandLine extends SequenceSearchTool {
         }
         ("${command} ${databaseArg} ${queryArg} ${outputArg} -out=blast8").execute().waitForProcessOutput(System.out, System.err)
         ("${command} ${databaseArg} ${queryArg} ${outputPsl}").execute().waitForProcessOutput(System.out, System.err)
-        def gffContent = ("blat2gff.pl ${outputPsl}").execute().text
+        def gffContent = ("${gffFormatter} ${outputPsl}").execute().text
         new File(outputGff).withWriterAppend('UTF-8') { it.write(gffContent) }
         ['flatfile-to-json.pl', '--config', $/{"glyph":"JBrowse/View/FeatureGlyph/Box"}/$,'--clientConfig',$/{"color":"function(feature){return(feature.get('strand')==-1?'blue':'red');}"}/$, '--trackType', 'JBrowse/View/Track/CanvasFeatures', '--trackLabel', "${dir.name}", '--gff', "${outputGff}", '--out', "${outputDir}"].execute().waitForProcessOutput(System.out, System.err)
 

@@ -37,6 +37,7 @@ lsaa {
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineNucleotideToNucleotide',
             name: 'Blat nucleotide',
             params: '',
+            gff_exe: '/usr/local/bin/blat2gff.pl',
             tmp_dir: '/tmp',
             removeTmpDir: false
         ],
@@ -44,6 +45,7 @@ lsaa {
             search_exe: '/usr/local/bin/blat',
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineProteinToNucleotide',
             name: 'Blat protein',
+            gff_exe: '/usr/local/bin/blat2gff.pl',
             params: '',
             tmp_dir: '/tmp',
             removeTmpDir: false
@@ -51,7 +53,7 @@ lsaa {
         blast_prot: [
             search_exe: '/usr/local/ncbi/blast/bin/tblastn',
             formatter_exe: '/usr/local/ncbi/blast/bin/blast_formatter',
-            gff_exe: 'bp_search2gff.pl',
+            gff_exe: '/usr/local/bin/bp_search2gff.pl',
             search_class: 'org.elsiklab.sequence.search.blast.BlastCommandLine',
             name: 'Blast protein',
             params: ''
