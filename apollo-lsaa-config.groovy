@@ -29,11 +29,13 @@ environments {
     }
 }
 
+
+// can use full paths to blat or bp_search2gff.pl if not in path
 lsaa {
     bootstrap = true
     sequence_search_tools = [
         blat_nuc: [
-            search_exe: '/usr/local/bin/blat',
+            search_exe: 'blat',
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineNucleotideToNucleotide',
             name: 'Blat nucleotide',
             params: '',
@@ -42,7 +44,7 @@ lsaa {
             removeTmpDir: false
         ],
         blat_prot: [
-            search_exe: '/usr/local/bin/blat',
+            search_exe: 'blat',
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineProteinToNucleotide',
             name: 'Blat protein',
             gff_exe: 'bp_search2gff.pl',

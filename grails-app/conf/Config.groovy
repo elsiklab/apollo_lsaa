@@ -33,7 +33,7 @@ lsaa {
     appStoreDirectory = '/tmp/'
     sequence_search_tools = [
         blat_nuc: [
-            search_exe: '/usr/local/bin/blat',
+            search_exe: 'blat',
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineNucleotideToNucleotide',
             name: 'Blat nucleotide',
             gff_exe: 'bp_search2gff.pl',
@@ -42,7 +42,7 @@ lsaa {
             removeTmpDir: false
         ],
         blat_prot: [
-            search_exe: '/usr/local/bin/blat',
+            search_exe: 'blat',
             search_class: 'org.elsiklab.sequence.search.blat.BlatCommandLineProteinToNucleotide',
             name: 'Blat protein',
             gff_exe: 'bp_search2gff.pl',

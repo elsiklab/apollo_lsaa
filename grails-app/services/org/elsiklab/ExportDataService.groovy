@@ -19,16 +19,21 @@ class ExportDataService {
         def fastaFile = FastaFile.findByOrganism(organism)
         def list = this.getAltLoci(organism)
         AlternativeLoci curr = list[0]
-        AlternativeLoci next = list[1]
-        map << [
-            sequence: [
-                source: curr.featureLocation.sequence.name,
-                start: prevstart,
-                stop: curr.featureLocation.fmin - 1,
-                filename: fastaFile.filename,
-                reverse: false
+        AlternativeLoci next
+        if(curr) {
+            map << [
+                sequence: [
+                    source: curr.featureLocation.sequence.name,
+                    start: prevstart,
+                    stop: curr.featureLocation.fmin - 1,
+                    filename: fastaFile.filename,
+                    reverse: false
+                ]
             ]
-        ]
+        } else {
+            map = [error: "No alt loci defined"]
+        }
+
         for(int i = 0; i < list.size(); i++) {
             curr = list[i]
             next = list[i + 1]

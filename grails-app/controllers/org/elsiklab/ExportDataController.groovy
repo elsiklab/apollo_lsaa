@@ -18,35 +18,50 @@ class ExportDataController {
     }
 
     def getTransformedYaml() {
-        def organism = Organism.findById(params.organism)
-        def map = exportDataService.getTransformations(organism)
-        response.contentType = 'text/plain'
-        if(params.download == 'Download') {
-            response.setHeader 'Content-disposition', 'attachment;filename=output.yaml'
+        def organism = Organism.findByCommonName(params.organism)?:Organism.findById(params.organism)
+        if(organism) {
+            def map = exportDataService.getTransformations(organism)
+            response.contentType = 'text/plain'
+            if(params.download == 'Download') {
+                response.setHeader 'Content-disposition', 'attachment;filename=output.yaml'
+            }
+            render text: Yaml.dump(map)
         }
-        render text: Yaml.dump(map)
+        else {
+            render text: Yaml.dump([error: "Organism not found"])
+        }
     }
 
     def getTransformedJSON() {
-        def organism = Organism.findById(params.organism)
-        def map = exportDataService.getTransformations(organism)
-        response.contentType = 'application/json'
-        if(params.download == 'Download') {
-            response.setHeader 'Content-disposition', 'attachment;filename=output.json'
+        def organism = Organism.findByCommonName(params.organism)?:Organism.findById(params.organism)
+        if(organism) {
+            def map = exportDataService.getTransformations(organism)
+            response.contentType = 'application/json'
+            if(params.download == 'Download') {
+                response.setHeader 'Content-disposition', 'attachment;filename=output.json'
+            }
+            def json = map as JSON
+            json.prettyPrint = true
+            render text: json
         }
-        def json = map as JSON
-        json.prettyPrint = true
-        render text: json
+        else {
+            render ([error: "Organism not found"] as JSON)
+        }
     }
 
     def getTransformedSequence() {
-        def organism = Organism.findById(params.organism)
-        def map = exportDataService.getTransformedSequence(organism)
-        if(params.download == 'Download') {
-            response.setHeader 'Content-disposition', 'attachment;filename=output.fa'
+        def organism = Organism.findByCommonName(params.organism)?:Organism.findById(params.organism)
+        if(organism) {
+            def map = exportDataService.getTransformedSequence(organism)
+            if(params.download == 'Download') {
+                response.setHeader 'Content-disposition', 'attachment;filename=output.fa'
+            }
+            response.contentType = 'text/plain'
+            render text: map
         }
-        response.contentType = 'text/plain'
-        render text: map
+        else {
+            render ([error: "Organism not found"] as JSON)
+        }
     }
 
     def export() {
